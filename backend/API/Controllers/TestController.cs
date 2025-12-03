@@ -11,7 +11,7 @@ namespace API.Controllers
     {
         // GET: api/<TestController>
         [HttpGet]
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles ="owner")]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
