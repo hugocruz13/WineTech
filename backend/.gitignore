@@ -22,3 +22,5 @@ _ReSharper*/
 *.tmp
 *.temp
 *.db
+appsettings.json
+Web.config
