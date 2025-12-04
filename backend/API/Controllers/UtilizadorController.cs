@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BLL;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Models;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
 {
@@ -10,19 +8,19 @@ namespace API.Controllers
     [ApiController]
     public class UtilizadorController : ControllerBase
     {
-        // GET: api/<TestController>
         [HttpPost("insert")]
         [Authorize(Roles = "owner,user")]
-        public IActionResult Insert()
+        public async Task<IActionResult> Insert()
         {
             var subClaim = User.FindFirst("sub")?.Value;
-           
 
-            return Ok(new
-            {
-                UserId = subClaim
-            });
+            if (string.IsNullOrEmpty(subClaim))
+                return BadRequest("User ID claim not found.");
 
+            var bll = new UtilizadorBLL();
+            await bll.InserteUserAsync(subClaim);
+
+            return Ok();
         }
     }
 }
