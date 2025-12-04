@@ -36,6 +36,10 @@ create table Alertas (
 create table Utilizadores (
   Id          int identity not null, 
   Auth0UserId nvarchar(100) not null unique, 
+  Nome        nvarchar(100) not null, 
+  Email       nvarchar(255) not null, 
+  ImgUrl      nvarchar(255) not null, 
+  CreatedAt   datetime2(0) default GETDATE() not null, 
   primary key (Id));
 create table Compras (
   Id             int identity not null, 
