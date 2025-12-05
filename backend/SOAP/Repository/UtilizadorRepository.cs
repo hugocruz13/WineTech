@@ -1,5 +1,6 @@
-﻿using Models;
+﻿using SOAP.Models;
 using System;
+using System.Data;
 using System.Data.SqlClient;
 
 
@@ -16,23 +17,21 @@ namespace SOAP.Repository
 
         public int AddUser(Utilizador user)
         {
-            if (user == null) throw new ArgumentNullException(nameof(user));
+            if (user == null)
+                throw new ArgumentNullException(nameof(user), "O utilizador não pode ser nulo");
 
-            string query = "EXEC RegistrarUtilizador @Auth0UserId, @Nome, @Email, @ImgUrl";
-
-            using (SqlConnection connection = _connectionFactory.GetConnection())
-            using (SqlCommand cmd = new SqlCommand(query, connection))
+            using (SqlConnection conn = _connectionFactory.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("RegistrarUtilizador", conn))
             {
+                cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Auth0UserId", user.Auth0UserId);
                 cmd.Parameters.AddWithValue("@Nome", user.Nome);
                 cmd.Parameters.AddWithValue("@Email", user.Email);
                 cmd.Parameters.AddWithValue("@ImgUrl", user.ImgUrl);
-                connection.Open();
 
-                var result = cmd.ExecuteScalar();
-                return Convert.ToInt32(result);
+                conn.Open();
+                return Convert.ToInt32(cmd.ExecuteScalar()); 
             }
         }
-
     }
 }

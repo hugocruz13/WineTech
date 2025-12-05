@@ -1,5 +1,5 @@
 ﻿using DAL.Interfaces;
-using ServiceReference1;
+using ServiceUtilizador;
 using System.Threading.Tasks;
 using Utilizador = Models.Utilizador;
 
@@ -10,7 +10,7 @@ namespace DAL.Services
         public async Task<int> AddUserAsync(Utilizador user)
         {
             var client = new UtilizadorRepositoryServiceSoapClient(UtilizadorRepositoryServiceSoapClient.EndpointConfiguration.UtilizadorRepositoryServiceSoap);
-            var userDto = new ServiceReference1.Utilizador
+            var userDto = new ServiceUtilizador.Utilizador
             {
                 Auth0UserId = user.Auth0UserId,
                 Nome = user.Nome,

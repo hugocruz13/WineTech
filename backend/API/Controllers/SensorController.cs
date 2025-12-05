@@ -9,15 +9,15 @@ namespace API.Controllers
     [ApiController]
     public class SensorController : ControllerBase
     {
-        [HttpPost("data")]
-        public IActionResult Post([FromBody] SensorData data)
-        {
-            if (data == null)
-                return BadRequest("Dados inválidos");
+        //[HttpPost("data")]
+        //public IActionResult Post([FromBody] SensorData data)
+        //{
+        //    if (data == null)
+        //        return BadRequest("Dados inválidos");
 
-            Console.WriteLine($"Recebido -> Temp: {data.Temperature}, Humi: {data.Humidity}, LDR: {data.LightIntensity}");
+        //    Console.WriteLine($"Recebido -> Temp: {data.Temperature}, Humi: {data.Humidity}, LDR: {data.LightIntensity}");
 
-            return Ok("Dados recebidos com sucesso!");
-        }
+        //    return Ok("Dados recebidos com sucesso!");
+        //}
     }
 }

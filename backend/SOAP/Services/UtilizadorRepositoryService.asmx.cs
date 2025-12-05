@@ -1,4 +1,4 @@
-﻿using Models;
+﻿using SOAP.Models;
 using SOAP.Repository;
 using System;
 using System.Web.Services;
@@ -32,8 +32,7 @@ namespace SOAP.Services
 
             try
             {
-                int userId = _repository.AddUser(user);
-                return userId;
+                return _repository.AddUser(user);
             }
             catch (Exception ex)
             {

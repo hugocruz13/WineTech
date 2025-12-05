@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ServiceReference1
+namespace ServiceUtilizador
 {
     using System.Runtime.Serialization;
     
@@ -18,6 +18,8 @@ namespace ServiceReference1
     internal partial class Utilizador : object
     {
         
+        private int IdField;
+        
         private string Auth0UserIdField;
         
         private string NomeField;
@@ -26,7 +28,20 @@ namespace ServiceReference1
         
         private string ImgUrlField;
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        internal int Id
+        {
+            get
+            {
+                return this.IdField;
+            }
+            set
+            {
+                this.IdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         internal string Auth0UserId
         {
             get
@@ -39,7 +54,7 @@ namespace ServiceReference1
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         internal string Nome
         {
             get
@@ -52,7 +67,7 @@ namespace ServiceReference1
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
         internal string Email
         {
             get
@@ -65,7 +80,7 @@ namespace ServiceReference1
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
         internal string ImgUrl
         {
             get
@@ -80,12 +95,12 @@ namespace ServiceReference1
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.UtilizadorRepositoryServiceSoap")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceUtilizador.UtilizadorRepositoryServiceSoap")]
     internal interface UtilizadorRepositoryServiceSoap
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AddUser", ReplyAction="*")]
-        System.Threading.Tasks.Task<ServiceReference1.AddUserResponse> AddUserAsync(ServiceReference1.AddUserRequest request);
+        System.Threading.Tasks.Task<ServiceUtilizador.AddUserResponse> AddUserAsync(ServiceUtilizador.AddUserRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -96,13 +111,13 @@ namespace ServiceReference1
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AddUser", Namespace="http://tempuri.org/", Order=0)]
-        public ServiceReference1.AddUserRequestBody Body;
+        public ServiceUtilizador.AddUserRequestBody Body;
         
         public AddUserRequest()
         {
         }
         
-        public AddUserRequest(ServiceReference1.AddUserRequestBody Body)
+        public AddUserRequest(ServiceUtilizador.AddUserRequestBody Body)
         {
             this.Body = Body;
         }
@@ -116,13 +131,13 @@ namespace ServiceReference1
     {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ServiceReference1.Utilizador user;
+        public ServiceUtilizador.Utilizador user;
         
         public AddUserRequestBody()
         {
         }
         
-        public AddUserRequestBody(ServiceReference1.Utilizador user)
+        public AddUserRequestBody(ServiceUtilizador.Utilizador user)
         {
             this.user = user;
         }
@@ -136,13 +151,13 @@ namespace ServiceReference1
     {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Name="AddUserResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ServiceReference1.AddUserResponseBody Body;
+        public ServiceUtilizador.AddUserResponseBody Body;
         
         public AddUserResponse()
         {
         }
         
-        public AddUserResponse(ServiceReference1.AddUserResponseBody Body)
+        public AddUserResponse(ServiceUtilizador.AddUserResponseBody Body)
         {
             this.Body = Body;
         }
@@ -169,13 +184,13 @@ namespace ServiceReference1
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    internal interface UtilizadorRepositoryServiceSoapChannel : ServiceReference1.UtilizadorRepositoryServiceSoap, System.ServiceModel.IClientChannel
+    internal interface UtilizadorRepositoryServiceSoapChannel : ServiceUtilizador.UtilizadorRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    internal partial class UtilizadorRepositoryServiceSoapClient : System.ServiceModel.ClientBase<ServiceReference1.UtilizadorRepositoryServiceSoap>, ServiceReference1.UtilizadorRepositoryServiceSoap
+    internal partial class UtilizadorRepositoryServiceSoapClient : System.ServiceModel.ClientBase<ServiceUtilizador.UtilizadorRepositoryServiceSoap>, ServiceUtilizador.UtilizadorRepositoryServiceSoap
     {
         
         /// <summary>
@@ -212,17 +227,17 @@ namespace ServiceReference1
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceReference1.AddUserResponse> ServiceReference1.UtilizadorRepositoryServiceSoap.AddUserAsync(ServiceReference1.AddUserRequest request)
+        System.Threading.Tasks.Task<ServiceUtilizador.AddUserResponse> ServiceUtilizador.UtilizadorRepositoryServiceSoap.AddUserAsync(ServiceUtilizador.AddUserRequest request)
         {
             return base.Channel.AddUserAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceReference1.AddUserResponse> AddUserAsync(ServiceReference1.Utilizador user)
+        public System.Threading.Tasks.Task<ServiceUtilizador.AddUserResponse> AddUserAsync(ServiceUtilizador.Utilizador user)
         {
-            ServiceReference1.AddUserRequest inValue = new ServiceReference1.AddUserRequest();
-            inValue.Body = new ServiceReference1.AddUserRequestBody();
+            ServiceUtilizador.AddUserRequest inValue = new ServiceUtilizador.AddUserRequest();
+            inValue.Body = new ServiceUtilizador.AddUserRequestBody();
             inValue.Body.user = user;
-            return ((ServiceReference1.UtilizadorRepositoryServiceSoap)(this)).AddUserAsync(inValue);
+            return ((ServiceUtilizador.UtilizadorRepositoryServiceSoap)(this)).AddUserAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

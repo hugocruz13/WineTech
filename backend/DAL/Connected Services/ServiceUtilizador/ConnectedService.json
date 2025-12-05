@@ -9,7 +9,7 @@
     ],
     "internalTypeAccess": true,
     "namespaceMappings": [
-      "*, ServiceReference1"
+      "*, ServiceUtilizador"
     ],
     "targetFramework": "netstandard2.0",
     "typeReuseMode": "All"

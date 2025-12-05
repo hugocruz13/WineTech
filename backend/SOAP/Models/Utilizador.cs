@@ -1,4 +1,4 @@
-﻿namespace Models
+﻿namespace SOAP.Models
 {
     public class Utilizador
     {
@@ -7,5 +7,7 @@
         public string Nome { get; set; }
         public string Email { get; set; }
         public string ImgUrl { get; set; }
+
+        public Utilizador() { }
     }
 }
