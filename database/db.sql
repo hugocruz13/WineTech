@@ -1,3 +1,7 @@
+CREATE DATABASE ISI
+
+USE ISI
+
 create table Vinhos (
   Id        int identity not null, 
   Nome      nvarchar(255) not null, 
