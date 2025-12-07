@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 
 namespace SOAP.Repository
 {
@@ -16,116 +15,89 @@ namespace SOAP.Repository
             _connectionFactory = connectionFactory;
         }
 
-        public async Task<int> InserirAdegaAsync(string localizacao)
+        public int InserirAdega(string localizacao)
         {
-            if (string.IsNullOrWhiteSpace(localizacao))
-                throw new ArgumentException("A localização não pode ser nula ou vazia", nameof(localizacao));
-
             using (var conn = _connectionFactory.GetConnection())
             using (var cmd = new SqlCommand("InserirAdega", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Localizacao", localizacao);
+                conn.Open();
 
-                await conn.OpenAsync();
-                return Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                var res = cmd.ExecuteScalar();
+                return (res != null && res != DBNull.Value) ? Convert.ToInt32(res) : 0;
             }
         }
 
-        public async Task<List<Adega>> TodasAdegasAsync()
+        public List<Adega> TodasAdegas()
         {
-            var lista = new List<Adega>();
-
+            List<Adega> lista = new List<Adega>();
             using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("TodasAdegas", conn))
             {
-                using (var cmd = new SqlCommand("TodasAdegas", conn))
+                cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    await conn.OpenAsync();
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    while (reader.Read())
                     {
-                        while (await reader.ReadAsync())
+                        lista.Add(new Adega
                         {
-                            lista.Add(new Adega
-                            {
-                                Id = Convert.ToInt32(reader["Id"]),
-                                Localizacao = reader["Localizacao"].ToString()
-                            });
-                        }
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Localizacao = reader["Localizacao"]?.ToString()
+                        });
                     }
                 }
             }
-
             return lista;
         }
 
-        public async Task<Adega> AdegaByIdAsync(int id)
+        public Adega AdegaById(int id)
         {
-            if (id <= 0)
-                throw new ArgumentException("O ID deve ser maior que zero", nameof(id));
-
             using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("AdegaById", conn))
             {
-                using (var cmd = new SqlCommand("AdegaById", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Id", id);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", id);
+                conn.Open();
 
-                    await conn.OpenAsync();
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
                     {
-                        if (await reader.ReadAsync())
+                        return new Adega
                         {
-                            return new Adega
-                            {
-                                Id = Convert.ToInt32(reader["Id"]),
-                                Localizacao = reader["Localizacao"].ToString()
-                            };
-                        }
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Localizacao = reader["Localizacao"]?.ToString()
+                        };
                     }
                 }
             }
-
             return null;
         }
 
-        public async Task<bool> ModificarAdegaAsync(Adega adega)
+        public bool ModificarAdega(Adega adega)
         {
-            if (adega == null)
-                throw new ArgumentNullException(nameof(adega), "A adega não pode ser nula");
-
             using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ModificarAdega", conn))
             {
-                using (var cmd = new SqlCommand("ModificarAdega", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Id", adega.Id);
-                    cmd.Parameters.AddWithValue("@Localizacao", adega.Localizacao);
-
-                    await conn.OpenAsync();
-                    int rows = await cmd.ExecuteNonQueryAsync();
-                    return rows > 0;
-                }
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", adega.Id);
+                cmd.Parameters.AddWithValue("@Localizacao", adega.Localizacao);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
             }
         }
 
-        public async Task<bool> ApagarAdegaAsync(int id)
+        public bool ApagarAdega(int id)
         {
-            if (id <= 0)
-                throw new ArgumentException("O ID deve ser maior que zero", nameof(id));
-
             using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ApagarAdega", conn))
             {
-                using (var cmd = new SqlCommand("ApagarAdega", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Id", id);
-
-                    await conn.OpenAsync();
-                    int rows = await cmd.ExecuteNonQueryAsync();
-                    return rows > 0;
-                }
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", id);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
             }
         }
     }

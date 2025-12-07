@@ -14,60 +14,6 @@ namespace ServiceAdega
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Task", Namespace="http://tempuri.org/")]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceAdega.TaskOfListOfAdega))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceAdega.TaskOfAdega))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceAdega.TaskOfBoolean))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(ServiceAdega.TaskOfInt32))]
-    internal partial class Task : object
-    {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskOfListOfAdega", Namespace="http://tempuri.org/")]
-    internal partial class TaskOfListOfAdega : ServiceAdega.Task
-    {
-        
-        private ServiceAdega.Adega[] ResultField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
-        internal ServiceAdega.Adega[] Result
-        {
-            get
-            {
-                return this.ResultField;
-            }
-            set
-            {
-                this.ResultField = value;
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskOfAdega", Namespace="http://tempuri.org/")]
-    internal partial class TaskOfAdega : ServiceAdega.Task
-    {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskOfBoolean", Namespace="http://tempuri.org/")]
-    internal partial class TaskOfBoolean : ServiceAdega.Task
-    {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaskOfInt32", Namespace="http://tempuri.org/")]
-    internal partial class TaskOfInt32 : ServiceAdega.Task
-    {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Adega", Namespace="http://tempuri.org/")]
     internal partial class Adega : object
     {
@@ -120,8 +66,8 @@ namespace ServiceAdega
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ModificarAdega", ReplyAction="*")]
         System.Threading.Tasks.Task<ServiceAdega.ModificarAdegaResponse> ModificarAdegaAsync(ServiceAdega.ModificarAdegaRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ApagarAdegaAsync", ReplyAction="*")]
-        System.Threading.Tasks.Task<ServiceAdega.ApagarAdegaAsyncResponse> ApagarAdegaAsyncAsync(ServiceAdega.ApagarAdegaAsyncRequest request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ApagarAdega", ReplyAction="*")]
+        System.Threading.Tasks.Task<bool> ApagarAdegaAsync(int id);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -191,14 +137,14 @@ namespace ServiceAdega
     internal partial class InserirAdegaResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ServiceAdega.TaskOfInt32 InserirAdegaResult;
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int InserirAdegaResult;
         
         public InserirAdegaResponseBody()
         {
         }
         
-        public InserirAdegaResponseBody(ServiceAdega.TaskOfInt32 InserirAdegaResult)
+        public InserirAdegaResponseBody(int InserirAdegaResult)
         {
             this.InserirAdegaResult = InserirAdegaResult;
         }
@@ -264,13 +210,13 @@ namespace ServiceAdega
     {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ServiceAdega.TaskOfListOfAdega TodasAdegasResult;
+        public ServiceAdega.Adega[] TodasAdegasResult;
         
         public TodasAdegasResponseBody()
         {
         }
         
-        public TodasAdegasResponseBody(ServiceAdega.TaskOfListOfAdega TodasAdegasResult)
+        public TodasAdegasResponseBody(ServiceAdega.Adega[] TodasAdegasResult)
         {
             this.TodasAdegasResult = TodasAdegasResult;
         }
@@ -344,13 +290,13 @@ namespace ServiceAdega
     {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ServiceAdega.TaskOfAdega AdegaByIdResult;
+        public ServiceAdega.Adega AdegaByIdResult;
         
         public AdegaByIdResponseBody()
         {
         }
         
-        public AdegaByIdResponseBody(ServiceAdega.TaskOfAdega AdegaByIdResult)
+        public AdegaByIdResponseBody(ServiceAdega.Adega AdegaByIdResult)
         {
             this.AdegaByIdResult = AdegaByIdResult;
         }
@@ -423,96 +369,16 @@ namespace ServiceAdega
     internal partial class ModificarAdegaResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ServiceAdega.TaskOfBoolean ModificarAdegaResult;
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public bool ModificarAdegaResult;
         
         public ModificarAdegaResponseBody()
         {
         }
         
-        public ModificarAdegaResponseBody(ServiceAdega.TaskOfBoolean ModificarAdegaResult)
+        public ModificarAdegaResponseBody(bool ModificarAdegaResult)
         {
             this.ModificarAdegaResult = ModificarAdegaResult;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    internal partial class ApagarAdegaAsyncRequest
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="ApagarAdegaAsync", Namespace="http://tempuri.org/", Order=0)]
-        public ServiceAdega.ApagarAdegaAsyncRequestBody Body;
-        
-        public ApagarAdegaAsyncRequest()
-        {
-        }
-        
-        public ApagarAdegaAsyncRequest(ServiceAdega.ApagarAdegaAsyncRequestBody Body)
-        {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    internal partial class ApagarAdegaAsyncRequestBody
-    {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
-        public int id;
-        
-        public ApagarAdegaAsyncRequestBody()
-        {
-        }
-        
-        public ApagarAdegaAsyncRequestBody(int id)
-        {
-            this.id = id;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    internal partial class ApagarAdegaAsyncResponse
-    {
-        
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="ApagarAdegaAsyncResponse", Namespace="http://tempuri.org/", Order=0)]
-        public ServiceAdega.ApagarAdegaAsyncResponseBody Body;
-        
-        public ApagarAdegaAsyncResponse()
-        {
-        }
-        
-        public ApagarAdegaAsyncResponse(ServiceAdega.ApagarAdegaAsyncResponseBody Body)
-        {
-            this.Body = Body;
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
-    internal partial class ApagarAdegaAsyncResponseBody
-    {
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public ServiceAdega.TaskOfBoolean ApagarAdegaAsyncResult;
-        
-        public ApagarAdegaAsyncResponseBody()
-        {
-        }
-        
-        public ApagarAdegaAsyncResponseBody(ServiceAdega.TaskOfBoolean ApagarAdegaAsyncResult)
-        {
-            this.ApagarAdegaAsyncResult = ApagarAdegaAsyncResult;
         }
     }
     
@@ -614,18 +480,9 @@ namespace ServiceAdega
             return ((ServiceAdega.AdegaRepositoryServiceSoap)(this)).ModificarAdegaAsync(inValue);
         }
         
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<ServiceAdega.ApagarAdegaAsyncResponse> ServiceAdega.AdegaRepositoryServiceSoap.ApagarAdegaAsyncAsync(ServiceAdega.ApagarAdegaAsyncRequest request)
+        public System.Threading.Tasks.Task<bool> ApagarAdegaAsync(int id)
         {
-            return base.Channel.ApagarAdegaAsyncAsync(request);
-        }
-        
-        public System.Threading.Tasks.Task<ServiceAdega.ApagarAdegaAsyncResponse> ApagarAdegaAsyncAsync(int id)
-        {
-            ServiceAdega.ApagarAdegaAsyncRequest inValue = new ServiceAdega.ApagarAdegaAsyncRequest();
-            inValue.Body = new ServiceAdega.ApagarAdegaAsyncRequestBody();
-            inValue.Body.id = id;
-            return ((ServiceAdega.AdegaRepositoryServiceSoap)(this)).ApagarAdegaAsyncAsync(inValue);
+            return base.Channel.ApagarAdegaAsync(id);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

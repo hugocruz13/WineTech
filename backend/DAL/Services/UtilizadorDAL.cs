@@ -1,35 +1,33 @@
 ﻿using DAL.Interfaces;
-using ServiceUtilizador;
+using DAL.Helpers; 
+using ServiceUtilizador; 
 using System.Threading.Tasks;
-using Utilizador = Models.Utilizador;
 
 namespace DAL.Services
 {
     public class UtilizadorDAL : IUtilizadorDAL
     {
-        public async Task<int> AddUserAsync(Utilizador user)
+        private UtilizadorRepositoryServiceSoapClient CreateClient()
         {
-            var client = new UtilizadorRepositoryServiceSoapClient(UtilizadorRepositoryServiceSoapClient.EndpointConfiguration.UtilizadorRepositoryServiceSoap);
-            var userDto = new ServiceUtilizador.Utilizador
-            {
-                Auth0UserId = user.Auth0UserId,
-                Nome = user.Nome,
-                Email = user.Email,
-                ImgUrl = user.ImgUrl
-            };
+            return new UtilizadorRepositoryServiceSoapClient(UtilizadorRepositoryServiceSoapClient.EndpointConfiguration.UtilizadorRepositoryServiceSoap);
+        }
 
-            try
+        public async Task<int> AddUserAsync(Models.Utilizador user)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
             {
+                var userDto = new ServiceUtilizador.Utilizador
+                {
+                    Auth0UserId = user.Auth0UserId,
+                    Nome = user.Nome,
+                    Email = user.Email,
+                    ImgUrl = user.ImgUrl
+                };
+
                 var response = await client.AddUserAsync(userDto);
-                await client.CloseAsync();
-                return response.Body.AddUserResult;
 
-            }
-            catch
-            {
-                client.Abort();
-                throw;
-            }
+                return response.Body.AddUserResult;
+            });
         }
     }
 }

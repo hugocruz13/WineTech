@@ -4,17 +4,13 @@ using SOAP.Repository;
 using System;
 using System.Collections.Generic;
 using System.Web.Services;
-using System.Threading.Tasks;
 
 namespace SOAP.Services
 {
-    /// <summary>
-    /// Serviço SOAP para gerir Adegas
-    /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
-    public class AdegaRepositoryService : System.Web.Services.WebService
+    public class AdegaRepositoryService : WebService
     {
         private readonly AdegaRepository _repository;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
@@ -26,83 +22,84 @@ namespace SOAP.Services
         }
 
         [WebMethod]
-        public async Task<int> InserirAdega(string localizacao)
+        public int InserirAdega(string localizacao)
         {
             if (string.IsNullOrWhiteSpace(localizacao))
-                throw new ArgumentNullException(nameof(localizacao), "A localização não pode ser nula ou vazia");
+                throw new ArgumentException("A localização não pode ser nula ou vazia");
 
             try
             {
-                return await _repository.InserirAdegaAsync(localizacao);
+                return _repository.InserirAdega(localizacao);
             }
             catch (Exception ex)
             {
+                Logger.Error(ex, "Erro ao inserir a adega");
                 throw new Exception("Erro ao inserir a adega: " + ex.Message);
             }
         }
 
         [WebMethod]
-        public async Task<List<Adega>> TodasAdegas()
+        public List<Adega> TodasAdegas()
         {
             try
             {
-                return await _repository.TodasAdegasAsync();
+                return _repository.TodasAdegas();
             }
             catch (Exception ex)
             {
+                Logger.Error(ex, "Erro ao listar todas as adegas");
                 throw new Exception("Erro ao listar todas as adegas: " + ex.Message);
             }
         }
 
         [WebMethod]
-        public async Task<Adega> AdegaById(int id)
+        public Adega AdegaById(int id)
         {
             if (id <= 0)
-                throw new ArgumentException("O ID deve ser maior que zero", nameof(id));
+                throw new ArgumentException("O ID deve ser maior que zero");
 
             try
             {
-                return await _repository.AdegaByIdAsync(id);
+                return _repository.AdegaById(id);
             }
             catch (Exception ex)
             {
+                Logger.Error(ex, $"Erro ao procurar a adega com ID {id}");
                 throw new Exception($"Erro ao procurar a adega com ID {id}: " + ex.Message);
             }
         }
 
         [WebMethod]
-        public async Task<bool> ModificarAdega(Adega adega)
+        public bool ModificarAdega(Adega adega)
         {
             if (adega == null)
                 throw new ArgumentNullException(nameof(adega), "A adega não pode ser nula");
 
             try
             {
-                var result = await _repository.ModificarAdegaAsync(adega);
-                return result;
+                return _repository.ModificarAdega(adega);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, $"Erro ao modificar a adega com ID {adega.Id}");
-                return false;
+                throw new Exception($"Erro ao modificar a adega com ID {adega.Id}: {ex.Message}");
             }
         }
 
         [WebMethod]
-        public async Task<bool> ApagarAdegaAsync(int id)
+        public bool ApagarAdega(int id)
         {
             if (id <= 0)
-                throw new ArgumentException("O ID deve ser maior que zero", nameof(id));
+                throw new ArgumentException("O ID deve ser maior que zero");
 
             try
             {
-                var result = await _repository.ApagarAdegaAsync(id);
-                return result;
+                return _repository.ApagarAdega(id);
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, $"Erro ao apagar a adega com ID {id}");
-                return false;
+                throw new Exception($"Erro ao apagar a adega com ID {id}: {ex.Message}");
             }
         }
     }
