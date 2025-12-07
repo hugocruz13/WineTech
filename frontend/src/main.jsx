@@ -16,6 +16,7 @@ createRoot(document.getElementById("root")).render(
       authorizationParams={{
         redirect_uri: window.location.origin,
         audience: apiAudience,
+        scope: "openid profile email",
       }}
       cacheLocation="localstorage"
       useRefreshTokens={true}
