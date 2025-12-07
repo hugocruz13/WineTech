@@ -42,13 +42,13 @@ CREATE OR ALTER PROCEDURE ModificarAdega
     @Localizacao NVARCHAR(255)
 AS
 BEGIN
-    SET NOCOUNT ON;
+    SET NOCOUNT OFF;
 
     UPDATE Adega
        SET Localizacao = @Localizacao
      WHERE Id = @Id;
 END;
-GO
+
 
 
 -- Apagar Adega
@@ -56,12 +56,12 @@ CREATE OR ALTER PROCEDURE ApagarAdega
     @Id INT
 AS
 BEGIN
-    SET NOCOUNT ON;
+    SET NOCOUNT OFF;
 
     DELETE FROM Adega
     WHERE Id = @Id;
 END;
-GO
+
 
 DROP Procedure InserirAdega;
 EXEC InserirAdega @Localizacao = 'Braga - Portugal';
