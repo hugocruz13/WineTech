@@ -22,14 +22,14 @@ namespace SOAP.Services
         }
 
         [WebMethod]
-        public int InserirAdega(string localizacao)
+        public Adega InserirAdega(Adega adega)
         {
-            if (string.IsNullOrWhiteSpace(localizacao))
-                throw new ArgumentException("A localização não pode ser nula ou vazia");
+            if (adega == null)
+                throw new ArgumentException("A adega não pode ser nula.");
 
             try
             {
-                return _repository.InserirAdega(localizacao);
+                return _repository.InserirAdega(adega);
             }
             catch (Exception ex)
             {
@@ -70,7 +70,7 @@ namespace SOAP.Services
         }
 
         [WebMethod]
-        public bool ModificarAdega(Adega adega)
+        public Adega ModificarAdega(Adega adega)
         {
             if (adega == null)
                 throw new ArgumentNullException(nameof(adega), "A adega não pode ser nula");

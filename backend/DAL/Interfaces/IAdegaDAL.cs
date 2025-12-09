@@ -6,10 +6,10 @@ namespace DAL.Interfaces
 {
     public interface IAdegaDAL
     {
-        Task<int> InserirAdega(string localizacao);
+        Task<Adega> InserirAdega(Models.Adega adega);
         Task< List<Adega>> TodasAdegas();
         Task<Adega> AdegaById(int id);
-        Task<bool> ModificarAdega(Adega adega);        
+        Task<Adega> ModificarAdega(Models.Adega adega);
         Task<bool> ApagarAdega(int id);
     }
 }

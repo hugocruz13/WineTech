@@ -16,12 +16,24 @@ namespace BLL.Services
             _adegaDAL = adegaDAL;
         }
 
-        public async Task<int> InserirAdega(string localizacao)
+        public async Task<Adega> InserirAdega(Adega adega)
         {
-            if (string.IsNullOrWhiteSpace(localizacao))
+            if (adega == null)
+                throw new ArgumentException("Adega não pode ser nula");
+
+            if (adega.Id != 0)
+                throw new ArgumentException("O ID deve ser zero para uma nova adega.");
+
+            if (string.IsNullOrWhiteSpace(adega.Nome))
+                throw new ArgumentException("O nome é obrigatório.");
+
+            if (string.IsNullOrWhiteSpace(adega.Localizacao))
                 throw new ArgumentException("A localização é obrigatória.");
 
-            return await _adegaDAL.InserirAdega(localizacao);
+            if (adega.Capacidade <= 0)
+                throw new ArgumentException("A capacidade deve ser maior que zero.");
+
+            return await _adegaDAL.InserirAdega(adega);
         }
 
         public async Task<List<Adega>> TodasAdegas()
@@ -41,12 +53,10 @@ namespace BLL.Services
             return adega;
         }
 
-        public async Task<bool> ModificarAdega(Adega adega)
+        public async Task<Adega> ModificarAdega(Adega adega)
         {
             if (adega == null || adega.Id <= 0)
                 throw new ArgumentException("Dados inválidos.");
-            if (string.IsNullOrWhiteSpace(adega.Localizacao))
-                throw new ArgumentException("Localização vazia.");
 
             return await _adegaDAL.ModificarAdega(adega);
         }

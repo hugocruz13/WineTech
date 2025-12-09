@@ -15,19 +15,37 @@ namespace SOAP.Repository
             _connectionFactory = connectionFactory;
         }
 
-        public int InserirAdega(string localizacao)
+        public Adega InserirAdega(Adega adega)
         {
             using (var conn = _connectionFactory.GetConnection())
             using (var cmd = new SqlCommand("InserirAdega", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Localizacao", localizacao);
+
+                cmd.Parameters.AddWithValue("@Nome", adega.Nome);
+                cmd.Parameters.AddWithValue("@Localizacao", adega.Localizacao);
+                cmd.Parameters.AddWithValue("@Capacidade", adega.Capacidade);
+
                 conn.Open();
 
-                var res = cmd.ExecuteScalar();
-                return (res != null && res != DBNull.Value) ? Convert.ToInt32(res) : 0;
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Adega
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nome = reader["Nome"].ToString(),
+                            Localizacao = reader["Localizacao"].ToString(),
+                            Capacidade = Convert.ToInt32(reader["Capacidade"])
+                        };
+                    }
+                }
             }
+
+            return null; 
         }
+
 
         public List<Adega> TodasAdegas()
         {
@@ -44,7 +62,9 @@ namespace SOAP.Repository
                         lista.Add(new Adega
                         {
                             Id = Convert.ToInt32(reader["Id"]),
-                            Localizacao = reader["Localizacao"]?.ToString()
+                            Nome = reader["Nome"].ToString(),
+                            Localizacao = reader["Localizacao"]?.ToString(),
+                            Capacidade = Convert.ToInt32(reader["Capacidade"])
                         });
                     }
                 }
@@ -68,7 +88,9 @@ namespace SOAP.Repository
                         return new Adega
                         {
                             Id = Convert.ToInt32(reader["Id"]),
-                            Localizacao = reader["Localizacao"]?.ToString()
+                            Nome = reader["Nome"].ToString(),
+                            Localizacao = reader["Localizacao"]?.ToString(),
+                            Capacidade = Convert.ToInt32(reader["Capacidade"])
                         };
                     }
                 }
@@ -76,17 +98,35 @@ namespace SOAP.Repository
             return null;
         }
 
-        public bool ModificarAdega(Adega adega)
+        public Adega ModificarAdega(Adega adega)
         {
             using (var conn = _connectionFactory.GetConnection())
             using (var cmd = new SqlCommand("ModificarAdega", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Id", adega.Id);
+                cmd.Parameters.AddWithValue("@Nome", adega.Nome);
                 cmd.Parameters.AddWithValue("@Localizacao", adega.Localizacao);
+                cmd.Parameters.AddWithValue("@Capacidade", adega.Capacidade == 0 ? DBNull.Value : (object)adega.Capacidade);
+
                 conn.Open();
-                return cmd.ExecuteNonQuery() > 0;
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Adega
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nome = reader["Nome"].ToString(),
+                            Localizacao = reader["Localizacao"].ToString(),
+                            Capacidade = Convert.ToInt32(reader["Capacidade"])
+                        };
+                    }
+                }
             }
+
+            return null;
         }
 
         public bool ApagarAdega(int id)

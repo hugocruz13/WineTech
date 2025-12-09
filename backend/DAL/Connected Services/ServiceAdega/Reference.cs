@@ -20,7 +20,11 @@ namespace ServiceAdega
         
         private int IdField;
         
+        private string NomeField;
+        
         private string LocalizacaoField;
+        
+        private int CapacidadeField;
         
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         internal int Id
@@ -36,6 +40,19 @@ namespace ServiceAdega
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        internal string Nome
+        {
+            get
+            {
+                return this.NomeField;
+            }
+            set
+            {
+                this.NomeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         internal string Localizacao
         {
             get
@@ -45,6 +62,19 @@ namespace ServiceAdega
             set
             {
                 this.LocalizacaoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=3)]
+        internal int Capacidade
+        {
+            get
+            {
+                return this.CapacidadeField;
+            }
+            set
+            {
+                this.CapacidadeField = value;
             }
         }
     }
@@ -98,15 +128,15 @@ namespace ServiceAdega
     {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string localizacao;
+        public ServiceAdega.Adega adega;
         
         public InserirAdegaRequestBody()
         {
         }
         
-        public InserirAdegaRequestBody(string localizacao)
+        public InserirAdegaRequestBody(ServiceAdega.Adega adega)
         {
-            this.localizacao = localizacao;
+            this.adega = adega;
         }
     }
     
@@ -137,14 +167,14 @@ namespace ServiceAdega
     internal partial class InserirAdegaResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
-        public int InserirAdegaResult;
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceAdega.Adega InserirAdegaResult;
         
         public InserirAdegaResponseBody()
         {
         }
         
-        public InserirAdegaResponseBody(int InserirAdegaResult)
+        public InserirAdegaResponseBody(ServiceAdega.Adega InserirAdegaResult)
         {
             this.InserirAdegaResult = InserirAdegaResult;
         }
@@ -369,14 +399,14 @@ namespace ServiceAdega
     internal partial class ModificarAdegaResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
-        public bool ModificarAdegaResult;
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceAdega.Adega ModificarAdegaResult;
         
         public ModificarAdegaResponseBody()
         {
         }
         
-        public ModificarAdegaResponseBody(bool ModificarAdegaResult)
+        public ModificarAdegaResponseBody(ServiceAdega.Adega ModificarAdegaResult)
         {
             this.ModificarAdegaResult = ModificarAdegaResult;
         }
@@ -431,11 +461,11 @@ namespace ServiceAdega
             return base.Channel.InserirAdegaAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceAdega.InserirAdegaResponse> InserirAdegaAsync(string localizacao)
+        public System.Threading.Tasks.Task<ServiceAdega.InserirAdegaResponse> InserirAdegaAsync(ServiceAdega.Adega adega)
         {
             ServiceAdega.InserirAdegaRequest inValue = new ServiceAdega.InserirAdegaRequest();
             inValue.Body = new ServiceAdega.InserirAdegaRequestBody();
-            inValue.Body.localizacao = localizacao;
+            inValue.Body.adega = adega;
             return ((ServiceAdega.AdegaRepositoryServiceSoap)(this)).InserirAdegaAsync(inValue);
         }
         

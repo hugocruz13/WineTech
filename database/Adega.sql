@@ -45,24 +45,23 @@ GO
 -- Atualizar Adega e retornar a adega atualizada
 CREATE OR ALTER PROCEDURE ModificarAdega
     @Id INT,
-    @Nome NVARCHAR(100),
-    @Localizacao NVARCHAR(255),
-    @Capacidade INT
+    @Nome NVARCHAR(100) = NULL,
+    @Localizacao NVARCHAR(255) = NULL,
+    @Capacidade INT = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Atualiza os campos
+    -- Atualiza apenas os campos que não são nulos
     UPDATE Adega
-       SET Nome        = @Nome,
-           Localizacao = @Localizacao,
-           Capacidade  = @Capacidade
-     WHERE Id = @Id;
+    SET 
+        Nome = COALESCE(@Nome, Nome),
+        Localizacao = COALESCE(@Localizacao, Localizacao),
+        Capacidade = COALESCE(@Capacidade, Capacidade)
+    WHERE Id = @Id;
 
     -- Retorna o registro atualizado
-    SELECT *
-      FROM Adega
-     WHERE Id = @Id;
+    SELECT * FROM Adega WHERE Id = @Id;
 END;
 
 
