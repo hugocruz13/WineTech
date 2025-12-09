@@ -1,3 +1,5 @@
+using API.Services;
+using Azure.Storage.Blobs;
 using BLL.Interfaces;
 using BLL.Services;
 using DAL.Interfaces;
@@ -28,11 +30,14 @@ builder.Services.AddAuthorization();
 
 // Add services to the container.
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-// Dependency injection
+// Dependency injection dos seus serviços
 builder.Services.AddServices();
+
+// Adicionando Blob Storage
+builder.Services.AddSingleton(x => new BlobServiceClient("UseDevelopmentStorage=true"));
+builder.Services.AddScoped<IStorageService, BlobStorageService>();
 
 var app = builder.Build();
 

@@ -37,7 +37,8 @@ namespace SOAP.Repository
                             Id = Convert.ToInt32(reader["Id"]),
                             Nome = reader["Nome"].ToString(),
                             Localizacao = reader["Localizacao"].ToString(),
-                            Capacidade = Convert.ToInt32(reader["Capacidade"])
+                            Capacidade = Convert.ToInt32(reader["Capacidade"]),
+                            ImagemUrl = reader["ImagemUrl"].ToString()
                         };
                     }
                 }
@@ -64,7 +65,8 @@ namespace SOAP.Repository
                             Id = Convert.ToInt32(reader["Id"]),
                             Nome = reader["Nome"].ToString(),
                             Localizacao = reader["Localizacao"]?.ToString(),
-                            Capacidade = Convert.ToInt32(reader["Capacidade"])
+                            Capacidade = Convert.ToInt32(reader["Capacidade"]),
+                            ImagemUrl = reader["ImagemUrl"].ToString()
                         });
                     }
                 }
@@ -90,7 +92,8 @@ namespace SOAP.Repository
                             Id = Convert.ToInt32(reader["Id"]),
                             Nome = reader["Nome"].ToString(),
                             Localizacao = reader["Localizacao"]?.ToString(),
-                            Capacidade = Convert.ToInt32(reader["Capacidade"])
+                            Capacidade = Convert.ToInt32(reader["Capacidade"]),
+                            ImagemUrl = reader["ImagemUrl"].ToString()
                         };
                     }
                 }
@@ -108,6 +111,7 @@ namespace SOAP.Repository
                 cmd.Parameters.AddWithValue("@Nome", adega.Nome);
                 cmd.Parameters.AddWithValue("@Localizacao", adega.Localizacao);
                 cmd.Parameters.AddWithValue("@Capacidade", adega.Capacidade == 0 ? DBNull.Value : (object)adega.Capacidade);
+                cmd.Parameters.AddWithValue("@ImagemUrl", adega.ImagemUrl);
 
                 conn.Open();
 
@@ -120,7 +124,8 @@ namespace SOAP.Repository
                             Id = Convert.ToInt32(reader["Id"]),
                             Nome = reader["Nome"].ToString(),
                             Localizacao = reader["Localizacao"].ToString(),
-                            Capacidade = Convert.ToInt32(reader["Capacidade"])
+                            Capacidade = Convert.ToInt32(reader["Capacidade"]),
+                            ImagemUrl = reader["ImagemUrl"].ToString()
                         };
                     }
                 }

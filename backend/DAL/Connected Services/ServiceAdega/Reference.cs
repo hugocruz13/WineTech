@@ -26,6 +26,8 @@ namespace ServiceAdega
         
         private int CapacidadeField;
         
+        private string ImagemUrlField;
+        
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         internal int Id
         {
@@ -75,6 +77,19 @@ namespace ServiceAdega
             set
             {
                 this.CapacidadeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        internal string ImagemUrl
+        {
+            get
+            {
+                return this.ImagemUrlField;
+            }
+            set
+            {
+                this.ImagemUrlField = value;
             }
         }
     }

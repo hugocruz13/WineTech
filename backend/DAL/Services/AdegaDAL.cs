@@ -1,6 +1,6 @@
-﻿using DAL.Interfaces;
-using DAL.Helpers;
-using ServiceAdega; 
+﻿using DAL.Helpers;
+using DAL.Interfaces;
+using ServiceAdega;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,7 +25,7 @@ namespace DAL.Services
                 if (item == null)
                     return null;
 
-                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade };
+                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade, ImagemUrl = item.ImagemUrl };
             });
         }
 
@@ -35,7 +35,7 @@ namespace DAL.Services
             {
                 var response = await client.TodasAdegasAsync();
                 return response.Body.TodasAdegasResult
-                .Select(item => new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade })
+                .Select(item => new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade, ImagemUrl = item.ImagemUrl })
                 .ToList();
             });
         }
@@ -50,7 +50,7 @@ namespace DAL.Services
                 if (item == null)
                     return null;
 
-                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade };
+                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade, ImagemUrl = item.ImagemUrl };
             });
         }
 
@@ -58,14 +58,14 @@ namespace DAL.Services
         {
             return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
             {
-                var soapModel = new ServiceAdega.Adega { Id = adega.Id, Nome = adega.Nome, Localizacao = adega.Localizacao, Capacidade = adega.Capacidade };
+                var soapModel = new ServiceAdega.Adega { Id = adega.Id, Nome = adega.Nome, Localizacao = adega.Localizacao, Capacidade = adega.Capacidade, ImagemUrl = adega.ImagemUrl };
                 var response = await client.ModificarAdegaAsync(soapModel);
                 var item = response.Body.ModificarAdegaResult;
 
                 if (item == null)
                     return null;
 
-                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade };
+                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade, ImagemUrl = item.ImagemUrl };
             });
         }
 

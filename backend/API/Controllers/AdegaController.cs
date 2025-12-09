@@ -1,4 +1,5 @@
 ﻿using API.DTOs;
+using API.Services;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -10,10 +11,12 @@ namespace API.Controllers
     public class AdegaController : ControllerBase
     {
         private readonly IAdegaBLL _adegaBLL;
+        private readonly IStorageService _storageService;
 
-        public AdegaController(IAdegaBLL adegaBLL)
+        public AdegaController(IAdegaBLL adegaBLL, IStorageService storageService)
         {
             _adegaBLL = adegaBLL;
+            _storageService = storageService;
         }
 
         [HttpGet]
@@ -27,7 +30,8 @@ namespace API.Controllers
                     id = a.Id,
                     nome = a.Nome,
                     localizacao = a.Localizacao,
-                    capacidade = a.Capacidade
+                    capacidade = a.Capacidade,
+                    imageUrl = a.ImagemUrl,
                 }).ToList();
 
                 return Ok(new { success = true, data = data });
@@ -51,6 +55,7 @@ namespace API.Controllers
                     nome = adega.Nome,
                     localizacao = adega.Localizacao,
                     capacidade = adega.Capacidade,
+                    imageUrl = adega.ImagemUrl,
                     vinhos = new List<object>() // Lista de vinhos vazia
                 };
 
@@ -71,7 +76,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] CreateAdegaDTO adegaDTO)
+        public async Task<ActionResult> Post(CreateAdegaDTO adegaDTO)
         {
             try
             {
@@ -80,6 +85,13 @@ namespace API.Controllers
 
                 if (adega.Id <= 0)
                     return StatusCode(500, new { success = false, message = "Erro ao inserir adega." });
+
+                if (adegaDTO.Imagem != null && adegaDTO.Imagem.Length > 0)
+                {
+                    string imageUrl = await _storageService.UploadFileAsync(adegaDTO.Imagem, "adega-images");
+                    adega.ImagemUrl = imageUrl;
+                    await _adegaBLL.ModificarAdega(adega);
+                }
 
                 return Ok(new
                 {
@@ -91,6 +103,7 @@ namespace API.Controllers
                         nome = adega.Nome,
                         localizacao = adega.Localizacao,
                         capacidade = adega.Capacidade,
+                        imageUrl = adega.ImagemUrl,
                         vinhos = new List<object>() // Lista de vinhos vazia
                     }
                 });
@@ -130,6 +143,7 @@ namespace API.Controllers
                         nome = adega.Nome,
                         localizacao = adega.Localizacao,
                         capacidade = adega.Capacidade,
+                        imageUrl = adega.ImagemUrl,
                         vinhos = new List<object>() // Lista de vinhos vazia
                     }
                 });
@@ -159,6 +173,32 @@ namespace API.Controllers
             catch (ArgumentException ex)
             {
                 return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
+
+        [HttpPost("{id}/upload-image")]
+        public async Task<ActionResult> UploadImage(int id, IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+                return BadRequest(new { success = false, message = "Arquivo inválido." });
+
+            try
+            {
+                Adega adega = await _adegaBLL.AdegaById(id);
+
+                if (adega == null)
+                    return NotFound(new { success = false, message = "Adega não encontrada." });
+
+                string imageUrl = await _storageService.UploadFileAsync(file, "adega-images");
+
+                adega.ImagemUrl = imageUrl;
+                await _adegaBLL.ModificarAdega(adega);
+
+                return Ok(new { success = true, message = "Imagem enviada com sucesso.", data = imageUrl });
             }
             catch (Exception ex)
             {

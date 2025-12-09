@@ -13,6 +13,7 @@
         public string Nome { get; set; }
         public string Localizacao { get; set; }
         public int Capacidade { get; set; }
+        public IFormFile? Imagem { get; set; }
     }
 
     public class UpdateAdegaDTO

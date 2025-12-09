@@ -47,7 +47,8 @@ CREATE OR ALTER PROCEDURE ModificarAdega
     @Id INT,
     @Nome NVARCHAR(100) = NULL,
     @Localizacao NVARCHAR(255) = NULL,
-    @Capacidade INT = NULL
+    @Capacidade INT = NULL,
+    @ImagemUrl NVARCHAR(255) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -57,7 +58,8 @@ BEGIN
     SET 
         Nome = COALESCE(@Nome, Nome),
         Localizacao = COALESCE(@Localizacao, Localizacao),
-        Capacidade = COALESCE(@Capacidade, Capacidade)
+        Capacidade = COALESCE(@Capacidade, Capacidade),
+        ImagemUrl = COALESCE(@ImagemUrl, ImagemUrl)
     WHERE Id = @Id;
 
     -- Retorna o registro atualizado
