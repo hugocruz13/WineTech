@@ -1,14 +1,20 @@
 -- Inserir Adega
 CREATE OR ALTER PROCEDURE InserirAdega
-    @Localizacao NVARCHAR(255)
+    @Nome NVARCHAR(100),
+    @Localizacao NVARCHAR(255),
+    @Capacidade INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO Adega (Localizacao)
-    VALUES (@Localizacao);
+    INSERT INTO Adega (Nome, Localizacao, Capacidade)
+    VALUES (@Nome, @Localizacao, @Capacidade);
 
-    SELECT SCOPE_IDENTITY() AS Id;
+    DECLARE @NovoId INT = SCOPE_IDENTITY();
+
+    SELECT *
+    FROM Adega
+    WHERE Id = @NovoId;
 END;
 GO
 
@@ -18,7 +24,7 @@ CREATE OR ALTER PROCEDURE TodasAdegas
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT Id, Localizacao
+    SELECT *
     FROM Adega
 END;
 GO
@@ -30,25 +36,34 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT Id, Localizacao
+    SELECT *
     FROM Adega
     WHERE Id = @Id;
 END;
 GO
 
--- Atualizar Adega 
+-- Atualizar Adega e retornar a adega atualizada
 CREATE OR ALTER PROCEDURE ModificarAdega
     @Id INT,
-    @Localizacao NVARCHAR(255)
+    @Nome NVARCHAR(100),
+    @Localizacao NVARCHAR(255),
+    @Capacidade INT
 AS
 BEGIN
-    SET NOCOUNT OFF;
+    SET NOCOUNT ON;
 
+    -- Atualiza os campos
     UPDATE Adega
-       SET Localizacao = @Localizacao
+       SET Nome        = @Nome,
+           Localizacao = @Localizacao,
+           Capacidade  = @Capacidade
+     WHERE Id = @Id;
+
+    -- Retorna o registro atualizado
+    SELECT *
+      FROM Adega
      WHERE Id = @Id;
 END;
-
 
 
 -- Apagar Adega
