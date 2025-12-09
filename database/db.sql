@@ -1,7 +1,3 @@
-CREATE DATABASE ISI
-
-USE ISI
-
 create table Vinhos (
   Id        int identity not null, 
   Nome      nvarchar(255) not null, 
@@ -62,12 +58,15 @@ create table LinhasCompra (
   primary key (Id));
 create table Adega (
   Id          int identity not null, 
+  Nome        nvarchar(100) not null, 
   Localizacao nvarchar(255) not null, 
+  Capacidade  int not null, 
+  ImagemUrl   nvarchar(255) null, 
   primary key (Id));
 create table Stock (
-  VinhosId   int not null, 
-  Adegaid    int not null, 
-  Quantidade int not null, 
+  VinhosId  int not null, 
+  Adegaid   int not null, 
+  CreatedAt datetime2(7) default GETDATE() not null, 
   primary key (VinhosId, 
   Adegaid));
 alter table Leituras add constraint FKLeituras498639 foreign key (SensorId) references Sensores (Id);
