@@ -1,3 +1,7 @@
+create database ISI
+
+use ISI
+
 create table Vinhos (
   Id        int identity not null, 
   Nome      nvarchar(255) not null, 
@@ -13,6 +17,7 @@ create table Sensores (
   IdentificadorHardware nvarchar(255) null, 
   Tipo                  nvarchar(255) not null, 
   Estado                bit not null, 
+  ImagemUrl             nvarchar(255) null, 
   Adegaid               int not null, 
   primary key (Id));
 create table Leituras (
@@ -34,8 +39,8 @@ create table Utilizadores (
   Auth0UserId nvarchar(100) not null unique, 
   Nome        nvarchar(100) not null, 
   Email       nvarchar(255) not null, 
-  ImgUrl      nvarchar(255) not null, 
-  CreatedAt   datetime2(0) default GETDATE() not null, 
+  ImgUrl      nvarchar(255) null, 
+  CreatedAt   datetime2(7) default GETDATE() not null, 
   primary key (Id));
 create table Compras (
   Id             int identity not null, 
@@ -64,11 +69,17 @@ create table Adega (
   ImagemUrl   nvarchar(255) null, 
   primary key (Id));
 create table Stock (
+  Id        int identity not null, 
   VinhosId  int not null, 
   Adegaid   int not null, 
   CreatedAt datetime2(7) default GETDATE() not null, 
-  primary key (VinhosId, 
-  Adegaid));
+  primary key (Id));
+create table Notificacoes (
+  Id             int identity not null, 
+  UtilizadoresId int not null, 
+  Mensagem       nvarchar(255) not null, 
+  CreatedAt      datetime2(7) default GETDATE() not null, 
+  primary key (Id));
 alter table Leituras add constraint FKLeituras498639 foreign key (SensorId) references Sensores (Id);
 alter table Carrinho add constraint FKCarrinho434971 foreign key (VinhosId) references Vinhos (Id);
 alter table Carrinho add constraint FKCarrinho190422 foreign key (UtilizadoresId) references Utilizadores (Id);
@@ -79,3 +90,4 @@ alter table Alertas add constraint FKAlertas224704 foreign key (SensoresId) refe
 alter table Stock add constraint FKStock882072 foreign key (Adegaid) references Adega (Id);
 alter table Stock add constraint FKStock178117 foreign key (VinhosId) references Vinhos (Id);
 alter table Sensores add constraint FKSensores424905 foreign key (Adegaid) references Adega (Id);
+alter table Notificacoes add constraint FKNotificaco901569 foreign key (UtilizadoresId) references Utilizadores (Id);
