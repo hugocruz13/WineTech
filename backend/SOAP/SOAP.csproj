@@ -75,21 +75,28 @@
   <ItemGroup>
     <Content Include="Services\AdegaRepositoryService.asmx" />
     <Content Include="Services\UtilizadorRepositoryService.asmx" />
+    <Content Include="Services\VinhoRepositoryService.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Adega.cs" />
     <Compile Include="Models\Utilizador.cs" />
+    <Compile Include="Models\Vinho.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AdegaRepository.cs" />
     <Compile Include="Repository\DbConnectionFactory.cs" />
     <Compile Include="Repository\UtilizadorRepository.cs" />
+    <Compile Include="Repository\VinhoRepository.cs" />
     <Compile Include="Services\AdegaRepositoryService.asmx.cs">
       <DependentUpon>AdegaRepositoryService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\UtilizadorRepositoryService.asmx.cs">
       <DependentUpon>UtilizadorRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\VinhoRepositoryService.asmx.cs">
+      <DependentUpon>VinhoRepositoryService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
