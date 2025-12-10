@@ -85,21 +85,45 @@ namespace SOAP.Repository
 
                 using (var reader = cmd.ExecuteReader())
                 {
+                    Adega adega = null;
+
                     if (reader.Read())
                     {
-                        return new Adega
+                        adega = new Adega
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nome = reader["Nome"].ToString(),
                             Localizacao = reader["Localizacao"]?.ToString(),
                             Capacidade = Convert.ToInt32(reader["Capacidade"]),
-                            ImagemUrl = reader["ImagemUrl"].ToString()
+                            ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                            Vinhos = new List<Vinho>()
                         };
                     }
+
+
+                    if (reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            adega.Vinhos.Add(new Vinho
+                            {
+                                Id = Convert.ToInt32(reader["VinhoId"]),
+                                Nome = reader["VinhoNome"].ToString(),
+                                Produtor = reader["Produtor"].ToString(),
+                                Ano = Convert.ToInt32(reader["Ano"]),
+                                Tipo = reader["Tipo"].ToString(),
+                                Descricao = reader["Descricao"].ToString(),
+                                ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                                Preco = (float)Convert.ToDouble(reader["Preco"])
+                            });
+                        }
+                    }
+
+                    return adega;
                 }
             }
-            return null;
         }
+
 
         public Adega ModificarAdega(Adega adega)
         {
@@ -117,21 +141,42 @@ namespace SOAP.Repository
 
                 using (var reader = cmd.ExecuteReader())
                 {
+                    Adega adegaAtualizada = null;
+
                     if (reader.Read())
                     {
-                        return new Adega
+                        adegaAtualizada = new Adega
                         {
                             Id = Convert.ToInt32(reader["Id"]),
                             Nome = reader["Nome"].ToString(),
                             Localizacao = reader["Localizacao"].ToString(),
                             Capacidade = Convert.ToInt32(reader["Capacidade"]),
-                            ImagemUrl = reader["ImagemUrl"].ToString()
+                            ImagemUrl = reader["ImagemUrl"].ToString(),
+                            Vinhos = new List<Vinho>()
                         };
                     }
+
+                    if (adegaAtualizada != null && reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            adegaAtualizada.Vinhos.Add(new Vinho
+                            {
+                                Id = Convert.ToInt32(reader["VinhoId"]),
+                                Nome = reader["VinhoNome"].ToString(),
+                                Produtor = reader["Produtor"].ToString(),
+                                Ano = Convert.ToInt32(reader["Ano"]),
+                                Tipo = reader["Tipo"].ToString(),
+                                Descricao = reader["Descricao"].ToString(),
+                                ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                                Preco = (float)Convert.ToDouble(reader["Preco"])
+                            });
+                        }
+                    }
+
+                    return adegaAtualizada;
                 }
             }
-
-            return null;
         }
 
         public bool ApagarAdega(int id)

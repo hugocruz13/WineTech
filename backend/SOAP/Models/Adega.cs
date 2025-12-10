@@ -1,4 +1,6 @@
-﻿namespace SOAP.Models
+﻿using System.Collections.Generic;
+
+namespace SOAP.Models
 {
     public class Adega
     {
@@ -7,5 +9,6 @@
         public string Localizacao { get; set; }
         public int Capacidade { get; set; }
         public string ImagemUrl { get; set; }
+        public List<Vinho> Vinhos { get; set; }
     }
 }

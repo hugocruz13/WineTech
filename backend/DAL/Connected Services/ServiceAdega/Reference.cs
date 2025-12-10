@@ -28,6 +28,8 @@ namespace ServiceAdega
         
         private string ImagemUrlField;
         
+        private ServiceAdega.Vinho[] VinhosField;
+        
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         internal int Id
         {
@@ -90,6 +92,146 @@ namespace ServiceAdega
             set
             {
                 this.ImagemUrlField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        internal ServiceAdega.Vinho[] Vinhos
+        {
+            get
+            {
+                return this.VinhosField;
+            }
+            set
+            {
+                this.VinhosField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Vinho", Namespace="http://tempuri.org/")]
+    internal partial class Vinho : object
+    {
+        
+        private int IdField;
+        
+        private string NomeField;
+        
+        private string ProdutorField;
+        
+        private int AnoField;
+        
+        private string TipoField;
+        
+        private string DescricaoField;
+        
+        private string ImagemUrlField;
+        
+        private float PrecoField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        internal int Id
+        {
+            get
+            {
+                return this.IdField;
+            }
+            set
+            {
+                this.IdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        internal string Nome
+        {
+            get
+            {
+                return this.NomeField;
+            }
+            set
+            {
+                this.NomeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        internal string Produtor
+        {
+            get
+            {
+                return this.ProdutorField;
+            }
+            set
+            {
+                this.ProdutorField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=3)]
+        internal int Ano
+        {
+            get
+            {
+                return this.AnoField;
+            }
+            set
+            {
+                this.AnoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        internal string Tipo
+        {
+            get
+            {
+                return this.TipoField;
+            }
+            set
+            {
+                this.TipoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        internal string Descricao
+        {
+            get
+            {
+                return this.DescricaoField;
+            }
+            set
+            {
+                this.DescricaoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
+        internal string ImagemUrl
+        {
+            get
+            {
+                return this.ImagemUrlField;
+            }
+            set
+            {
+                this.ImagemUrlField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=7)]
+        internal float Preco
+        {
+            get
+            {
+                return this.PrecoField;
+            }
+            set
+            {
+                this.PrecoField = value;
             }
         }
     }

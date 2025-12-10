@@ -25,7 +25,14 @@ namespace DAL.Services
                 if (item == null)
                     return null;
 
-                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade, ImagemUrl = item.ImagemUrl };
+                return new Models.Adega
+                {
+                    Id = item.Id,
+                    Nome = item.Nome,
+                    Localizacao = item.Localizacao,
+                    Capacidade = item.Capacidade,
+                    ImagemUrl = item.ImagemUrl
+                };
             });
         }
 
@@ -50,7 +57,27 @@ namespace DAL.Services
                 if (item == null)
                     return null;
 
-                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade, ImagemUrl = item.ImagemUrl };
+                return new Models.Adega
+                {
+                    Id = item.Id,
+                    Nome = item.Nome,
+                    Localizacao = item.Localizacao,
+                    Capacidade = item.Capacidade,
+                    ImagemUrl = item.ImagemUrl,
+                    Vinhos = item.Vinhos?.Select(v =>
+                        new Models.Vinho
+                        {
+                            Id = v.Id,
+                            Nome = v.Nome,
+                            Produtor = v.Produtor,
+                            Ano = v.Ano,
+                            Tipo = v.Tipo,
+                            Descricao = v.Descricao,
+                            ImagemUrl = v.ImagemUrl,
+                            Preco = v.Preco
+                        }
+                    ).ToList()
+                };
             });
         }
 
@@ -65,7 +92,27 @@ namespace DAL.Services
                 if (item == null)
                     return null;
 
-                return new Models.Adega { Id = item.Id, Nome = item.Nome, Localizacao = item.Localizacao, Capacidade = item.Capacidade, ImagemUrl = item.ImagemUrl };
+                return new Models.Adega
+                {
+                    Id = item.Id,
+                    Nome = item.Nome,
+                    Localizacao = item.Localizacao,
+                    Capacidade = item.Capacidade,
+                    ImagemUrl = item.ImagemUrl,
+                    Vinhos = item.Vinhos?.Select(v =>
+                        new Models.Vinho
+                        {
+                            Id = v.Id,
+                            Nome = v.Nome,
+                            Produtor = v.Produtor,
+                            Ano = v.Ano,
+                            Tipo = v.Tipo,
+                            Descricao = v.Descricao,
+                            ImagemUrl = v.ImagemUrl,
+                            Preco = v.Preco
+                        }
+                    ).ToList()
+                };
             });
         }
 

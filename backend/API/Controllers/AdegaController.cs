@@ -56,7 +56,7 @@ namespace API.Controllers
                     localizacao = adega.Localizacao,
                     capacidade = adega.Capacidade,
                     imageUrl = adega.ImagemUrl,
-                    vinhos = new List<object>() // Lista de vinhos vazia
+                    vinhos = adega.Vinhos
                 };
 
                 return Ok(new { success = true, data = data });
@@ -104,7 +104,7 @@ namespace API.Controllers
                         localizacao = adega.Localizacao,
                         capacidade = adega.Capacidade,
                         imageUrl = adega.ImagemUrl,
-                        vinhos = new List<object>() // Lista de vinhos vazia
+                        vinhos = new List<Vinho>() 
                     }
                 });
             }
@@ -144,7 +144,7 @@ namespace API.Controllers
                         localizacao = adega.Localizacao,
                         capacidade = adega.Capacidade,
                         imageUrl = adega.ImagemUrl,
-                        vinhos = new List<object>() // Lista de vinhos vazia
+                        vinhos = adega.Vinhos
                     }
                 });
             }

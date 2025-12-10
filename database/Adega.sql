@@ -36,9 +36,26 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    -- Retorna os dados da adega
     SELECT *
     FROM Adega
     WHERE Id = @Id;
+
+    -- Retorna os vinhos presentes na adega
+    SELECT 
+        v.Id AS VinhoId,
+        v.Nome AS VinhoNome,
+        v.Produtor,
+        v.Ano,
+        v.Tipo,
+        v.Descricao,
+        v.ImagemUrl,
+        v.Preco,
+        s.CreatedAt AS DataEntradaStock
+    FROM Stock s
+    INNER JOIN Vinhos v ON s.VinhosId = v.Id
+    WHERE s.Adegaid = @Id
+    ORDER BY v.Nome;
 END;
 GO
 
@@ -62,9 +79,28 @@ BEGIN
         ImagemUrl = COALESCE(@ImagemUrl, ImagemUrl)
     WHERE Id = @Id;
 
-    -- Retorna o registro atualizado
-    SELECT * FROM Adega WHERE Id = @Id;
+    -- Retorna o registro atualizado da adega
+    SELECT * 
+    FROM Adega 
+    WHERE Id = @Id;
+
+    -- Retorna os vinhos presentes na adega atualizada
+    SELECT 
+        v.Id AS VinhoId,
+        v.Nome AS VinhoNome,
+        v.Produtor,
+        v.Ano,
+        v.Tipo,
+        v.Descricao,
+        v.ImagemUrl,
+        v.Preco,
+        s.CreatedAt AS DataEntradaStock
+    FROM Stock s
+    INNER JOIN Vinhos v ON s.VinhosId = v.Id
+    WHERE s.Adegaid = @Id
+    ORDER BY v.Nome;
 END;
+GO
 
 
 -- Apagar Adega
