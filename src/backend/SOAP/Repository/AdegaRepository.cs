@@ -1,0 +1,194 @@
+﻿using SOAP.Models;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace SOAP.Repository
+{
+    public class AdegaRepository
+    {
+        private readonly DbConnectionFactory _connectionFactory;
+
+        public AdegaRepository(DbConnectionFactory connectionFactory)
+        {
+            _connectionFactory = connectionFactory;
+        }
+
+        public Adega InserirAdega(Adega adega)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("InserirAdega", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Nome", adega.Nome);
+                cmd.Parameters.AddWithValue("@Localizacao", adega.Localizacao);
+                cmd.Parameters.AddWithValue("@Capacidade", adega.Capacidade);
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Adega
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nome = reader["Nome"].ToString(),
+                            Localizacao = reader["Localizacao"].ToString(),
+                            Capacidade = Convert.ToInt32(reader["Capacidade"]),
+                            ImagemUrl = reader["ImagemUrl"].ToString()
+                        };
+                    }
+                }
+            }
+
+            return null; 
+        }
+
+
+        public List<Adega> TodasAdegas()
+        {
+            List<Adega> lista = new List<Adega>();
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("TodasAdegas", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Adega
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nome = reader["Nome"].ToString(),
+                            Localizacao = reader["Localizacao"]?.ToString(),
+                            Capacidade = Convert.ToInt32(reader["Capacidade"]),
+                            ImagemUrl = reader["ImagemUrl"].ToString()
+                        });
+                    }
+                }
+            }
+            return lista;
+        }
+
+        public Adega AdegaById(int id)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("AdegaById", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", id);
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    Adega adega = null;
+
+                    if (reader.Read())
+                    {
+                        adega = new Adega
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nome = reader["Nome"].ToString(),
+                            Localizacao = reader["Localizacao"]?.ToString(),
+                            Capacidade = Convert.ToInt32(reader["Capacidade"]),
+                            ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                            Vinhos = new List<Vinho>()
+                        };
+                    }
+
+
+                    if (reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            adega.Vinhos.Add(new Vinho
+                            {
+                                Id = Convert.ToInt32(reader["VinhoId"]),
+                                Nome = reader["VinhoNome"].ToString(),
+                                Produtor = reader["Produtor"].ToString(),
+                                Ano = Convert.ToInt32(reader["Ano"]),
+                                Tipo = reader["Tipo"].ToString(),
+                                Descricao = reader["Descricao"].ToString(),
+                                ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                                Preco = (float)Convert.ToDouble(reader["Preco"])
+                            });
+                        }
+                    }
+
+                    return adega;
+                }
+            }
+        }
+
+
+        public Adega ModificarAdega(Adega adega)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ModificarAdega", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", adega.Id);
+                cmd.Parameters.AddWithValue("@Nome", adega.Nome);
+                cmd.Parameters.AddWithValue("@Localizacao", adega.Localizacao);
+                cmd.Parameters.AddWithValue("@Capacidade", adega.Capacidade == 0 ? DBNull.Value : (object)adega.Capacidade);
+                cmd.Parameters.AddWithValue("@ImagemUrl", adega.ImagemUrl);
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    Adega adegaAtualizada = null;
+
+                    if (reader.Read())
+                    {
+                        adegaAtualizada = new Adega
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            Nome = reader["Nome"].ToString(),
+                            Localizacao = reader["Localizacao"].ToString(),
+                            Capacidade = Convert.ToInt32(reader["Capacidade"]),
+                            ImagemUrl = reader["ImagemUrl"].ToString(),
+                            Vinhos = new List<Vinho>()
+                        };
+                    }
+
+                    if (adegaAtualizada != null && reader.NextResult())
+                    {
+                        while (reader.Read())
+                        {
+                            adegaAtualizada.Vinhos.Add(new Vinho
+                            {
+                                Id = Convert.ToInt32(reader["VinhoId"]),
+                                Nome = reader["VinhoNome"].ToString(),
+                                Produtor = reader["Produtor"].ToString(),
+                                Ano = Convert.ToInt32(reader["Ano"]),
+                                Tipo = reader["Tipo"].ToString(),
+                                Descricao = reader["Descricao"].ToString(),
+                                ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                                Preco = (float)Convert.ToDouble(reader["Preco"])
+                            });
+                        }
+                    }
+
+                    return adegaAtualizada;
+                }
+            }
+        }
+
+        public bool ApagarAdega(int id)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ApagarAdega", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@Id", id);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+    }
+}

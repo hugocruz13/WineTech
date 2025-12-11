@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="API/API.csproj" />
+  <Project Path="BLL/BLL.csproj" Id="936b8aee-0565-4bd1-b706-f3d0469d28ed" />
+  <Project Path="DAL/DAL.csproj" Id="5ec4a392-3bba-4669-9a24-d1bcbf3d2d88" />
+  <Project Path="Models/Models.csproj" Id="43118acd-d035-43bc-a91f-2e50b7cc7e2f" />
+  <Project Path="SOAP/SOAP.csproj" Id="a3bd77b0-4b1e-4fbb-a45e-149eec63cedd" />
+</Solution>

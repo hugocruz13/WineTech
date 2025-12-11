@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Passw0rd_dev!"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - mssql_data:/var/opt/mssql
+    restart: always
+
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    container_name: azurite
+    ports:
+      - "10000:10000"
+      - "10001:10001" 
+      - "10002:10002"  
+    volumes:
+      - azurite_data:/data
+    command: "azurite-blob --blobHost 0.0.0.0 --location /data"
+    restart: always
+
+volumes:
+  mssql_data:
+  azurite_data:

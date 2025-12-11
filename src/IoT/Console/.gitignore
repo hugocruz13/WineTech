@@ -1,0 +1,26 @@
+# Pastas de build
+**/bin/
+**/obj/
+
+# Pacotes NuGet
+**/packages/
+
+# Arquivos de propriedades do projeto
+**/Properties/launchSettings.json
+
+# Arquivos de usuário do Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+*.bak
+*.swp
+
+# IDEs
+.vscode/
+.idea/
+.vs
