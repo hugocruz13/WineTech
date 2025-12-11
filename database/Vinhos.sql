@@ -5,16 +5,19 @@ CREATE OR ALTER PROCEDURE InserirVinho
     @Ano INT,
     @Tipo NVARCHAR(255),
     @Descricao NVARCHAR(255),
-    @ImagemUrl NVARCHAR(255),
     @Preco FLOAT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO Vinhos (Nome, Produtor, Ano, Tipo, Descricao, ImagemURL, Preco)
-    VALUES (@Nome, @Produtor, @Ano, @Tipo, @Descricao, @ImagemUrl, @Preco)
+    INSERT INTO Vinhos (Nome, Produtor, Ano, Tipo, Descricao, Preco)
+    VALUES (@Nome, @Produtor, @Ano, @Tipo, @Descricao, @Preco)
 
-    SELECT SCOPE_IDENTITY() AS Id;
+    DECLARE @NovoId INT = SCOPE_IDENTITY();
+
+    SELECT *
+    FROM Vinhos
+    WHERE Id = @NovoId;
 END;
 GO
 

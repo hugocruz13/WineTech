@@ -26,8 +26,8 @@ namespace SOAP.Repository
                 cmd.Parameters.AddWithValue("@Produtor", vinho.Produtor);
                 cmd.Parameters.AddWithValue("@Ano", vinho.Ano);
                 cmd.Parameters.AddWithValue("@Tipo", vinho.Tipo);
-                cmd.Parameters.AddWithValue("@Descricao", vinho.Descricao ?? string.Empty);
-                cmd.Parameters.AddWithValue("@Preco", vinho.Descricao ?? string.Empty);
+                cmd.Parameters.AddWithValue("@Descricao", vinho.Descricao);
+                cmd.Parameters.AddWithValue("@Preco", vinho.Preco);
 
                 conn.Open();
 
