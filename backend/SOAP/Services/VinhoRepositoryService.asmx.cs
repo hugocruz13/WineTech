@@ -78,8 +78,8 @@ namespace SOAP.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Erro ao listar todas as adegas");
-                throw new Exception("Erro ao listar todas as adegas: " + ex.Message);
+                Logger.Error(ex, "Erro ao listar todas os vinhos");
+                throw new Exception("Erro ao listar todos os vinhos: " + ex.Message);
             }
         }
         [WebMethod]

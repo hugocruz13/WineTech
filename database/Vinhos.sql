@@ -47,25 +47,30 @@ GO
 -- Atualizar Vinho
 CREATE OR ALTER PROCEDURE ModificarVinho
     @Id INT,
-    @Nome NVARCHAR(255),
-    @Produtor NVARCHAR(255),
+    @Nome NVARCHAR(255) = NULL,
+    @Produtor NVARCHAR(255) = NULL,
     @Ano INT,
-    @Tipo NVARCHAR(255),
-    @Descricao NVARCHAR(255),
-    @ImagemUrl NVARCHAR(255),
+    @Tipo NVARCHAR(255) = NULL,
+    @Descricao NVARCHAR(255) = NULL,
+    @ImagemUrl NVARCHAR(255) = NULL,
     @Preco FLOAT
 AS
 BEGIN
     SET NOCOUNT ON;
 
     UPDATE Vinhos
-       SET Nome = @Nome,
-           Produtor = @Produtor,
-           Ano = @Ano,
-           Tipo = @Tipo,
-           Descricao = @Descricao,
-           ImagemUrl = @ImagemUrl,
-           Preco = @Preco
+       SET 
+           Nome = COALESCE (@Nome, Nome),
+           Produtor = COALESCE (@Produtor, Produtor),
+           Ano = COALESCE (@Ano, Ano),
+           Tipo = COALESCE (@Tipo, Tipo),
+           Descricao = COALESCE (@Descricao, Descricao),
+           ImagemUrl = COALESCE (@ImagemUrl, ImagemUrl),
+           Preco = COALESCE (@Preco, Preco)
+     WHERE Id = @Id;
+
+     SELECT *
+     FROM Vinhos
      WHERE Id = @Id;
 END;
 GO
@@ -103,6 +108,6 @@ Exec ModificarVinho
     @ImagemUrl = 'https://teste.com/img.png',
     @Preco = 19.99;
 
-EXEC ApagarVinho @Id = 1
+EXEC ApagarVinho @Id = 16
 EXEC TodosVinhos;
 EXEC VinhoById @Id = 4;
