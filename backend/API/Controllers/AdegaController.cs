@@ -266,20 +266,6 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("{id}/stock/ocupacao")]
-        public async Task<ActionResult> GetCapacidadeOcupada(int id)
-        {
-            try
-            {
-                int capacidadeOcupada = await _adegaBLL.ObterCapacidadeAtual(id);
-                return Ok(new { success = true, data = capacidadeOcupada });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
-            }
-        }
-
         [HttpGet("stock")]
         public async Task<ActionResult> GetStockResumoGlobal()
         {

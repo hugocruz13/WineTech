@@ -18,7 +18,7 @@ namespace API.Controllers
             _bll = bll;
         }
 
-        [HttpPost("register")]
+        [HttpPost]
         [Authorize(Roles = "owner,user")]
         public async Task<IActionResult> RegisterUser()
         {

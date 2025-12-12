@@ -135,14 +135,6 @@ namespace BLL.Services
             return await _adegaDAL.AtualizarStock(stock);
         }
 
-        public async Task<int> ObterCapacidadeAtual(int adegaId)
-        {
-            if (adegaId <= 0)
-                throw new ArgumentException("ID inválido.");
-
-            return await _adegaDAL.ObterCapacidadeAtual(adegaId);
-        }
-
         public async Task<List<StockResumo>> ObterResumoStockTotal()
         {
             return await _adegaDAL.ObterResumoStockTotal();
