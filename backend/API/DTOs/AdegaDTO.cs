@@ -23,4 +23,11 @@
         public string? Localizacao { get; set; }
         public int Capacidade { get; set; } = 0;
     }
+
+    public class AdegaStockDTO
+    {
+        public int VinhoId { get; set; }
+        public int AdegaId { get; set; }
+        public int Quantidade { get; set; }
+    }
 }

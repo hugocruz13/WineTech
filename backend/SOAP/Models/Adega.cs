@@ -9,6 +9,5 @@ namespace SOAP.Models
         public string Localizacao { get; set; }
         public int Capacidade { get; set; }
         public string ImagemUrl { get; set; }
-        public List<Vinho> Vinhos { get; set; }
     }
 }

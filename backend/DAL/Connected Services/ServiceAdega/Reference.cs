@@ -28,8 +28,6 @@ namespace ServiceAdega
         
         private string ImagemUrlField;
         
-        private ServiceAdega.Vinho[] VinhosField;
-        
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         internal int Id
         {
@@ -94,28 +92,15 @@ namespace ServiceAdega
                 this.ImagemUrlField = value;
             }
         }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
-        internal ServiceAdega.Vinho[] Vinhos
-        {
-            get
-            {
-                return this.VinhosField;
-            }
-            set
-            {
-                this.VinhosField = value;
-            }
-        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Vinho", Namespace="http://tempuri.org/")]
-    internal partial class Vinho : object
+    [System.Runtime.Serialization.DataContractAttribute(Name="StockResumo", Namespace="http://tempuri.org/")]
+    internal partial class StockResumo : object
     {
         
-        private int IdField;
+        private int VinhoIdField;
         
         private string NomeField;
         
@@ -125,26 +110,26 @@ namespace ServiceAdega
         
         private string TipoField;
         
-        private string DescricaoField;
-        
         private string ImagemUrlField;
         
-        private float PrecoField;
+        private decimal PrecoField;
+        
+        private int QuantidadeField;
         
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        internal int Id
+        internal int VinhoId
         {
             get
             {
-                return this.IdField;
+                return this.VinhoIdField;
             }
             set
             {
-                this.IdField = value;
+                this.VinhoIdField = value;
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
         internal string Nome
         {
             get
@@ -157,7 +142,7 @@ namespace ServiceAdega
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         internal string Produtor
         {
             get
@@ -197,19 +182,6 @@ namespace ServiceAdega
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
-        internal string Descricao
-        {
-            get
-            {
-                return this.DescricaoField;
-            }
-            set
-            {
-                this.DescricaoField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
         internal string ImagemUrl
         {
             get
@@ -222,8 +194,8 @@ namespace ServiceAdega
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=7)]
-        internal float Preco
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=6)]
+        internal decimal Preco
         {
             get
             {
@@ -232,6 +204,71 @@ namespace ServiceAdega
             set
             {
                 this.PrecoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=7)]
+        internal int Quantidade
+        {
+            get
+            {
+                return this.QuantidadeField;
+            }
+            set
+            {
+                this.QuantidadeField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="StockInput", Namespace="http://tempuri.org/")]
+    internal partial class StockInput : object
+    {
+        
+        private int VinhoIdField;
+        
+        private int AdegaIdField;
+        
+        private int QuantidadeField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        internal int VinhoId
+        {
+            get
+            {
+                return this.VinhoIdField;
+            }
+            set
+            {
+                this.VinhoIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=1)]
+        internal int AdegaId
+        {
+            get
+            {
+                return this.AdegaIdField;
+            }
+            set
+            {
+                this.AdegaIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=2)]
+        internal int Quantidade
+        {
+            get
+            {
+                return this.QuantidadeField;
+            }
+            set
+            {
+                this.QuantidadeField = value;
             }
         }
     }
@@ -255,6 +292,18 @@ namespace ServiceAdega
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ApagarAdega", ReplyAction="*")]
         System.Threading.Tasks.Task<bool> ApagarAdegaAsync(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/StockAdega", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceAdega.StockAdegaResponse> StockAdegaAsync(ServiceAdega.StockAdegaRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AdicionarStock", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceAdega.AdicionarStockResponse> AdicionarStockAsync(ServiceAdega.AdicionarStockRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AtualizarStock", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceAdega.AtualizarStockResponse> AtualizarStockAsync(ServiceAdega.AtualizarStockRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterOcupacaoAtual", ReplyAction="*")]
+        System.Threading.Tasks.Task<int> ObterOcupacaoAtualAsync(int adegaId);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -569,6 +618,246 @@ namespace ServiceAdega
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class StockAdegaRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="StockAdega", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceAdega.StockAdegaRequestBody Body;
+        
+        public StockAdegaRequest()
+        {
+        }
+        
+        public StockAdegaRequest(ServiceAdega.StockAdegaRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class StockAdegaRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int adegaId;
+        
+        public StockAdegaRequestBody()
+        {
+        }
+        
+        public StockAdegaRequestBody(int adegaId)
+        {
+            this.adegaId = adegaId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class StockAdegaResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="StockAdegaResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceAdega.StockAdegaResponseBody Body;
+        
+        public StockAdegaResponse()
+        {
+        }
+        
+        public StockAdegaResponse(ServiceAdega.StockAdegaResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class StockAdegaResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceAdega.StockResumo[] StockAdegaResult;
+        
+        public StockAdegaResponseBody()
+        {
+        }
+        
+        public StockAdegaResponseBody(ServiceAdega.StockResumo[] StockAdegaResult)
+        {
+            this.StockAdegaResult = StockAdegaResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class AdicionarStockRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AdicionarStock", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceAdega.AdicionarStockRequestBody Body;
+        
+        public AdicionarStockRequest()
+        {
+        }
+        
+        public AdicionarStockRequest(ServiceAdega.AdicionarStockRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class AdicionarStockRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceAdega.StockInput stock;
+        
+        public AdicionarStockRequestBody()
+        {
+        }
+        
+        public AdicionarStockRequestBody(ServiceAdega.StockInput stock)
+        {
+            this.stock = stock;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class AdicionarStockResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AdicionarStockResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceAdega.AdicionarStockResponseBody Body;
+        
+        public AdicionarStockResponse()
+        {
+        }
+        
+        public AdicionarStockResponse(ServiceAdega.AdicionarStockResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class AdicionarStockResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public bool AdicionarStockResult;
+        
+        public AdicionarStockResponseBody()
+        {
+        }
+        
+        public AdicionarStockResponseBody(bool AdicionarStockResult)
+        {
+            this.AdicionarStockResult = AdicionarStockResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class AtualizarStockRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AtualizarStock", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceAdega.AtualizarStockRequestBody Body;
+        
+        public AtualizarStockRequest()
+        {
+        }
+        
+        public AtualizarStockRequest(ServiceAdega.AtualizarStockRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class AtualizarStockRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceAdega.StockInput stock;
+        
+        public AtualizarStockRequestBody()
+        {
+        }
+        
+        public AtualizarStockRequestBody(ServiceAdega.StockInput stock)
+        {
+            this.stock = stock;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class AtualizarStockResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AtualizarStockResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceAdega.AtualizarStockResponseBody Body;
+        
+        public AtualizarStockResponse()
+        {
+        }
+        
+        public AtualizarStockResponse(ServiceAdega.AtualizarStockResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class AtualizarStockResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public bool AtualizarStockResult;
+        
+        public AtualizarStockResponseBody()
+        {
+        }
+        
+        public AtualizarStockResponseBody(bool AtualizarStockResult)
+        {
+            this.AtualizarStockResult = AtualizarStockResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     internal interface AdegaRepositoryServiceSoapChannel : ServiceAdega.AdegaRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -670,6 +959,53 @@ namespace ServiceAdega
         public System.Threading.Tasks.Task<bool> ApagarAdegaAsync(int id)
         {
             return base.Channel.ApagarAdegaAsync(id);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceAdega.StockAdegaResponse> ServiceAdega.AdegaRepositoryServiceSoap.StockAdegaAsync(ServiceAdega.StockAdegaRequest request)
+        {
+            return base.Channel.StockAdegaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceAdega.StockAdegaResponse> StockAdegaAsync(int adegaId)
+        {
+            ServiceAdega.StockAdegaRequest inValue = new ServiceAdega.StockAdegaRequest();
+            inValue.Body = new ServiceAdega.StockAdegaRequestBody();
+            inValue.Body.adegaId = adegaId;
+            return ((ServiceAdega.AdegaRepositoryServiceSoap)(this)).StockAdegaAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceAdega.AdicionarStockResponse> ServiceAdega.AdegaRepositoryServiceSoap.AdicionarStockAsync(ServiceAdega.AdicionarStockRequest request)
+        {
+            return base.Channel.AdicionarStockAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceAdega.AdicionarStockResponse> AdicionarStockAsync(ServiceAdega.StockInput stock)
+        {
+            ServiceAdega.AdicionarStockRequest inValue = new ServiceAdega.AdicionarStockRequest();
+            inValue.Body = new ServiceAdega.AdicionarStockRequestBody();
+            inValue.Body.stock = stock;
+            return ((ServiceAdega.AdegaRepositoryServiceSoap)(this)).AdicionarStockAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceAdega.AtualizarStockResponse> ServiceAdega.AdegaRepositoryServiceSoap.AtualizarStockAsync(ServiceAdega.AtualizarStockRequest request)
+        {
+            return base.Channel.AtualizarStockAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceAdega.AtualizarStockResponse> AtualizarStockAsync(ServiceAdega.StockInput stock)
+        {
+            ServiceAdega.AtualizarStockRequest inValue = new ServiceAdega.AtualizarStockRequest();
+            inValue.Body = new ServiceAdega.AtualizarStockRequestBody();
+            inValue.Body.stock = stock;
+            return ((ServiceAdega.AdegaRepositoryServiceSoap)(this)).AtualizarStockAsync(inValue);
+        }
+        
+        public System.Threading.Tasks.Task<int> ObterOcupacaoAtualAsync(int adegaId)
+        {
+            return base.Channel.ObterOcupacaoAtualAsync(adegaId);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

@@ -12,6 +12,10 @@ namespace BLL.Interfaces
         Task<Adega> AdegaById(int id);
         Task<Adega> ModificarAdega(Adega adega);
         Task<bool> ApagarAdega(int id);
+        Task<List<StockResumo>> ObterResumoPorAdega(int adegaId);
+        Task<bool> AdicionarStock(StockInput stock);
+        Task<bool> AtualizarStock(StockInput stock);
+        Task<int> ObterCapacidadeAtual(int adegaId);
 
     }
 }

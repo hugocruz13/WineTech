@@ -80,11 +80,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Adega.cs" />
+    <Compile Include="Models\StockResumo.cs" />
     <Compile Include="Models\Utilizador.cs" />
     <Compile Include="Models\Vinho.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AdegaRepository.cs" />
     <Compile Include="Repository\DbConnectionFactory.cs" />
+    <Compile Include="Models\StockInput.cs" />
     <Compile Include="Repository\UtilizadorRepository.cs" />
     <Compile Include="Repository\VinhoRepository.cs" />
     <Compile Include="Services\AdegaRepositoryService.asmx.cs">

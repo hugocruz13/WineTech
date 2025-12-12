@@ -11,5 +11,9 @@ namespace DAL.Interfaces
         Task<Adega> AdegaById(int id);
         Task<Adega> ModificarAdega(Models.Adega adega);
         Task<bool> ApagarAdega(int id);
+        Task<List<Models.StockResumo>> ObterResumoPorAdega(int id);
+        Task<bool> AdicionarStock(Models.StockInput stock);
+        Task<bool> AtualizarStock(Models.StockInput stock);
+        Task<int> ObterCapacidadeAtual(int adegaId);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using DAL.Helpers;
 using DAL.Interfaces;
+using Models;
 using ServiceAdega;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,20 +64,7 @@ namespace DAL.Services
                     Nome = item.Nome,
                     Localizacao = item.Localizacao,
                     Capacidade = item.Capacidade,
-                    ImagemUrl = item.ImagemUrl,
-                    Vinhos = item.Vinhos?.Select(v =>
-                        new Models.Vinho
-                        {
-                            Id = v.Id,
-                            Nome = v.Nome,
-                            Produtor = v.Produtor,
-                            Ano = v.Ano,
-                            Tipo = v.Tipo,
-                            Descricao = v.Descricao,
-                            ImagemUrl = v.ImagemUrl,
-                            Preco = v.Preco
-                        }
-                    ).ToList()
+                    ImagemUrl = item.ImagemUrl
                 };
             });
         }
@@ -98,20 +86,7 @@ namespace DAL.Services
                     Nome = item.Nome,
                     Localizacao = item.Localizacao,
                     Capacidade = item.Capacidade,
-                    ImagemUrl = item.ImagemUrl,
-                    Vinhos = item.Vinhos?.Select(v =>
-                        new Models.Vinho
-                        {
-                            Id = v.Id,
-                            Nome = v.Nome,
-                            Produtor = v.Produtor,
-                            Ano = v.Ano,
-                            Tipo = v.Tipo,
-                            Descricao = v.Descricao,
-                            ImagemUrl = v.ImagemUrl,
-                            Preco = v.Preco
-                        }
-                    ).ToList()
+                    ImagemUrl = item.ImagemUrl
                 };
             });
         }
@@ -121,6 +96,56 @@ namespace DAL.Services
             return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
             {
                 var response = await client.ApagarAdegaAsync(id);
+                return response;
+            });
+        }
+
+        public async Task<List<Models.StockResumo>> ObterResumoPorAdega(int id)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.StockAdegaAsync(id);
+                return response.Body.StockAdegaResult
+                .Select(item => new Models.StockResumo
+                {
+                    VinhoId = item.VinhoId,
+                    Nome = item.Nome,
+                    Produtor = item.Produtor,
+                    Ano = item.Ano,
+                    Tipo = item.Tipo,
+                    ImagemUrl = item.ImagemUrl,
+                    Preco = item.Preco,
+                    Quantidade = item.Quantidade
+                })
+                .ToList();
+            });
+        }
+
+        public async Task<bool> AdicionarStock(Models.StockInput stock)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var soapModel = new ServiceAdega.StockInput { AdegaId = stock.AdegaId, VinhoId = stock.VinhoId, Quantidade = stock.Quantidade };
+                var response = await client.AdicionarStockAsync(soapModel);
+                return response != null;
+            });
+        }
+
+        public async Task<bool> AtualizarStock(Models.StockInput stock)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var soapModel = new ServiceAdega.StockInput { AdegaId = stock.AdegaId, VinhoId = stock.VinhoId, Quantidade = stock.Quantidade };
+                var response = await client.AtualizarStockAsync(soapModel);
+                return response != null;
+            });
+        }
+
+        public async Task<int> ObterCapacidadeAtual(int adegaId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.ObterOcupacaoAtualAsync(adegaId);
                 return response;
             });
         }
