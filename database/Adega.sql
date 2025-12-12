@@ -36,26 +36,9 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Retorna os dados da adega
     SELECT *
     FROM Adega
     WHERE Id = @Id;
-
-    -- Retorna os vinhos presentes na adega
-    SELECT 
-        v.Id AS VinhoId,
-        v.Nome AS VinhoNome,
-        v.Produtor,
-        v.Ano,
-        v.Tipo,
-        v.Descricao,
-        v.ImagemUrl,
-        v.Preco,
-        s.CreatedAt AS DataEntradaStock
-    FROM Stock s
-    INNER JOIN Vinhos v ON s.VinhosId = v.Id
-    WHERE s.Adegaid = @Id
-    ORDER BY v.Nome;
 END;
 GO
 
@@ -79,26 +62,9 @@ BEGIN
         ImagemUrl = COALESCE(@ImagemUrl, ImagemUrl)
     WHERE Id = @Id;
 
-    -- Retorna o registro atualizado da adega
-    SELECT * 
-    FROM Adega 
+    SELECT *
+    FROM Adega
     WHERE Id = @Id;
-
-    -- Retorna os vinhos presentes na adega atualizada
-    SELECT 
-        v.Id AS VinhoId,
-        v.Nome AS VinhoNome,
-        v.Produtor,
-        v.Ano,
-        v.Tipo,
-        v.Descricao,
-        v.ImagemUrl,
-        v.Preco,
-        s.CreatedAt AS DataEntradaStock
-    FROM Stock s
-    INNER JOIN Vinhos v ON s.VinhosId = v.Id
-    WHERE s.Adegaid = @Id
-    ORDER BY v.Nome;
 END;
 GO
 
@@ -114,8 +80,119 @@ BEGIN
     WHERE Id = @Id;
 END;
 
+-- Stock Resumido
+CREATE OR ALTER PROCEDURE ObterResumoPorAdega
+    @AdegaId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
 
-DROP Procedure InserirAdega;
-EXEC InserirAdega @Localizacao = 'Braga - Portugal';
-EXEC TodasAdegas;
-EXEC AdegaById @Id = 1;
+    SELECT 
+        v.Id AS VinhoId,
+        v.Nome,
+        v.Produtor,
+        v.Ano,
+        v.Tipo,
+        v.ImagemUrl,
+        v.Preco,
+        COUNT(s.Id) AS QuantidadeTotal
+    FROM Stock s
+    INNER JOIN Vinhos v ON s.VinhosId = v.Id
+    WHERE s.Adegaid = @AdegaId 
+      AND s.Estado = 'Disponivel' 
+    GROUP BY 
+        v.Id, v.Nome, v.Produtor, v.Ano, v.Tipo, v.ImagemUrl, v.Preco
+    ORDER BY 
+        v.Nome ASC;
+END;
+GO
+
+-- Adicionar stock
+CREATE OR ALTER PROCEDURE AdicionarStock
+    @AdegaId INT,
+    @VinhoId INT,
+    @Quantidade INT
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    DECLARE @i INT = 0;
+
+    WHILE @i < @Quantidade
+    BEGIN
+        INSERT INTO Stock (VinhosId, Adegaid, Estado, CreatedAt)
+        VALUES (@VinhoId, @AdegaId, 'Disponivel', GETDATE());
+
+        SET @i = @i + 1;
+    END
+END;
+GO
+
+-- Atualizar stock
+CREATE OR ALTER PROCEDURE AtualizarStock
+    @AdegaId INT,
+    @VinhoId INT,
+    @Quantidade INT
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    DECLARE @StockAtual INT;
+    DECLARE @Diferenca INT;
+    DECLARE @i INT = 0;
+
+    -- 1. Ver quantas garrafas existem atualmente (Disponíveis)
+    SELECT @StockAtual = COUNT(*) 
+    FROM Stock 
+    WHERE AdegaId = @AdegaId 
+      AND VinhosId = @VinhoId 
+      AND Estado = 'Disponivel';
+
+    -- A nova quantidade é MAIOR (Adicionar garrafas)
+    IF @Quantidade > @StockAtual
+    BEGIN
+        SET @Diferenca = @Quantidade - @StockAtual;
+
+        WHILE @i < @Diferenca
+        BEGIN
+            INSERT INTO Stock (VinhosId, Adegaid, Estado, CreatedAt)
+            VALUES (@VinhoId, @AdegaId, 'Disponivel', GETDATE());
+
+            SET @i = @i + 1;
+        END
+    END
+
+    -- A nova quantidade é MENOR (Remover garrafas)
+    ELSE IF @Quantidade < @StockAtual
+    BEGIN
+        SET @Diferenca = @StockAtual - @Quantidade;
+
+        -- Seleciona as garrafas mais antiga que estão disponíveis.
+        ;WITH GarrafasParaAtualizar AS (
+            SELECT TOP (@Diferenca) *
+            FROM Stock
+            WHERE AdegaId = @AdegaId 
+              AND VinhosId = @VinhoId 
+              AND Estado = 'Disponivel'
+            ORDER BY CreatedAt ASC 
+        )
+
+        UPDATE GarrafasParaAtualizar
+        SET Estado = 'Vendido'; 
+    END
+END;
+GO
+
+-- Obter Quantidade total
+CREATE OR ALTER PROCEDURE ObterOcupacaoAdega
+    @AdegaId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT COUNT(*) AS Total
+    FROM Stock 
+    WHERE AdegaId = @AdegaId 
+      AND Estado = 'Disponivel';
+END;
+GO

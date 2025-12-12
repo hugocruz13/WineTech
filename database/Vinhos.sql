@@ -38,7 +38,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    SELECT Id, Nome, Produtor, Ano, Tipo, Descricao, ImagemURL
+    SELECT *
     FROM Vinhos
     WHERE Id = @Id;
 END;

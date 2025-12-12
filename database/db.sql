@@ -1,6 +1,6 @@
 create database ISI
 
-use ISI
+USE ISI
 
 create table Vinhos (
   Id        int identity not null, 
@@ -54,13 +54,6 @@ create table Carrinho (
   UtilizadoresId int not null, 
   Quantidade     int not null, 
   primary key (Id));
-create table LinhasCompra (
-  Id            int identity not null, 
-  ComprasId     int not null, 
-  VinhosId      int not null, 
-  Quantidade    int not null, 
-  PrecoUnitario float(10) not null, 
-  primary key (Id));
 create table Adega (
   Id          int identity not null, 
   Nome        nvarchar(100) not null, 
@@ -72,6 +65,7 @@ create table Stock (
   Id        int identity not null, 
   VinhosId  int not null, 
   Adegaid   int not null, 
+  Estado    nvarchar(100) default 'Disponivel' not null, 
   CreatedAt datetime2(7) default GETDATE() not null, 
   primary key (Id));
 create table Notificacoes (
@@ -80,14 +74,20 @@ create table Notificacoes (
   Mensagem       nvarchar(255) not null, 
   CreatedAt      datetime2(7) default GETDATE() not null, 
   primary key (Id));
+create table LinhasCompra (
+  Id            int identity not null, 
+  ComprasId     int not null, 
+  StockId       int not null, 
+  PrecoUnitario float(10) not null, 
+  primary key (Id));
 alter table Leituras add constraint FKLeituras498639 foreign key (SensorId) references Sensores (Id);
 alter table Carrinho add constraint FKCarrinho434971 foreign key (VinhosId) references Vinhos (Id);
 alter table Carrinho add constraint FKCarrinho190422 foreign key (UtilizadoresId) references Utilizadores (Id);
 alter table Compras add constraint FKCompras967168 foreign key (UtilizadoresId) references Utilizadores (Id);
-alter table LinhasCompra add constraint FKLinhasComp46120 foreign key (ComprasId) references Compras (Id);
-alter table LinhasCompra add constraint FKLinhasComp914077 foreign key (VinhosId) references Vinhos (Id);
 alter table Alertas add constraint FKAlertas224704 foreign key (SensoresId) references Sensores (Id);
 alter table Stock add constraint FKStock882072 foreign key (Adegaid) references Adega (Id);
 alter table Stock add constraint FKStock178117 foreign key (VinhosId) references Vinhos (Id);
 alter table Sensores add constraint FKSensores424905 foreign key (Adegaid) references Adega (Id);
 alter table Notificacoes add constraint FKNotificaco901569 foreign key (UtilizadoresId) references Utilizadores (Id);
+alter table LinhasCompra add constraint FKLinhasComp46120 foreign key (ComprasId) references Compras (Id);
+alter table LinhasCompra add constraint FKLinhasComp471231 foreign key (StockId) references Stock (Id);
