@@ -40,7 +40,7 @@ create table Utilizadores (
 create table Compras (
   Id             int identity not null, 
   DataCompra     datetime2(7) default GETDATE() not null, 
-  ValorTotal     decimal(19, 0) null, 
+  ValorTotal     decimal(19, 2) null, 
   UtilizadoresId nvarchar(100) not null, 
   primary key (Id));
 create table Carrinho (
