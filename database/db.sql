@@ -1,7 +1,3 @@
-create database ISI
-
-USE ISI
-
 create table Vinhos (
   Id        int identity not null, 
   Nome      nvarchar(255) not null, 
@@ -35,24 +31,23 @@ create table Alertas (
   SensoresId int not null, 
   primary key (Id));
 create table Utilizadores (
-  Id          int identity not null, 
-  Auth0UserId nvarchar(100) not null unique, 
-  Nome        nvarchar(100) not null, 
-  Email       nvarchar(255) not null, 
-  ImgUrl      nvarchar(255) null, 
-  CreatedAt   datetime2(7) default GETDATE() not null, 
+  Id        nvarchar(100) not null, 
+  Nome      nvarchar(100) not null, 
+  Email     nvarchar(255) not null, 
+  ImgUrl    nvarchar(255) null, 
+  CreatedAt datetime2(7) default GETDATE() not null, 
   primary key (Id));
 create table Compras (
   Id             int identity not null, 
   DataCompra     datetime2(7) default GETDATE() not null, 
   ValorTotal     decimal(19, 0) null, 
-  UtilizadoresId int not null, 
+  UtilizadoresId nvarchar(100) not null, 
   primary key (Id));
 create table Carrinho (
   Id             int identity not null, 
   VinhosId       int not null, 
-  UtilizadoresId int not null, 
   Quantidade     int not null, 
+  UtilizadoresId nvarchar(100) not null, 
   primary key (Id));
 create table Adega (
   Id          int identity not null, 
@@ -70,9 +65,9 @@ create table Stock (
   primary key (Id));
 create table Notificacoes (
   Id             int identity not null, 
-  UtilizadoresId int not null, 
   Mensagem       nvarchar(255) not null, 
   CreatedAt      datetime2(7) default GETDATE() not null, 
+  UtilizadoresId nvarchar(100) not null, 
   primary key (Id));
 create table LinhasCompra (
   Id            int identity not null, 
