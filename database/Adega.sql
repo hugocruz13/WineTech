@@ -107,6 +107,31 @@ BEGIN
 END;
 GO
 
+-- Stock todas as adegas
+CREATE OR ALTER PROCEDURE ObterResumoStockTotal
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        v.Id AS VinhoId,
+        v.Nome,
+        v.Produtor,
+        v.Ano,
+        v.Tipo,
+        v.ImagemUrl,
+        v.Preco,
+        COUNT(s.Id) AS QuantidadeTotal
+    FROM Stock s
+    INNER JOIN Vinhos v ON s.VinhosId = v.Id
+    WHERE s.Estado = 'Disponivel' -- Mantemos este filtro para contar apenas stock disponível
+    GROUP BY 
+        v.Id, v.Nome, v.Produtor, v.Ano, v.Tipo, v.ImagemUrl, v.Preco
+    ORDER BY 
+        v.Id ASC;
+END;
+GO
+
 -- Adicionar stock
 CREATE OR ALTER PROCEDURE AdicionarStock
     @AdegaId INT,

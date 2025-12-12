@@ -164,5 +164,21 @@ namespace SOAP.Services
                 throw new Exception("Erro ao remover stock: " + ex.Message);
             }
         }
+
+
+        [WebMethod]
+        public List<StockResumo> ObterResumoStockTotal()
+        {
+            try
+            {
+                return _repository.ObterResumoStockTotal();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao remover stock");
+                throw new Exception("Erro ao remover stock: " + ex.Message);
+            }
+
+        }
     }
 }

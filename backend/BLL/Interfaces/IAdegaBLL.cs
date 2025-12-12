@@ -16,6 +16,7 @@ namespace BLL.Interfaces
         Task<bool> AdicionarStock(StockInput stock);
         Task<bool> AtualizarStock(StockInput stock);
         Task<int> ObterCapacidadeAtual(int adegaId);
+        Task<List<StockResumo>> ObterResumoStockTotal();
 
     }
 }

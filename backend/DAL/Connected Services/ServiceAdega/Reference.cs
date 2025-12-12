@@ -304,6 +304,9 @@ namespace ServiceAdega
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterOcupacaoAtual", ReplyAction="*")]
         System.Threading.Tasks.Task<int> ObterOcupacaoAtualAsync(int adegaId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterResumoStockTotal", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceAdega.ObterResumoStockTotalResponse> ObterResumoStockTotalAsync(ServiceAdega.ObterResumoStockTotalRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -858,6 +861,78 @@ namespace ServiceAdega
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterResumoStockTotalRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterResumoStockTotal", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceAdega.ObterResumoStockTotalRequestBody Body;
+        
+        public ObterResumoStockTotalRequest()
+        {
+        }
+        
+        public ObterResumoStockTotalRequest(ServiceAdega.ObterResumoStockTotalRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute()]
+    internal partial class ObterResumoStockTotalRequestBody
+    {
+        
+        public ObterResumoStockTotalRequestBody()
+        {
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterResumoStockTotalResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterResumoStockTotalResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceAdega.ObterResumoStockTotalResponseBody Body;
+        
+        public ObterResumoStockTotalResponse()
+        {
+        }
+        
+        public ObterResumoStockTotalResponse(ServiceAdega.ObterResumoStockTotalResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterResumoStockTotalResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceAdega.StockResumo[] ObterResumoStockTotalResult;
+        
+        public ObterResumoStockTotalResponseBody()
+        {
+        }
+        
+        public ObterResumoStockTotalResponseBody(ServiceAdega.StockResumo[] ObterResumoStockTotalResult)
+        {
+            this.ObterResumoStockTotalResult = ObterResumoStockTotalResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     internal interface AdegaRepositoryServiceSoapChannel : ServiceAdega.AdegaRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -1006,6 +1081,19 @@ namespace ServiceAdega
         public System.Threading.Tasks.Task<int> ObterOcupacaoAtualAsync(int adegaId)
         {
             return base.Channel.ObterOcupacaoAtualAsync(adegaId);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceAdega.ObterResumoStockTotalResponse> ServiceAdega.AdegaRepositoryServiceSoap.ObterResumoStockTotalAsync(ServiceAdega.ObterResumoStockTotalRequest request)
+        {
+            return base.Channel.ObterResumoStockTotalAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceAdega.ObterResumoStockTotalResponse> ObterResumoStockTotalAsync()
+        {
+            ServiceAdega.ObterResumoStockTotalRequest inValue = new ServiceAdega.ObterResumoStockTotalRequest();
+            inValue.Body = new ServiceAdega.ObterResumoStockTotalRequestBody();
+            return ((ServiceAdega.AdegaRepositoryServiceSoap)(this)).ObterResumoStockTotalAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

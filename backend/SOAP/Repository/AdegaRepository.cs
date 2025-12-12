@@ -226,5 +226,37 @@ namespace SOAP.Repository
                 return resultado != null ? Convert.ToInt32(resultado) : 0;
             }
         }
+
+        public List<StockResumo> ObterResumoStockTotal()
+        {
+            var lista = new List<StockResumo>();
+
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterResumoStockTotal", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new StockResumo
+                        {
+                            VinhoId = Convert.ToInt32(reader["VinhoId"]),
+                            Nome = reader["Nome"].ToString(),
+                            Produtor = reader["Produtor"].ToString(),
+                            Ano = Convert.ToInt32(reader["Ano"]),
+                            Tipo = reader["Tipo"].ToString(),
+                            ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                            Preco = Convert.ToDecimal(reader["Preco"]),
+                            Quantidade = Convert.ToInt32(reader["QuantidadeTotal"])
+                        });
+                    }
+                }
+            }
+            return lista;
+        }
     }
 }

@@ -93,7 +93,7 @@ namespace BLL.Services
 
             if (adega == null)
                 throw new KeyNotFoundException($"Adega {stock.AdegaId} não encontrada.");
-            
+
             if (await _adegaDAL.ObterCapacidadeAtual(stock.AdegaId) + stock.Quantidade > adega.Capacidade)
                 throw new InvalidOperationException("Capacidade da adega excedida.");
 
@@ -141,6 +141,11 @@ namespace BLL.Services
                 throw new ArgumentException("ID inválido.");
 
             return await _adegaDAL.ObterCapacidadeAtual(adegaId);
+        }
+
+        public async Task<List<StockResumo>> ObterResumoStockTotal()
+        {
+            return await _adegaDAL.ObterResumoStockTotal();
         }
     }
 }

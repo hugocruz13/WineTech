@@ -279,5 +279,19 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
+
+        [HttpGet("stock")]
+        public async Task<ActionResult> GetStockResumoGlobal()
+        {
+            try
+            {
+                List<StockResumo> resumo = await _adegaBLL.ObterResumoStockTotal();
+                return Ok(new { success = true, data = resumo });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using DAL.Helpers;
 using DAL.Interfaces;
-using Models;
 using ServiceAdega;
 using System.Collections.Generic;
 using System.Linq;
@@ -147,6 +146,27 @@ namespace DAL.Services
             {
                 var response = await client.ObterOcupacaoAtualAsync(adegaId);
                 return response;
+            });
+        }
+
+        public async Task<List<Models.StockResumo>> ObterResumoStockTotal()
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.ObterResumoStockTotalAsync();
+                return response.Body.ObterResumoStockTotalResult
+                .Select(item => new Models.StockResumo
+                {
+                    VinhoId = item.VinhoId,
+                    Nome = item.Nome,
+                    Produtor = item.Produtor,
+                    Ano = item.Ano,
+                    Tipo = item.Tipo,
+                    ImagemUrl = item.ImagemUrl,
+                    Preco = item.Preco,
+                    Quantidade = item.Quantidade
+                })
+                .ToList();
             });
         }
     }
