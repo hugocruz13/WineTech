@@ -25,7 +25,7 @@ namespace SOAP.Services
         }
 
         [WebMethod]
-        public int AddUser(Utilizador user)
+        public Utilizador AddUser(Utilizador user)
         {
             if (user == null)
                 throw new ArgumentNullException(nameof(user));
@@ -40,5 +40,19 @@ namespace SOAP.Services
             }
         }
 
+        [WebMethod]
+        public Utilizador GetUserById(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new ArgumentException("O ID do utilizador não pode ser nulo ou vazio", nameof(id));
+            try
+            {
+                return _repository.GetUserById(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Database error: " + ex.Message);
+            }
+        }
     }
 }

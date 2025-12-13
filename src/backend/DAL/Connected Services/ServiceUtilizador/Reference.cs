@@ -18,9 +18,7 @@ namespace ServiceUtilizador
     internal partial class Utilizador : object
     {
         
-        private int IdField;
-        
-        private string Auth0UserIdField;
+        private string IdField;
         
         private string NomeField;
         
@@ -28,8 +26,8 @@ namespace ServiceUtilizador
         
         private string ImgUrlField;
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
-        internal int Id
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
+        internal string Id
         {
             get
             {
@@ -41,20 +39,7 @@ namespace ServiceUtilizador
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        internal string Auth0UserId
-        {
-            get
-            {
-                return this.Auth0UserIdField;
-            }
-            set
-            {
-                this.Auth0UserIdField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         internal string Nome
         {
             get
@@ -67,7 +52,7 @@ namespace ServiceUtilizador
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
         internal string Email
         {
             get
@@ -80,7 +65,7 @@ namespace ServiceUtilizador
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=3)]
         internal string ImgUrl
         {
             get
@@ -101,6 +86,9 @@ namespace ServiceUtilizador
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AddUser", ReplyAction="*")]
         System.Threading.Tasks.Task<ServiceUtilizador.AddUserResponse> AddUserAsync(ServiceUtilizador.AddUserRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetUserById", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceUtilizador.GetUserByIdResponse> GetUserByIdAsync(ServiceUtilizador.GetUserByIdRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -170,16 +158,96 @@ namespace ServiceUtilizador
     internal partial class AddUserResponseBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
-        public int AddUserResult;
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceUtilizador.Utilizador AddUserResult;
         
         public AddUserResponseBody()
         {
         }
         
-        public AddUserResponseBody(int AddUserResult)
+        public AddUserResponseBody(ServiceUtilizador.Utilizador AddUserResult)
         {
             this.AddUserResult = AddUserResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class GetUserByIdRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetUserById", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceUtilizador.GetUserByIdRequestBody Body;
+        
+        public GetUserByIdRequest()
+        {
+        }
+        
+        public GetUserByIdRequest(ServiceUtilizador.GetUserByIdRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class GetUserByIdRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string id;
+        
+        public GetUserByIdRequestBody()
+        {
+        }
+        
+        public GetUserByIdRequestBody(string id)
+        {
+            this.id = id;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class GetUserByIdResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetUserByIdResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceUtilizador.GetUserByIdResponseBody Body;
+        
+        public GetUserByIdResponse()
+        {
+        }
+        
+        public GetUserByIdResponse(ServiceUtilizador.GetUserByIdResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class GetUserByIdResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceUtilizador.Utilizador GetUserByIdResult;
+        
+        public GetUserByIdResponseBody()
+        {
+        }
+        
+        public GetUserByIdResponseBody(ServiceUtilizador.Utilizador GetUserByIdResult)
+        {
+            this.GetUserByIdResult = GetUserByIdResult;
         }
     }
     
@@ -238,6 +306,20 @@ namespace ServiceUtilizador
             inValue.Body = new ServiceUtilizador.AddUserRequestBody();
             inValue.Body.user = user;
             return ((ServiceUtilizador.UtilizadorRepositoryServiceSoap)(this)).AddUserAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceUtilizador.GetUserByIdResponse> ServiceUtilizador.UtilizadorRepositoryServiceSoap.GetUserByIdAsync(ServiceUtilizador.GetUserByIdRequest request)
+        {
+            return base.Channel.GetUserByIdAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceUtilizador.GetUserByIdResponse> GetUserByIdAsync(string id)
+        {
+            ServiceUtilizador.GetUserByIdRequest inValue = new ServiceUtilizador.GetUserByIdRequest();
+            inValue.Body = new ServiceUtilizador.GetUserByIdRequestBody();
+            inValue.Body.id = id;
+            return ((ServiceUtilizador.UtilizadorRepositoryServiceSoap)(this)).GetUserByIdAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
