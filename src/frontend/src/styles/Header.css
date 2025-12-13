@@ -1,0 +1,137 @@
+/* Header.css */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: #fdfdfd; /* Fundo quase branco */
+  border-bottom: 1px solid #f1f5f9;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+}
+
+/* --- LOGO --- */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.logo-icon {
+  color: #d32f2f; /* Vermelho Vinho */
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+/* --- BARRA DE PESQUISA --- */
+.search-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 2rem;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #f1f5f9; /* Cinza azulado muito leve */
+  border-radius: 9999px; /* Pílula completa */
+  padding: 0.6rem 1rem;
+  width: 100%;
+  max-width: 500px;
+  transition: box-shadow 0.2s ease;
+}
+
+.search-bar:focus-within {
+  box-shadow: 0 0 0 2px #e2e8f0;
+}
+
+.search-icon {
+  color: #94a3b8;
+  margin-right: 0.75rem;
+}
+
+.search-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.search-input::placeholder {
+  color: #94a3b8;
+}
+
+/* --- AÇÕES (Direita) --- */
+.actions-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1e293b;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Para a notificação absoluta */
+  transition: color 0.2s;
+}
+
+.icon-btn:hover {
+  color: #000;
+}
+
+/* Bolinha vermelha de notificação */
+.notification-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background-color: #d32f2f;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+/* Avatar do utilizador */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e2e8f0; /* Cinza do círculo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  border: none;
+  cursor: pointer;
+}
+
+.user-avatar:hover {
+  background-color: #cbd5e1;
+}
+
+/* Responsividade simples para esconder a busca em telemóveis */
+@media (max-width: 768px) {
+  .search-section {
+    display: none;
+  }
+}
