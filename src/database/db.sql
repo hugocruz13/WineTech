@@ -32,15 +32,15 @@ create table Alertas (
   primary key (Id));
 create table Utilizadores (
   Id        nvarchar(100) not null, 
-  Nome      nvarchar(100) not null, 
-  Email     nvarchar(255) not null, 
+  Nome      nvarchar(100) null, 
+  Email     nvarchar(255) null, 
   ImgUrl    nvarchar(255) null, 
   CreatedAt datetime2(7) default GETDATE() not null, 
   primary key (Id));
 create table Compras (
   Id             int identity not null, 
   DataCompra     datetime2(7) default GETDATE() not null, 
-  ValorTotal     decimal(19, 2) null, 
+  ValorTotal     decimal(19, 2) not null, 
   UtilizadoresId nvarchar(100) not null, 
   primary key (Id));
 create table Carrinho (

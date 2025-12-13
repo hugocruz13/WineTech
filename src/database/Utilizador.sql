@@ -1,20 +1,37 @@
 SELECT name
 FROM sys.procedures
 
+-- Inserir utilizador
 CREATE OR ALTER PROCEDURE RegistrarUtilizador
     @Auth0UserId NVARCHAR(100),
-    @Nome NVARCHAR(100),
-    @Email NVARCHAR(255),
-    @ImgUrl NVARCHAR(255)
+    @Nome NVARCHAR(100) = NULL,
+    @Email NVARCHAR(255) = NULL,
+    @ImgUrl NVARCHAR(255) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
-    DECLARE @NovoId INT;
 
-    INSERT INTO Utilizadores (Auth0UserId, Nome, Email, ImgUrl)
-    VALUES (@Auth0UserId, @Nome, @Email, @ImgUrl);
+    -- Inserir o utilizador, permitindo NULL nos campos opcionais
+    INSERT INTO Utilizadores (Id, Nome, Email, ImgUrl)
+    VALUES (@Auth0UserId, @Nome, @Email,@ImgUrl);
 
-    SET @NovoId = SCOPE_IDENTITY();
-
-    SELECT @NovoId AS Id;
+    -- Retorna o utilizador criado
+    SELECT *
+    FROM Utilizadores
+    WHERE Id = @Auth0UserId;
 END;
+GO
+
+-- Get Utilizador pelo ID
+CREATE OR ALTER PROCEDURE UtilizadorById
+    @Auth0UserId NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT *
+    FROM Utilizadores
+    WHERE Id = @Auth0UserId;
+END;
+GO
+
