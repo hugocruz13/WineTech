@@ -5,6 +5,7 @@ import RoleGuard from "./components/RoleGuard";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import JWT from "./pages/Jwt";
 
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
@@ -35,6 +36,8 @@ function App() {
       <Routes>
         {/* Owner/User */}
         <Route path="/" element={<Home />} />
+
+        <Route path="/jwt" element={<JWT />} />
 
         {/* --- Rotas Protegidas Owner --- */}
         <Route
