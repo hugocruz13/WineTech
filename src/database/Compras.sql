@@ -75,7 +75,7 @@ GO
 -- Atribuir Valor total 
 CREATE OR ALTER PROCEDURE AtualizarValorCompra
     @CompraId INT,
-    @Valor Decimal(19, 0)
+    @Valor Decimal(19, 2)
 AS
 BEGIN
     SET NOCOUNT OFF;
