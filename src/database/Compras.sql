@@ -86,3 +86,43 @@ BEGIN
 END
 GO
 
+-- Compras Utilizador
+CREATE OR ALTER PROCEDURE ComprasPorUtilizador
+    @UtilizadorId nvarchar(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT *
+    FROM Compras
+    WHERE UtilizadoresId = @UtilizadorId
+    ORDER BY DataCompra DESC;
+END;
+GO
+
+-- Compra detalhada
+CREATE OR ALTER PROCEDURE DetalhesCompra
+    @CompraId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        c.Id AS CompraId,
+        c.DataCompra,
+        c.ValorTotal,
+        v.Id AS VinhoId,
+        v.Nome,
+        v.Produtor,
+        v.Ano,
+        v.Tipo,
+        lc.PrecoUnitario
+    FROM Compras c
+    JOIN LinhasCompra lc ON lc.ComprasId = c.Id
+    JOIN Stock s ON s.Id = lc.StockId
+    JOIN Vinhos v ON v.Id = s.VinhosId
+    WHERE c.Id = 2;
+END;
+GO
+
+

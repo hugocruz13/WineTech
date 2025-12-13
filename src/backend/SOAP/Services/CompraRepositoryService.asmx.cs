@@ -106,13 +106,13 @@ namespace SOAP.Services
         [WebMethod]
         public bool AtualizarValorTotal(Compra compra)
         {
-            if(compra == null)
+            if (compra == null)
                 throw new ArgumentNullException("A compra não pode ser nula");
 
             if (compra.Id <= 0)
                 throw new ArgumentException("O ID da compra deve ser maior que zero", nameof(compra.Id));
 
-            if (compra.ValorTotal<= 0)
+            if (compra.ValorTotal <= 0)
                 throw new ArgumentException("O valor total da compra deve ser maior que zero", nameof(compra.ValorTotal));
 
             try
@@ -123,6 +123,38 @@ namespace SOAP.Services
             {
                 Logger.Error(ex, "Erro ao cancelar a compra");
                 throw new Exception("Erro ao cancelar a compra: " + ex.Message);
+            }
+        }
+
+        [WebMethod]
+        public List<Compra> ObterComprasPorUtilizador(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+                throw new ArgumentException("O ID do utilizador não pode ser nulo ou vazio", nameof(userId));
+            try
+            {
+                return _repository.ObterComprasPorUtilizador(userId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter a compra");
+                throw new Exception("Erro ao obter a compra: " + ex.Message);
+            }
+        }
+
+        [WebMethod]
+        public List<CompraDetalhe> ObterLinhasPorCompra(int compraId)
+        {
+            if (compraId <= 0)
+                throw new ArgumentException("O ID da compra deve ser maior que zero", nameof(compraId));
+            try
+            {
+                return _repository.CompraDetalhes(compraId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter as linhas da compra");
+                throw new Exception("Erro ao obter as linhas da compra: " + ex.Message);
             }
         }
     }

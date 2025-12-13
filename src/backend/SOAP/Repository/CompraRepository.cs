@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Runtime.Remoting.Messaging;
 
 namespace SOAP.Repository
 {
@@ -125,5 +124,63 @@ namespace SOAP.Repository
                 return rowsAffected > 0;
             }
         }
+
+        public List<Compra> ObterComprasPorUtilizador(string utilizadorId)
+        {
+            var compras = new List<Compra>();
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ComprasPorUtilizador", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UtilizadorId", utilizadorId);
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        compras.Add(new Compra
+                        {
+                            Id = reader.GetInt32(0),
+                            DataCompra = reader.GetDateTime(1),
+                            ValorTotal = Convert.ToDouble(reader.GetDecimal(2)),
+                            UtilizadorId = reader.GetString(3)
+                        });
+                    }
+                }
+            }
+            return compras;
+        }
+
+        public List<CompraDetalhe> CompraDetalhes(int idCompra)
+        {
+            var detalhes = new List<CompraDetalhe>();
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("DetalhesCompra", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@CompraId", idCompra);
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        detalhes.Add(new CompraDetalhe
+                        {
+                            IdCompra = reader.GetInt32(0),
+                            DataCompra = reader.GetDateTime(1),
+                            ValorTotal = Convert.ToDouble(reader.GetDecimal(2)),
+                            IdVinho = reader.GetInt32(3),
+                            Nome = reader.GetString(4),
+                            Produtor = reader.GetString(5),
+                            Ano = reader.GetInt32(6),
+                            Tipo = reader.GetString(7),
+                            Preco = reader.GetFloat(8)
+                        });
+                    }
+                }
+            }
+            return detalhes;
+        }
+
     }
 }

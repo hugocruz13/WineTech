@@ -82,6 +82,7 @@
   <ItemGroup>
     <Compile Include="Models\Adega.cs" />
     <Compile Include="Models\Compra.cs" />
+    <Compile Include="Models\CompraDetalhe.cs" />
     <Compile Include="Models\LinhaCompra.cs" />
     <Compile Include="Models\StockResumo.cs" />
     <Compile Include="Models\Utilizador.cs" />
