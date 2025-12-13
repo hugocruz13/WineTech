@@ -61,6 +61,7 @@ namespace BLL.Services
             //bool atualizou = await _compraDAL.AtualizarValorTotal(compra);
             //if (!atualizou)
             //    return false;
+            //apagar carrinho do utilizador
 
             return true;
         }
