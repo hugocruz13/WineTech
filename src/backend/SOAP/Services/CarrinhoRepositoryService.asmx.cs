@@ -9,14 +9,10 @@ using System.Web.Services;
 
 namespace SOAP.Services
 {
-    /// <summary>
-    /// Descrição resumida de CarrinhoRepositoryService
-    /// </summary>
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
-    // Para permitir que esse serviço da web seja chamado a partir do script, usando ASP.NET AJAX, remova os comentários da linha a seguir. 
-    // [System.Web.Script.Services.ScriptService]
+
     public class CarrinhoRepositoryService : WebService
     {
         private readonly CarrinhoRepository _repository;
@@ -41,5 +37,32 @@ namespace SOAP.Services
                 throw new Exception("Erro ao obter carrinho: " + ex.Message);
             }
         }
+        [WebMethod]
+        public List<Carrinho> InserirItem(int utilizadoresId, int vinhoId, int quantidade)
+        {
+            try
+            {
+                return _repository.InserirItem(utilizadoresId, vinhoId, quantidade);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao inserir vinho no carrinho");
+                throw new Exception("Erro ao inserir vinho no carrinho: " + ex.Message);
+            }
+        }
+        [WebMethod]
+        public List<Carrinho> AtualizarItem(int itemId, int utilizadoresId, int quantidade)
+        {
+            try
+            {
+                return _repository.AtualizarItem(itemId, utilizadoresId, quantidade);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao atualizar a quantidade de vinho no carrinho");
+                throw new Exception("Erro ao atualizar a quantidade de vinho no carrinho: " + ex.Message);
+            }
+        }
+
     }
 }

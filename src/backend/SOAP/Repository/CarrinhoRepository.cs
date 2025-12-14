@@ -44,6 +44,40 @@ namespace SOAP.Repository
             }
             return lista;
         }
+        public List<Carrinho> InserirItem(int utilizadoresId, int vinhoId, int quantidade)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("InserirItemCarrinho", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@UtilizadoresId", utilizadoresId);
+                cmd.Parameters.AddWithValue("@VinhosId", vinhoId);
+                cmd.Parameters.AddWithValue("@Quantidade", quantidade);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+            return ObterCarrinho(utilizadoresId);
+        }
+        public List<Carrinho> AtualizarItem(int itemId, int utilizadoresId, int quantidade)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("AtualizarItem", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Id", itemId);
+                cmd.Parameters.AddWithValue("@UtilizadoresId", utilizadoresId);
+                cmd.Parameters.AddWithValue("@Quantidade", quantidade);
+
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+
+            return ObterCarrinho(utilizadoresId);
+        }
 
     }
 }
