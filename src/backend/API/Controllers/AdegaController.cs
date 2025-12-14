@@ -20,6 +20,15 @@ namespace API.Controllers
             _storageService = storageService;
         }
 
+
+        /// <summary>
+        /// Handles HTTP GET requests to retrieve a list of all wine cellars.
+        /// </summary>
+        /// <remarks>Each wine cellar in the response includes its identifier, name, location, capacity,
+        /// and image URL. The response format is suitable for client-side consumption in applications that display or
+        /// manage wine cellars.</remarks>
+        /// <returns>An HTTP 200 response containing a JSON object with a success flag and a list of wine cellars if the
+        /// operation succeeds; otherwise, an HTTP 500 response with an error message.</returns>
         [HttpGet]
         public async Task<ActionResult> Get()
         {

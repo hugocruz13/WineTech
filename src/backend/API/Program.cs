@@ -9,7 +9,6 @@ JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adiciona OpenAPI com suporte a JWT
 builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((document, context, cancellationToken) =>
@@ -25,7 +24,8 @@ builder.Services.AddOpenApi(options =>
             Description = "Token"
         });
 
-        document.Security = [
+        document.Security = new List<OpenApiSecurityRequirement>
+        {
             new OpenApiSecurityRequirement
             {
                 {
@@ -33,12 +33,13 @@ builder.Services.AddOpenApi(options =>
                     new List<string>()
                 }
             }
-        ];
+        };
 
         document.SetReferenceHostDocument();
         return Task.CompletedTask;
     });
 });
+
 
 // CORS
 builder.Services.AddCors(options =>
