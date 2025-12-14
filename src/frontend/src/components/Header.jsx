@@ -1,4 +1,7 @@
-import { Search, Bell, ShoppingCart, User, Wine } from "lucide-react";
+import { Search, ShoppingCart, Wine, Warehouse } from "lucide-react";
+import Notifications from "./Notificacoes";
+import ProfileDropdown from "./ProfileDropdown";
+import RoleVisibility from "./RoleVisibility";
 import "../styles/Header.css";
 
 const Header = () => {
@@ -10,6 +13,7 @@ const Header = () => {
         </div>
         <h1 className="logo-text">VinhaTech</h1>
       </div>
+
       <div className="search-section">
         <div className="search-bar">
           <Search className="search-icon" size={20} />
@@ -20,17 +24,19 @@ const Header = () => {
           />
         </div>
       </div>
+
       <div className="actions-section">
-        <button className="icon-btn" aria-label="Notificações">
-          <Bell size={22} />
-          <span className="notification-badge"></span>
-        </button>
+        <RoleVisibility role="owner">
+          <button className="icon-btn" aria-label="Adegas">
+            <Warehouse size={22} />
+          </button>
+        </RoleVisibility>
+        <Notifications />
         <button className="icon-btn" aria-label="Carrinho">
           <ShoppingCart size={22} />
         </button>
-        <button className="user-avatar" aria-label="Perfil">
-          <User size={20} />
-        </button>
+
+        <ProfileDropdown />
       </div>
     </header>
   );

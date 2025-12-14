@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import Header from "../components/Header";
 
 const registerUserInDb = async (user, token) => {
   await fetch("https://localhost:7148/api/utilizador", {
@@ -28,7 +29,11 @@ const Home = () => {
     obterTokenERegistrar();
   }, [getAccessTokenSilently, user]);
 
-  return null;
+  return (
+    <>
+      <Header></Header>
+    </>
+  );
 };
 
 export default Home;
