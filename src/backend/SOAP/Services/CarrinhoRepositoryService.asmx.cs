@@ -63,6 +63,19 @@ namespace SOAP.Services
                 throw new Exception("Erro ao atualizar a quantidade de vinho no carrinho: " + ex.Message);
             }
         }
+        [WebMethod]
+        public bool EliminarItem(int itemId, int utilizadoresId)
+        {
+            try
+            {
+                return _repository.EliminarItem(itemId, utilizadoresId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao apagar vinho do carrinho");
+                throw new Exception("Erro ao apagar vinho do carrinho: " + ex.Message);
+            }
+        }
 
     }
 }
