@@ -10,5 +10,7 @@ namespace DAL.Interfaces
         Task<bool> CriarLinha(Models.LinhaCompra linha);
         Task<bool> FinalizarCompra(Models.LinhaCompra linha);
         Task<bool> AtualizarValorTotal(Models.Compra compra);
+        Task<List<Models.Compra>> ObterComprasUtilizador(string utilizadorId);
+        Task<List<Models.CompraDetalhe>> ObterDetalhesCompra(int compraId);
     }
 }

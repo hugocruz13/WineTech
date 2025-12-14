@@ -174,7 +174,8 @@ namespace SOAP.Repository
                             Produtor = reader.GetString(5),
                             Ano = reader.GetInt32(6),
                             Tipo = reader.GetString(7),
-                            Preco = reader.GetFloat(8)
+                            Quantidade = reader.GetInt32(8),
+                            Preco = reader.GetFloat(9)
                         });
                     }
                 }

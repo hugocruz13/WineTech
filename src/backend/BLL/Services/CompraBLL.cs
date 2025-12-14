@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
 using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,22 +12,33 @@ namespace BLL.Services
     {
         private readonly ICompraDAL _compraDAL;
         private readonly IVinhoDAL _vinhoDAL;
+        private readonly IUtilizadorDAL _utilizadorDAL;
 
-        public CompraBLL(ICompraDAL compraDAL, IVinhoDAL vinhoDAL)
+        public CompraBLL(ICompraDAL compraDAL, IVinhoDAL vinhoDAL, IUtilizadorDAL utilizadorDAL)
         {
             _compraDAL = compraDAL;
             _vinhoDAL = vinhoDAL;
+            _utilizadorDAL = utilizadorDAL;
         }
 
         public async Task<bool> ProcessarCarrinho(string utilizadorId)
         {
-            //Buscar carrinho pessoal do utilizador
-            //carrinhos = await _carrinhoDAL.ObterCarrinhoPorUtilizador(utilizadorId);
+            ////Buscar carrinho pessoal do
+            ////    utilizador
+            ////carrinhos = await _carrinhoDAL.ObterCarrinhoPorUtilizador(utilizadorId);
 
             //if (carrinhos == null || !carrinhos.Any())
             //    return false;
 
-            //var compra = await _compraDAL.CriarCompra(new Compra { UtilizadorId = utilizadorId });
+            //if (string.IsNullOrEmpty(utilizadorId))       
+            //    throw new ArgumentException("User ID cannot be null or empty", nameof(utilizadorId));
+
+            //Utilizador utilizador = await _utilizadorDAL.GetUserByIdAsync(utilizadorId);
+
+            //if (utilizador == null)
+            //    return false;
+
+            //Compra compra = await _compraDAL.CriarCompra(new Compra { UtilizadorId = utilizadorId });
             //if (compra == null)
             //    return false;
 
@@ -61,9 +73,30 @@ namespace BLL.Services
             //bool atualizou = await _compraDAL.AtualizarValorTotal(compra);
             //if (!atualizou)
             //    return false;
-            //apagar carrinho do utilizador
+            ////apagar carrinho do utilizador
 
             return true;
+        }
+
+        public async Task<List<Compra>> ObterComprasPorUtilizador(string utilizadorId)
+        {
+            if (string.IsNullOrEmpty(utilizadorId))
+                throw new ArgumentException("User ID cannot be null or empty", nameof(utilizadorId));
+
+            Utilizador utilizador = await _utilizadorDAL.GetUserByIdAsync(utilizadorId);
+
+            if (utilizador == null)
+                return null;
+
+            return await _compraDAL.ObterComprasUtilizador(utilizadorId);
+        }
+
+        public async Task<List<CompraDetalhe>> ObterCompraPorId(int compraId)
+        {
+            if (compraId <= 0)
+                throw new ArgumentException("Compra ID must be greater than zero", nameof(compraId));
+
+            return await _compraDAL.ObterDetalhesCompra(compraId);
         }
     }
 }

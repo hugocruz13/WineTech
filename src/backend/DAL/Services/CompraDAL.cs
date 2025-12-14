@@ -89,5 +89,54 @@ namespace DAL.Services
                 return response.Body.AtualizarValorTotalResult;
             });
         }
+
+        public async Task<List<Models.Compra>> ObterComprasUtilizador(string utilizadorId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.ObterComprasPorUtilizadorAsync(utilizadorId);
+                var soapList = response.Body.ObterComprasPorUtilizadorResult;
+                var result = new List<Models.Compra>();
+
+                foreach (var item in soapList)
+                {
+                    result.Add(new Models.Compra
+                    {
+                        Id = item.Id,
+                        ValorTotal = item.ValorTotal,
+                        UtilizadorId = item.UtilizadorId,
+                        DataCompra = item.DataCompra
+                    });
+                }
+                return result;
+            });
+        }
+
+        public async Task<List<Models.CompraDetalhe>> ObterDetalhesCompra(int compraId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.ObterLinhasPorCompraAsync(compraId);
+                var soapList = response.Body.ObterLinhasPorCompraResult;
+                var result = new List<Models.CompraDetalhe>();
+                foreach (var item in soapList)
+                {
+                    result.Add(new Models.CompraDetalhe
+                    {
+                        IdCompra = item.IdCompra,
+                        ValorTotal = item.ValorTotal,
+                        DataCompra = item.DataCompra,
+                        IdVinho = item.IdVinho,
+                        Nome = item.Nome,
+                        Produtor = item.Produtor,
+                        Ano = item.Ano,
+                        Tipo = item.Tipo,
+                        Quantidade = item.Quantidade,
+                        Preco = item.Preco
+                    });
+                }
+                return result;
+            });
+        }
     }
 }

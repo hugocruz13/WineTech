@@ -175,6 +175,163 @@ namespace ServiceCompra
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CompraDetalhe", Namespace="http://tempuri.org/")]
+    internal partial class CompraDetalhe : object
+    {
+        
+        private int IdCompraField;
+        
+        private double ValorTotalField;
+        
+        private System.DateTime DataCompraField;
+        
+        private int IdVinhoField;
+        
+        private string NomeField;
+        
+        private string ProdutorField;
+        
+        private int AnoField;
+        
+        private string TipoField;
+        
+        private float PrecoField;
+        
+        private int QuantidadeField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        internal int IdCompra
+        {
+            get
+            {
+                return this.IdCompraField;
+            }
+            set
+            {
+                this.IdCompraField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        internal double ValorTotal
+        {
+            get
+            {
+                return this.ValorTotalField;
+            }
+            set
+            {
+                this.ValorTotalField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=2)]
+        internal System.DateTime DataCompra
+        {
+            get
+            {
+                return this.DataCompraField;
+            }
+            set
+            {
+                this.DataCompraField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=3)]
+        internal int IdVinho
+        {
+            get
+            {
+                return this.IdVinhoField;
+            }
+            set
+            {
+                this.IdVinhoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        internal string Nome
+        {
+            get
+            {
+                return this.NomeField;
+            }
+            set
+            {
+                this.NomeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        internal string Produtor
+        {
+            get
+            {
+                return this.ProdutorField;
+            }
+            set
+            {
+                this.ProdutorField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=6)]
+        internal int Ano
+        {
+            get
+            {
+                return this.AnoField;
+            }
+            set
+            {
+                this.AnoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=7)]
+        internal string Tipo
+        {
+            get
+            {
+                return this.TipoField;
+            }
+            set
+            {
+                this.TipoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=8)]
+        internal float Preco
+        {
+            get
+            {
+                return this.PrecoField;
+            }
+            set
+            {
+                this.PrecoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=9)]
+        internal int Quantidade
+        {
+            get
+            {
+                return this.QuantidadeField;
+            }
+            set
+            {
+                this.QuantidadeField = value;
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceCompra.CompraRepositoryServiceSoap")]
     internal interface CompraRepositoryServiceSoap
@@ -194,6 +351,12 @@ namespace ServiceCompra
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AtualizarValorTotal", ReplyAction="*")]
         System.Threading.Tasks.Task<ServiceCompra.AtualizarValorTotalResponse> AtualizarValorTotalAsync(ServiceCompra.AtualizarValorTotalRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterComprasPorUtilizador", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceCompra.ObterComprasPorUtilizadorResponse> ObterComprasPorUtilizadorAsync(ServiceCompra.ObterComprasPorUtilizadorRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterLinhasPorCompra", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceCompra.ObterLinhasPorCompraResponse> ObterLinhasPorCompraAsync(ServiceCompra.ObterLinhasPorCompraRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -596,6 +759,166 @@ namespace ServiceCompra
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterComprasPorUtilizadorRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterComprasPorUtilizador", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceCompra.ObterComprasPorUtilizadorRequestBody Body;
+        
+        public ObterComprasPorUtilizadorRequest()
+        {
+        }
+        
+        public ObterComprasPorUtilizadorRequest(ServiceCompra.ObterComprasPorUtilizadorRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterComprasPorUtilizadorRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string userId;
+        
+        public ObterComprasPorUtilizadorRequestBody()
+        {
+        }
+        
+        public ObterComprasPorUtilizadorRequestBody(string userId)
+        {
+            this.userId = userId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterComprasPorUtilizadorResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterComprasPorUtilizadorResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceCompra.ObterComprasPorUtilizadorResponseBody Body;
+        
+        public ObterComprasPorUtilizadorResponse()
+        {
+        }
+        
+        public ObterComprasPorUtilizadorResponse(ServiceCompra.ObterComprasPorUtilizadorResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterComprasPorUtilizadorResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceCompra.Compra[] ObterComprasPorUtilizadorResult;
+        
+        public ObterComprasPorUtilizadorResponseBody()
+        {
+        }
+        
+        public ObterComprasPorUtilizadorResponseBody(ServiceCompra.Compra[] ObterComprasPorUtilizadorResult)
+        {
+            this.ObterComprasPorUtilizadorResult = ObterComprasPorUtilizadorResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterLinhasPorCompraRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterLinhasPorCompra", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceCompra.ObterLinhasPorCompraRequestBody Body;
+        
+        public ObterLinhasPorCompraRequest()
+        {
+        }
+        
+        public ObterLinhasPorCompraRequest(ServiceCompra.ObterLinhasPorCompraRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterLinhasPorCompraRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int compraId;
+        
+        public ObterLinhasPorCompraRequestBody()
+        {
+        }
+        
+        public ObterLinhasPorCompraRequestBody(int compraId)
+        {
+            this.compraId = compraId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterLinhasPorCompraResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterLinhasPorCompraResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceCompra.ObterLinhasPorCompraResponseBody Body;
+        
+        public ObterLinhasPorCompraResponse()
+        {
+        }
+        
+        public ObterLinhasPorCompraResponse(ServiceCompra.ObterLinhasPorCompraResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterLinhasPorCompraResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceCompra.CompraDetalhe[] ObterLinhasPorCompraResult;
+        
+        public ObterLinhasPorCompraResponseBody()
+        {
+        }
+        
+        public ObterLinhasPorCompraResponseBody(ServiceCompra.CompraDetalhe[] ObterLinhasPorCompraResult)
+        {
+            this.ObterLinhasPorCompraResult = ObterLinhasPorCompraResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     internal interface CompraRepositoryServiceSoapChannel : ServiceCompra.CompraRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -707,6 +1030,34 @@ namespace ServiceCompra
             inValue.Body = new ServiceCompra.AtualizarValorTotalRequestBody();
             inValue.Body.compra = compra;
             return ((ServiceCompra.CompraRepositoryServiceSoap)(this)).AtualizarValorTotalAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceCompra.ObterComprasPorUtilizadorResponse> ServiceCompra.CompraRepositoryServiceSoap.ObterComprasPorUtilizadorAsync(ServiceCompra.ObterComprasPorUtilizadorRequest request)
+        {
+            return base.Channel.ObterComprasPorUtilizadorAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceCompra.ObterComprasPorUtilizadorResponse> ObterComprasPorUtilizadorAsync(string userId)
+        {
+            ServiceCompra.ObterComprasPorUtilizadorRequest inValue = new ServiceCompra.ObterComprasPorUtilizadorRequest();
+            inValue.Body = new ServiceCompra.ObterComprasPorUtilizadorRequestBody();
+            inValue.Body.userId = userId;
+            return ((ServiceCompra.CompraRepositoryServiceSoap)(this)).ObterComprasPorUtilizadorAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceCompra.ObterLinhasPorCompraResponse> ServiceCompra.CompraRepositoryServiceSoap.ObterLinhasPorCompraAsync(ServiceCompra.ObterLinhasPorCompraRequest request)
+        {
+            return base.Channel.ObterLinhasPorCompraAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceCompra.ObterLinhasPorCompraResponse> ObterLinhasPorCompraAsync(int compraId)
+        {
+            ServiceCompra.ObterLinhasPorCompraRequest inValue = new ServiceCompra.ObterLinhasPorCompraRequest();
+            inValue.Body = new ServiceCompra.ObterLinhasPorCompraRequestBody();
+            inValue.Body.compraId = compraId;
+            return ((ServiceCompra.CompraRepositoryServiceSoap)(this)).ObterLinhasPorCompraAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

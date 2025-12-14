@@ -121,7 +121,7 @@ BEGIN
     JOIN LinhasCompra lc ON lc.ComprasId = c.Id
     JOIN Stock s ON s.Id = lc.StockId
     JOIN Vinhos v ON v.Id = s.VinhosId
-    WHERE c.Id = 2;
+    WHERE c.Id = @CompraId;
 END;
 GO
 

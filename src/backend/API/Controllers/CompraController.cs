@@ -23,7 +23,6 @@ namespace API.Controllers
         [Authorize(Roles = "owner,user")]
         public async Task<IActionResult> Post()
         {
-            var accessToken = await HttpContext.GetTokenAsync("access_token");
             var sub = User.FindFirst("sub")?.Value;
 
             if (string.IsNullOrEmpty(sub))
@@ -44,5 +43,52 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet]
+        [Authorize(Roles = "owner,user")]
+        public async Task<IActionResult> Get()
+        {
+            var sub = User.FindFirst("sub")?.Value;
+
+            if (string.IsNullOrEmpty(sub))
+                return Unauthorized(new { success = false, message = "Utilizador não autenticado." });
+
+            List<Compra> compras = await _compraBLL.ObterComprasPorUtilizador(sub);
+
+            var data = compras.Select(a => new
+            {
+                idCompra = a.Id,
+                utilizadorId = a.UtilizadorId,
+                dataCompra = a.DataCompra,
+                valorTotal = a.ValorTotal,
+            }).ToList();
+
+            return Ok(new { success = true, data = data });
+        }
+
+        [HttpGet("{id}")]
+        [Authorize(Roles = "owner,user")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            List<CompraDetalhe> compra = await _compraBLL.ObterCompraPorId(id);
+
+            if (compra == null)
+                return NotFound(new { success = false, message = "Compra não encontrada." });
+
+            var data = compra.Select(a => new
+            {
+                idCompra = a.IdCompra,
+                valorTotal = a.ValorTotal,
+                dataCompra = a.DataCompra,
+                idVinho = a.IdVinho,
+                nome = a.Nome,
+                produtor = a.Produtor,
+                ano = a.Ano,
+                tipo = a.Tipo,
+                quantidade = a.Quantidade,
+                preco = a.Preco,
+            }).ToList();
+
+            return Ok(new { success = true, data = data });
+        }
     }
 }
