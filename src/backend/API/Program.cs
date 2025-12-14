@@ -1,15 +1,43 @@
 using API.Services;
 using Azure.Storage.Blobs;
-using BLL.Interfaces;
-using BLL.Services;
-using DAL.Interfaces;
-using DAL.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.OpenApi;
 using System.IdentityModel.Tokens.Jwt;
 
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Adiciona OpenAPI com suporte a JWT
+builder.Services.AddOpenApi(options =>
+{
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        document.Components ??= new OpenApiComponents();
+        document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
+
+        document.Components.SecuritySchemes.Add("bearerAuth", new OpenApiSecurityScheme
+        {
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT",
+            Description = "Token"
+        });
+
+        document.Security = [
+            new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecuritySchemeReference("bearerAuth"),
+                    new List<string>()
+                }
+            }
+        ];
+
+        document.SetReferenceHostDocument();
+        return Task.CompletedTask;
+    });
+});
 
 // CORS
 builder.Services.AddCors(options =>
