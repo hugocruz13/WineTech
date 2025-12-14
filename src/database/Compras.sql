@@ -116,13 +116,25 @@ BEGIN
         v.Produtor,
         v.Ano,
         v.Tipo,
-        lc.PrecoUnitario
+        COUNT(*) AS Quantidade,
+        v.Preco AS PrecoUnitario
     FROM Compras c
     JOIN LinhasCompra lc ON lc.ComprasId = c.Id
     JOIN Stock s ON s.Id = lc.StockId
     JOIN Vinhos v ON v.Id = s.VinhosId
-    WHERE c.Id = @CompraId;
+    WHERE c.Id = @CompraId
+    GROUP BY 
+        c.Id,
+        c.DataCompra,
+        c.ValorTotal,
+        v.Id,
+        v.Nome,
+        v.Produtor,
+        v.Ano,
+        v.Tipo,
+        v.Preco;
 END;
 GO
+
 
 
