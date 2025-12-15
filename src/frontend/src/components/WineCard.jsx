@@ -1,39 +1,44 @@
-import React from "react";
-import { Heart, Star, ShoppingCart } from "lucide-react";
+import { ShoppingCart, Heart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import "../styles/WineCard.css";
 
-const WineCard = ({ title, subtitle, price, rating, type, imageUrl }) => {
-  return (
-    <div className="card-container">
-      <div className="image-wrapper">
-        <button className="favorite-btn" aria-label="Adicionar aos favoritos">
-          <Heart size={18} />
-        </button>
+const WineCard = ({ id, title, subtitle, price, type, imageUrl, year }) => {
+  const navigate = useNavigate();
 
+  const handleNavigate = () => {
+    navigate(`/vinho/${id}`);
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    console.log("Adicionar vinho:", id);
+  };
+
+  return (
+    <article className="wine-card" onClick={handleNavigate}>
+      <div className="wine-image-wrapper">
         {imageUrl && <img src={imageUrl} alt={title} className="wine-image" />}
       </div>
 
-      <div className="card-details">
-        <div className="info-row">
-          <span className="tag">{type}</span>
-          <div className="rating">
-            <Star size={14} fill="currentColor" />
-            <span>{rating}</span>
-          </div>
+      <div className="wine-content">
+        <div className="wine-meta">
+          <span className="wine-tag">{type}</span>
+          {year && <span className="wine-year">{year}</span>}
         </div>
 
-        <h3 className="card-title">{title}</h3>
-        <p className="card-subtitle">{subtitle}</p>
+        <h3 className="wine-title">{title}</h3>
+        <p className="wine-producer">{subtitle}</p>
 
-        <div className="card-footer">
-          <span className="price">€{price}</span>
+        <div className="wine-footer">
+          <span className="wine-price">{price} €</span>
 
-          <button className="cart-btn" aria-label="Adicionar ao carrinho">
-            <ShoppingCart size={18} />
+          <button className="add-cart-btn" onClick={handleAddToCart}>
+            <ShoppingCart size={16} />
+            <span>Adicionar</span>
           </button>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

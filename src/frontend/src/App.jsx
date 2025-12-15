@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import RoleGuard from "./components/RoleGuard";
 import Loading from "./components/Loading";
+import WineDetail from "./pages/WineDetail";
 import JWT from "./pages/Jwt";
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-
+        <Route path="/vinho/:id" element={<WineDetail />} />
         <Route
           path="/dashboard"
           element={
