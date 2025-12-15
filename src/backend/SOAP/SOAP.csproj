@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Services\AdegaRepositoryService.asmx" />
+    <Content Include="Services\CarrinhoRepositoryService.asmx" />
     <Content Include="Services\CompraRepositoryService.asmx" />
     <Content Include="Services\UtilizadorRepositoryService.asmx" />
     <Content Include="Services\VinhoRepositoryService.asmx" />
@@ -81,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Adega.cs" />
+    <Compile Include="Models\Carrinho.cs" />
     <Compile Include="Models\Compra.cs" />
     <Compile Include="Models\CompraDetalhe.cs" />
     <Compile Include="Models\LinhaCompra.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Models\Vinho.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AdegaRepository.cs" />
+    <Compile Include="Repository\CarrinhoRepository.cs" />
     <Compile Include="Repository\CompraRepository.cs" />
     <Compile Include="Repository\DbConnectionFactory.cs" />
     <Compile Include="Models\StockInput.cs" />
@@ -96,6 +99,10 @@
     <Compile Include="Repository\VinhoRepository.cs" />
     <Compile Include="Services\AdegaRepositoryService.asmx.cs">
       <DependentUpon>AdegaRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\CarrinhoRepositoryService.asmx.cs">
+      <DependentUpon>CarrinhoRepositoryService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\CompraRepositoryService.asmx.cs">
