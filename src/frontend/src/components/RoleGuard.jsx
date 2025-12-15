@@ -5,7 +5,7 @@ const RoleGuard = ({ role, children }) => {
   const roles = user?.["https://isi.com/roles"] || [];
 
   if (!roles.includes(role)) {
-    return <h1>Acesso negado</h1>;
+    return <p>Acesso negado</p>;
   }
 
   return children;

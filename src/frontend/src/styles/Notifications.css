@@ -47,8 +47,11 @@
 }
 
 .notifications-list {
+  list-style: none;
   max-height: 280px;
   overflow-y: auto;
+  padding: 0;
+  margin: 0;
 }
 
 .notification-item {

@@ -1,15 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { User, LogOut, ShoppingBag } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import "../styles/ProfileDropdown.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const ProfileDropdown = () => {
   const [open, setOpen] = useState(false);
-  const { logout, user } = useAuth0();
+  const [apiUser, setApiUser] = useState(null);
+
+  const { logout, getAccessTokenSilently } = useAuth0();
 
   const handleLogout = () => {
     logout({ logoutParams: { returnTo: window.location.origin } });
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      console.log(import.meta.env.VITE_API_URL);
+
+      try {
+        const token = await getAccessTokenSilently();
+
+        const res = await fetch(`${API_URL}/utilizador/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await res.json();
+        setApiUser(data);
+      } catch (err) {
+        console.error("Erro ao buscar user da API", err);
+      }
+    };
+
+    fetchUser();
+  }, [getAccessTokenSilently]);
 
   return (
     <div className="profile-wrapper">
@@ -18,8 +45,8 @@ const ProfileDropdown = () => {
         onClick={() => setOpen(!open)}
         aria-label="Menu de Perfil"
       >
-        {user?.picture ? (
-          <img src={user.picture} alt={user.name} className="avatar-img" />
+        {apiUser?.imgUrl ? (
+          <img src={apiUser.imgUrl} alt={apiUser.nome} className="avatar-img" />
         ) : (
           <User size={20} />
         )}
@@ -28,8 +55,8 @@ const ProfileDropdown = () => {
       {open && (
         <div className="profile-dropdown">
           <div className="profile-header">
-            <span className="user-name">{user?.name || "Minha Conta"}</span>
-            <span className="user-email">{user?.email}</span>
+            <span className="user-name">{apiUser?.nome || "Minha Conta"}</span>
+            <span className="user-email">{apiUser?.email}</span>
           </div>
 
           <ul className="profile-menu">
