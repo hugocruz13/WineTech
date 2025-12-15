@@ -52,7 +52,7 @@ namespace DAL.Services
                 if (item == null)
                     return null;
 
-                return new Models.Vinho { Id = item.Id, Nome = item.Nome, Produtor = item.Produtor, Ano = item.Ano, Tipo = item.Tipo, Descricao = item.Descricao, Preco = item.Preco };
+                return new Models.Vinho { Id = item.Id, Nome = item.Nome, Produtor = item.Produtor, Ano = item.Ano, Tipo = item.Tipo, Descricao = item.Descricao, Preco = item.Preco, ImagemUrl = item.ImagemUrl };
             });
         }
         public async Task<List<Models.Vinho>> TodosVinhos()
@@ -61,7 +61,7 @@ namespace DAL.Services
             {
                 var response = await client.TodosVinhosAsync();
                 return response.Body.TodosVinhosResult
-                .Select(item => new Models.Vinho { Id = item.Id, Nome = item.Nome, Produtor = item.Produtor, Ano = item.Ano, Tipo = item.Tipo, Descricao = item.Descricao, Preco = item.Preco })
+                .Select(item => new Models.Vinho { Id = item.Id, Nome = item.Nome, Produtor = item.Produtor, Ano = item.Ano, Tipo = item.Tipo, Descricao = item.Descricao, Preco = item.Preco, ImagemUrl = item.ImagemUrl })
                 .ToList();
             });
         }

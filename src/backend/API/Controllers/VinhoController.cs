@@ -144,7 +144,8 @@ namespace API.Controllers
                     ano = vinho.Ano,
                     tipo = vinho.Tipo,
                     descricao = vinho.Descricao,
-                    preco = vinho.Preco
+                    preco = vinho.Preco,
+                    img = vinho.ImagemUrl
                 };
 
                 return Ok(new { success = true, data = data });
