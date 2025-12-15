@@ -177,7 +177,8 @@ namespace API.Controllers
                     ano = a.Ano,
                     tipo = a.Tipo,
                     descricao = a.Descricao,
-                    preco = a.Preco
+                    preco = a.Preco,
+                    img = a.ImagemUrl
                 }).ToList();
 
                 return Ok(new { success = true, data = data });
