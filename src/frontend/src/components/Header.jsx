@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Search, ShoppingCart, Wine, Warehouse } from "lucide-react";
 import Notifications from "./Notificacoes";
 import ProfileDropdown from "./ProfileDropdown";
@@ -5,6 +6,7 @@ import RoleVisibility from "./RoleVisibility";
 import "../styles/Header.css";
 
 const Header = () => {
+  const [openMenu, setOpenMenu] = useState(null);
   return (
     <header className="header-container">
       <div className="logo-section">
@@ -31,12 +33,22 @@ const Header = () => {
             <Warehouse size={22} />
           </button>
         </RoleVisibility>
-        <Notifications />
+        <Notifications
+          open={openMenu === "notifications"}
+          onToggle={() =>
+            setOpenMenu(openMenu === "notifications" ? null : "notifications")
+          }
+        />
         <button className="icon-btn" aria-label="Carrinho">
           <ShoppingCart size={22} />
         </button>
 
-        <ProfileDropdown />
+        <ProfileDropdown
+          open={openMenu === "profile"}
+          onToggle={() =>
+            setOpenMenu(openMenu === "profile" ? null : "profile")
+          }
+        />
       </div>
     </header>
   );

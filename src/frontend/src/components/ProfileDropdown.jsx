@@ -5,8 +5,7 @@ import "../styles/ProfileDropdown.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const ProfileDropdown = () => {
-  const [open, setOpen] = useState(false);
+const ProfileDropdown = ({ open, onToggle }) => {
   const [apiUser, setApiUser] = useState(null);
 
   const { logout, getAccessTokenSilently } = useAuth0();
@@ -42,7 +41,7 @@ const ProfileDropdown = () => {
     <div className="profile-wrapper">
       <button
         className="user-avatar-btn"
-        onClick={() => setOpen(!open)}
+        onClick={onToggle}
         aria-label="Menu de Perfil"
       >
         {apiUser?.imgUrl ? (

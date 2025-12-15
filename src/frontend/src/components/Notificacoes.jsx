@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Bell } from "lucide-react";
 import "../styles/Notifications.css";
 
@@ -19,14 +18,12 @@ const notificationsMock = [
   },
 ];
 
-const Notifications = () => {
-  const [open, setOpen] = useState(false);
-
+const Notifications = ({ open, onToggle }) => {
   return (
     <div className="notifications-wrapper">
       <button
         className="notifications-btn"
-        onClick={() => setOpen(!open)}
+        onClick={onToggle}
         aria-label="Notificações"
       >
         <Bell size={22} />
