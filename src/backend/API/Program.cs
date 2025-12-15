@@ -1,3 +1,4 @@
+using API.Filters.API.Filters;
 using API.Services;
 using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -71,7 +72,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<EnsureUserExistsFilter>();
+});
+
+// Registo do filtro no DI
+builder.Services.AddScoped<EnsureUserExistsFilter>();
+
 builder.Services.AddOpenApi();
 
 // Dependency injection dos seus serviços

@@ -26,7 +26,7 @@ CREATE OR ALTER PROCEDURE TodosVinhos
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT Id, Nome, Produtor, Ano, Tipo, Descricao, ImagemURL
+    SELECT Id, Nome, Produtor, Ano, Tipo, Descricao, ImagemURL, Preco
     FROM Vinhos
 END;
 GO
@@ -56,7 +56,7 @@ CREATE OR ALTER PROCEDURE ModificarVinho
     @Preco FLOAT
 AS
 BEGIN
-    SET NOCOUNT ON;
+    SET NOCOUNT OFF;
 
     UPDATE Vinhos
        SET 
@@ -80,7 +80,7 @@ CREATE OR ALTER PROCEDURE ApagarVinho
     @Id INT
 AS
 BEGIN
-    SET NOCOUNT ON;
+    SET NOCOUNT OFF;
 
     DELETE FROM Vinhos
     WHERE Id = @Id;

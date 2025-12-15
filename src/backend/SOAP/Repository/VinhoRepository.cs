@@ -61,11 +61,11 @@ namespace SOAP.Repository
                 cmd.Parameters.AddWithValue("@Id", vinho.Id);
                 cmd.Parameters.AddWithValue("@Nome", vinho.Nome);
                 cmd.Parameters.AddWithValue("@Produtor", vinho.Produtor);
-                cmd.Parameters.AddWithValue("@Ano", vinho.Ano);
+                cmd.Parameters.AddWithValue("@Ano", vinho.Ano == 0 ? DBNull.Value : (object)vinho.Ano);
                 cmd.Parameters.AddWithValue("@Tipo", vinho.Tipo);
-                cmd.Parameters.AddWithValue("@Descricao", vinho.Descricao ?? string.Empty);
+                cmd.Parameters.AddWithValue("@Descricao", vinho.Descricao);
                 cmd.Parameters.AddWithValue("@ImagemUrl", vinho.ImagemUrl);
-                cmd.Parameters.AddWithValue("@Preco", vinho.Preco);
+                cmd.Parameters.AddWithValue("@Preco", vinho.Preco == 0 ? DBNull.Value : (object)vinho.Preco);
 
                 conn.Open();
 

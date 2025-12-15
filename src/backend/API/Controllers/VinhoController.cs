@@ -73,7 +73,7 @@ namespace API.Controllers
             try
             {
                 Vinho vinho = new Vinho { Id = id, Nome = vinhoDTO.Nome, Produtor = vinhoDTO.Produtor, Ano = vinhoDTO.Ano, Tipo = vinhoDTO.Tipo, Descricao = vinhoDTO.Descricao, Preco = vinhoDTO.Preco };
-                vinho = await _vinhoBLL.InserirVinho(vinho);
+                vinho = await _vinhoBLL.ModificarVinho(vinho);
 
                 if (vinho == null)
                     return NotFound(new { success = false, message = "Vinho não encontrado." });
