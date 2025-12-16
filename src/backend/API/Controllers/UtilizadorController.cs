@@ -8,14 +8,16 @@ namespace API.Controllers
     [ApiController]
     public class UtilizadorController : ControllerBase
     {
-        private readonly IUtilizadorBLL _bll;
+        private readonly IUtilizadorBLL _utilizadorbll;
+        private readonly INotificacaoBLL _notificacaobll;
 
-        public UtilizadorController(IUtilizadorBLL bll)
+        public UtilizadorController(IUtilizadorBLL utilizadorbll, INotificacaoBLL notificacaoService)
         {
-            _bll = bll;
+            _utilizadorbll = utilizadorbll;
+            _notificacaobll = notificacaoService;
         }
 
-        [HttpGet("me")]
+        [HttpGet("perfil")]
         [Authorize(Roles = "owner,user")]
         public async Task<IActionResult> GetCurrentUser()
         {
@@ -25,13 +27,37 @@ namespace API.Controllers
                 if (userId == null)
                     return BadRequest("Token inválido.");
 
-                var user = await _bll.GetUserByIdAsync(userId);
+                var user = await _utilizadorbll.GetUserByIdAsync(userId);
                 return Ok(user);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { message = "Erro interno.", details = ex.Message });
             }
+        }
+
+
+        [HttpGet("notificacoes")]
+        [Authorize(Roles = "owner,user")]
+        public async Task<IActionResult> Get()
+        {
+            var sub = User.FindFirst("sub")?.Value;
+
+            if (string.IsNullOrEmpty(sub))
+                return Unauthorized(new { success = false, message = "Utilizador não autenticado." });
+
+            var data = _notificacaobll.ObterNotificacoesPorUtilizador(sub);
+
+            return Ok(new { success = true, data = data.Result });
+        }
+
+        [HttpPut("notificacoes/{id}/lida")]
+        public async Task<IActionResult> MarcarNotificacaoComoLida(int id)
+        {
+            var result = await _notificacaobll.MarcarNotificacaoComoLida(id);
+            if (!result)
+                return NotFound(new { success = false, message = "Notificação não encontrada." });
+            return Ok(new { success = true, message = "Notificação marcada como lida." });
         }
     }
 }

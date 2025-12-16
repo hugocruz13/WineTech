@@ -76,6 +76,7 @@
     <Content Include="Services\AdegaRepositoryService.asmx" />
     <Content Include="Services\CarrinhoRepositoryService.asmx" />
     <Content Include="Services\CompraRepositoryService.asmx" />
+    <Content Include="Services\NotificacaoRepositoryService.asmx" />
     <Content Include="Services\UtilizadorRepositoryService.asmx" />
     <Content Include="Services\VinhoRepositoryService.asmx" />
     <Content Include="Web.config" />
@@ -86,6 +87,7 @@
     <Compile Include="Models\Compra.cs" />
     <Compile Include="Models\CompraDetalhe.cs" />
     <Compile Include="Models\LinhaCompra.cs" />
+    <Compile Include="Models\Notificacao.cs" />
     <Compile Include="Models\StockResumo.cs" />
     <Compile Include="Models\Utilizador.cs" />
     <Compile Include="Models\Vinho.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="Repository\CompraRepository.cs" />
     <Compile Include="Repository\DbConnectionFactory.cs" />
     <Compile Include="Models\StockInput.cs" />
+    <Compile Include="Repository\NotificacaoRepository.cs" />
     <Compile Include="Repository\UtilizadorRepository.cs" />
     <Compile Include="Repository\VinhoRepository.cs" />
     <Compile Include="Services\AdegaRepositoryService.asmx.cs">
@@ -107,6 +110,10 @@
     </Compile>
     <Compile Include="Services\CompraRepositoryService.asmx.cs">
       <DependentUpon>CompraRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\NotificacaoRepositoryService.asmx.cs">
+      <DependentUpon>NotificacaoRepositoryService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\UtilizadorRepositoryService.asmx.cs">
