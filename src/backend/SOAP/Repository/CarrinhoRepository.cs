@@ -61,22 +61,22 @@ namespace SOAP.Repository
 
             return ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId);
         }
-        public List<Carrinho> AtualizarItem(int itemId, string utilizadoresId, int quantidade)
+        public List<Carrinho> AtualizarItem(Carrinho itemCarrinho)
         {
             using (var conn = _connectionFactory.GetConnection())
             using (var cmd = new SqlCommand("AtualizarItem", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@Id", itemId);
-                cmd.Parameters.AddWithValue("@UtilizadoresId", utilizadoresId);
-                cmd.Parameters.AddWithValue("@Quantidade", quantidade);
+                cmd.Parameters.AddWithValue("@VinhosId", itemCarrinho.VinhosId);
+                cmd.Parameters.AddWithValue("@UtilizadoresId", itemCarrinho.UtilizadoresId);
+                cmd.Parameters.AddWithValue("@Quantidade", itemCarrinho.Quantidade);
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
 
-            return ObterCarrinhoPorUtilizador(utilizadoresId);
+            return ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId);
         }
         public bool EliminarItem(int itemId, int utilizadoresId)
         {

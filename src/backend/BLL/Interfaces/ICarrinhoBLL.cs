@@ -11,7 +11,7 @@ namespace BLL.Interfaces
 
         Task<List<Models.Carrinho>>InserirItem(Models.Carrinho itemCarrinho);
 
-        //List<Carrinho> AtualizarItem(int itemId, int utilizadoresId, int quantidade);
+        Task<List<Models.Carrinho>> AtualizarItem(Models.Carrinho itemCarrinho);
 
         //bool ApagarItem(int itemId, int utilizadoresId);
     }
