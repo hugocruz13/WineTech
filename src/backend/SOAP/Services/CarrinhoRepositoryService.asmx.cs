@@ -25,11 +25,11 @@ namespace SOAP.Services
         }
 
         [WebMethod]
-        public List<Carrinho> ObterCarrinho(int utilizadoresId)
+        public List<Carrinho> ObterCarrinhoPorUtilizador(string utilizadoresId)
         {
             try
             {
-                return _repository.ObterCarrinho(utilizadoresId);
+                return _repository.ObterCarrinhoPorUtilizador(utilizadoresId);
             }
             catch (Exception ex)
             {
@@ -38,11 +38,11 @@ namespace SOAP.Services
             }
         }
         [WebMethod]
-        public List<Carrinho> InserirItem(int utilizadoresId, int vinhoId, int quantidade)
+        public List<Carrinho> InserirItem(Carrinho itemCarrinho)
         {
             try
             {
-                return _repository.InserirItem(utilizadoresId, vinhoId, quantidade);
+                return _repository.InserirItem(itemCarrinho);
             }
             catch (Exception ex)
             {
@@ -51,7 +51,7 @@ namespace SOAP.Services
             }
         }
         [WebMethod]
-        public List<Carrinho> AtualizarItem(int itemId, int utilizadoresId, int quantidade)
+        public List<Carrinho> AtualizarItem(int itemId, string utilizadoresId, int quantidade)
         {
             try
             {

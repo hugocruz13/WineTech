@@ -30,4 +30,9 @@
         public string? Descricao { get; set; }
         public float Preco { get; set; }
     }
+    public class InserirItemCarrinhoDTO
+    {
+        public int VinhosId { get; set; }
+        public int Quantidade { get; set; }
+    }
 }
