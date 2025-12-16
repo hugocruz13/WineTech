@@ -284,24 +284,16 @@ namespace ServiceCarrinho
     public partial class AtualizarItemRequestBody
     {
         
-        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
-        public int itemId;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
-        public string utilizadoresId;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-        public int quantidade;
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceCarrinho.Carrinho itemCarrinho;
         
         public AtualizarItemRequestBody()
         {
         }
         
-        public AtualizarItemRequestBody(int itemId, string utilizadoresId, int quantidade)
+        public AtualizarItemRequestBody(ServiceCarrinho.Carrinho itemCarrinho)
         {
-            this.itemId = itemId;
-            this.utilizadoresId = utilizadoresId;
-            this.quantidade = quantidade;
+            this.itemCarrinho = itemCarrinho;
         }
     }
     
@@ -422,13 +414,11 @@ namespace ServiceCarrinho
             return base.Channel.AtualizarItemAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ServiceCarrinho.AtualizarItemResponse> AtualizarItemAsync(int itemId, string utilizadoresId, int quantidade)
+        public System.Threading.Tasks.Task<ServiceCarrinho.AtualizarItemResponse> AtualizarItemAsync(ServiceCarrinho.Carrinho itemCarrinho)
         {
             ServiceCarrinho.AtualizarItemRequest inValue = new ServiceCarrinho.AtualizarItemRequest();
             inValue.Body = new ServiceCarrinho.AtualizarItemRequestBody();
-            inValue.Body.itemId = itemId;
-            inValue.Body.utilizadoresId = utilizadoresId;
-            inValue.Body.quantidade = quantidade;
+            inValue.Body.itemCarrinho = itemCarrinho;
             return ((ServiceCarrinho.CarrinhoRepositoryServiceSoap)(this)).AtualizarItemAsync(inValue);
         }
         

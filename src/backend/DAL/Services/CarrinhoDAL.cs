@@ -48,5 +48,17 @@ namespace DAL.Services
                     .ToList();
             });
         }
+        public async Task<List<Models.Carrinho>> AtualizarItem(Models.Carrinho itemCarrinho)
+        {
+            await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var soapModel = new ServiceCarrinho.Carrinho { Id = itemCarrinho.Id, VinhosId = itemCarrinho.VinhosId, UtilizadoresId = itemCarrinho.UtilizadoresId, Quantidade = itemCarrinho.Quantidade };
+                var response = await client.AtualizarItemAsync(soapModel);
+
+                return true;
+            });
+
+            return await ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId);
+        }
     }
 }

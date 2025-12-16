@@ -51,11 +51,11 @@ namespace SOAP.Services
             }
         }
         [WebMethod]
-        public List<Carrinho> AtualizarItem(int itemId, string utilizadoresId, int quantidade)
+        public List<Carrinho> AtualizarItem(Carrinho itemCarrinho)
         {
             try
             {
-                return _repository.AtualizarItem(itemId, utilizadoresId, quantidade);
+                return _repository.AtualizarItem(itemCarrinho);
             }
             catch (Exception ex)
             {

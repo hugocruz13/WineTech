@@ -44,25 +44,44 @@ namespace BLL.Services
             if (itemCarrinho.Quantidade <= 0)
                 throw new ArgumentException("Quantidade tem de ser maior que 0.", nameof(itemCarrinho.Quantidade));
 
-            List<Models.Carrinho> carrinho = await _carrinhoDAL.ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId) ?? new List<Models.Carrinho>();
+            return await AtualizarItem(itemCarrinho);
+        }
+        public async Task<List<Models.Carrinho>> AtualizarItem(Models.Carrinho itemCarrinho)
+        {
+            if (itemCarrinho == null)
+                throw new ArgumentException("Dados inválidos para a atualização do carrinho.");
 
-            var quantidadeJaNoCarrinho = carrinho.Where(x => x.VinhosId == itemCarrinho.VinhosId).Sum(x => x.Quantidade);
+            if (string.IsNullOrWhiteSpace(itemCarrinho.UtilizadoresId))
+                throw new ArgumentException("Utilizador inválido.");
+
+            if (itemCarrinho.VinhosId <= 0)
+                throw new ArgumentException("Vinho inválido.");
+
+            if (itemCarrinho.Quantidade <= 0)
+                throw new ArgumentException("Quantidade a adicionar inválida.");
+
+            List<Models.Carrinho> carrinhoAtual = await _carrinhoDAL.ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId)?? new List<Models.Carrinho>();
+
+            var quantidadeJaNoCarrinho = carrinhoAtual.Where(c => c.VinhosId == itemCarrinho.VinhosId).Sum(c => c.Quantidade);
+
             var quantidadePretendida = quantidadeJaNoCarrinho + itemCarrinho.Quantidade;
 
             var resumo = await _adegaDAL.ObterResumoStockTotal();
 
             if (resumo == null)
-                throw new Exception("Não foi possível obter o resumo de stock.");
+                throw new Exception("Não foi possível obter o resumo de stock para validação.");
 
             var stockVinho = resumo.FirstOrDefault(s => s.VinhoId == itemCarrinho.VinhosId);
-
-            if (stockVinho == null)
-                throw new ArgumentException("O vinho indicado não existe em stock.", nameof(itemCarrinho.VinhosId));
-
             if (quantidadePretendida > stockVinho.Quantidade)
                 throw new ArgumentException("Stock insuficiente.");
 
-            return await _carrinhoDAL.InserirItem(itemCarrinho);
+            var carrinhoFinal = new Models.Carrinho
+            {
+                VinhosId = itemCarrinho.VinhosId,
+                UtilizadoresId = itemCarrinho.UtilizadoresId,
+                Quantidade = quantidadePretendida
+            };
+            return await _carrinhoDAL.AtualizarItem(carrinhoFinal);
         }
     }
 }
