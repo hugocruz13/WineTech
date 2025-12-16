@@ -1,13 +1,15 @@
 -- Inserir Notificação
 CREATE OR ALTER PROCEDURE InserirNotificacao
+    @Titulo NVARCHAR(100),
     @Mensagem NVARCHAR(255),
+    @Tipo NVARCHAR(50),
     @UtilizadorId NVARCHAR(100)
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO Notificacoes (Mensagem, UtilizadoresId)
-    VALUES (@Mensagem, @UtilizadorId);
+    INSERT INTO Notificacoes (Titulo,Mensagem, Tipo,UtilizadoresId)
+    VALUES (@Titulo, @Mensagem,@Tipo , @UtilizadorId);
 
     DECLARE @NovoId INT = SCOPE_IDENTITY();
 
