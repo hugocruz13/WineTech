@@ -66,6 +66,7 @@ create table Stock (
 create table Notificacoes (
   Id             int identity not null, 
   Mensagem       nvarchar(255) not null, 
+  Lida           bit default 0 not null, 
   CreatedAt      datetime2(7) default GETDATE() not null, 
   UtilizadoresId nvarchar(100) not null, 
   primary key (Id));
