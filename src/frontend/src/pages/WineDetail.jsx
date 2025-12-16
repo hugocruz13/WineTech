@@ -16,7 +16,6 @@ const WineDetail = () => {
     const fetchWine = async () => {
       try {
         const response = await fetch(`${API_URL}/vinho/${id}`);
-        console.log(response);
         if (!response.ok) {
           throw new Error("Erro ao carregar vinho");
         }

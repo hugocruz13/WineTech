@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Search, ShoppingCart, Wine, Warehouse } from "lucide-react";
-import Notifications from "./Notificacoes";
+import { useNavigate } from "react-router-dom";
+import { Search, ShoppingCart, Wine, Warehouse, Bell } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
 import RoleVisibility from "./RoleVisibility";
 import "../styles/Header.css";
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(null);
+  const navigate = useNavigate();
+
   return (
     <header className="header-container">
-      <div className="logo-section">
+      <div className="logo-section" onClick={() => navigate("/")}>
         <div className="logo-icon">
           <Wine size={28} strokeWidth={2.5} />
         </div>
@@ -33,12 +35,9 @@ const Header = () => {
             <Warehouse size={22} />
           </button>
         </RoleVisibility>
-        <Notifications
-          open={openMenu === "notifications"}
-          onToggle={() =>
-            setOpenMenu(openMenu === "notifications" ? null : "notifications")
-          }
-        />
+        <button className="icon-btn">
+          <Bell size={22} onClick={() => navigate("/notificacoes")} />
+        </button>
         <button className="icon-btn" aria-label="Carrinho">
           <ShoppingCart size={22} />
         </button>

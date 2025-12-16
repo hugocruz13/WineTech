@@ -1,5 +1,3 @@
-import "../styles/Admin.css";
-
 const Admin = () => {
   return <h1>Admin</h1>;
 };

@@ -1,0 +1,118 @@
+.notifications-page {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+.notifications-header {
+  margin-bottom: 24px;
+}
+
+.notifications-header .title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.notifications-header h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+/* Empty */
+.empty {
+  color: #6b7280;
+  margin-top: 20px;
+}
+
+/* List */
+.page-notifications-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Item */
+.page-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  position: relative;
+}
+
+.page-item.unread {
+  border-left: 4px solid #ef4444;
+}
+
+.icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  flex: 1;
+}
+
+.message {
+  margin: 0;
+  font-size: 14px;
+  color: #374151;
+}
+
+/* Actions */
+.actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+}
+
+.actions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.actions .primary {
+  background: #ef4444;
+  color: white;
+  border: none;
+}
+
+.actions .primary:hover {
+  background: #dc2626;
+}
+
+.actions .ghost {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+}
+
+.actions .ghost:hover {
+  color: #111827;
+}
+
+/* Time */
+.time {
+  font-size: 12px;
+  color: #9ca3af;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}

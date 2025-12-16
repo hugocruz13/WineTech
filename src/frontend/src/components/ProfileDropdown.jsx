@@ -7,7 +7,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const ProfileDropdown = ({ open, onToggle }) => {
   const [apiUser, setApiUser] = useState(null);
-
   const { logout, getAccessTokenSilently } = useAuth0();
 
   const handleLogout = () => {
@@ -21,7 +20,7 @@ const ProfileDropdown = ({ open, onToggle }) => {
       try {
         const token = await getAccessTokenSilently();
 
-        const res = await fetch(`${API_URL}/utilizador/me`, {
+        const res = await fetch(`${API_URL}/utilizador/perfil`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
