@@ -16,8 +16,10 @@ namespace SOAP.Repository
         {
             _connectionFactory = connectionFactory;
         }
-        public List<Models.Leituras> InserirLeitura(Models.Leituras leitura)
+        public Models.Leituras InserirLeitura(Models.Leituras leitura)
         {
+            Models.Leituras leituraCriada = new Models.Leituras();
+
             using (var conn = _connectionFactory.GetConnection())
             using (var cmd = new SqlCommand("InserirLeitura", conn))
             {
@@ -27,10 +29,18 @@ namespace SOAP.Repository
                 cmd.Parameters.AddWithValue("@Valor", Convert.ToSingle(leitura.Valor));
 
                 conn.Open();
-                cmd.ExecuteNonQuery();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        leituraCriada.Id = Convert.ToInt32(reader["Id"]);
+                        leituraCriada.SensorId = Convert.ToInt32(reader["SensorId"]);
+                        leituraCriada.Valor = Convert.ToSingle(reader["Valor"]);
+                        leituraCriada.DataHora = Convert.ToDateTime(reader["DataHora"]);
+                    }
+                }
             }
-
-            return ObterLeiturasPorSensor(leitura.SensorId);
+            return leituraCriada;
         }
         public List<Models.Leituras> ObterLeiturasPorSensor(int sensorId)
         {

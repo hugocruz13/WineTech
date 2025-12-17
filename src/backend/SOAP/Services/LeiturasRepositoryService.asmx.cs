@@ -24,7 +24,7 @@ namespace SOAP.Services
         }
 
         [WebMethod]
-        public List<Models.Leituras> InserirLeitura(Models.Leituras leitura)
+        public Models.Leituras InserirLeitura(Models.Leituras leitura)
         {
             try
             {
