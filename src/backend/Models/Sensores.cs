@@ -14,6 +14,8 @@ namespace Models
 
         public bool Estado { get; set; }
 
+        public string ImagemUrl { get; set; }
+
         public int AdegaId { get; set; }
     }
 }

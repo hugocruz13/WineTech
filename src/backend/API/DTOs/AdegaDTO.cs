@@ -30,4 +30,16 @@
         public int AdegaId { get; set; }
         public int Quantidade { get; set; }
     }
+    public class InserirSensorDTO
+    {
+        public string IdentificadorHardware { get; set; }
+
+        public string Tipo { get; set; }
+
+        public bool Estado { get; set; }
+
+        public IFormFile? ImagemUrl { get; set; }
+
+        public int AdegaId { get; set; }
+    }
 }
