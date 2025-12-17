@@ -124,31 +124,5 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
-        [HttpGet("{sensorId}/leituras")]
-        public async Task<IActionResult> GetLeiturasPorSensor(int sensorId)
-        {
-            try
-            {
-                if (sensorId <= 0)
-                    return BadRequest(new { success = false, message = "Sensor inválido." });
-
-                List<Models.Leituras> leituras = await _sensoresBLL.ObterLeiturasPorSensor(sensorId);
-
-                var data = leituras.Select(l => new
-                {
-                    id = l.Id,
-                    sensorId = l.SensorId,
-                    valor = l.Valor,
-                    dataHora = l.DataHora
-                }).ToList();
-
-                return Ok(new { success = true, data = data });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
-            }
-        }
-
     }
 }

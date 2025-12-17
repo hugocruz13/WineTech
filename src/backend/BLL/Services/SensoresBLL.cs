@@ -48,15 +48,5 @@ namespace BLL.Services
 
             return sensores ?? new List<Models.Sensores>();
         }
-        public async Task<List<Models.Leituras>> ObterLeiturasPorSensor(int sensorId)
-        {
-            if (sensorId <= 0)
-                throw new ArgumentException("Sensor inválido.", nameof(sensorId));
-
-            var leituras = await _sensoresDAL.ObterLeiturasPorSensor(sensorId);
-
-            return leituras ?? new List<Models.Leituras>();
-        }
-
     }
 }

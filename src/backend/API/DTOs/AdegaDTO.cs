@@ -1,4 +1,6 @@
-﻿namespace API.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace API.DTOs
 {
     public class AdegaDTO
     {
@@ -41,5 +43,11 @@
         public IFormFile? ImagemUrl { get; set; }
 
         public int AdegaId { get; set; }
+    }
+    public class InserirLeituraDTO
+    {
+        public int SensorId { get; set; }
+
+        public float Valor { get; set; }
     }
 }
