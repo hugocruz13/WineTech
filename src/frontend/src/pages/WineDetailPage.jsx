@@ -12,24 +12,24 @@ const WineDetailPage = () => {
   const [wine, setWine] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [quantidade, setQuantidade] = useState(1);
+
+  // 🔥 novo estado para animação
+  const [added, setAdded] = useState(false);
+
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const fetchWine = async () => {
       try {
         const token = await getAccessTokenSilently();
-
         const response = await fetch(`${API_URL}/api/vinho/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-        if (!response.ok) {
-          throw new Error("Erro ao carregar vinho");
-        }
+
+        if (!response.ok) throw new Error("Erro ao carregar vinho");
 
         const result = await response.json();
-        console.log(result.data);
         setWine(result.data ?? result);
       } catch (err) {
         setError(err.message);
@@ -39,7 +39,39 @@ const WineDetailPage = () => {
     };
 
     fetchWine();
-  }, [id]);
+  }, [id, getAccessTokenSilently]);
+
+  const handleAddToCart = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const response = await fetch(`${API_URL}/api/carrinho`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          vinhosId: wine.id,
+          quantidade,
+        }),
+      });
+
+      if (!response.ok) return;
+
+      setAdded(true);
+
+      const cartIcon = document.querySelector(".cart-icon");
+      cartIcon?.classList.add("cart-pulse");
+
+      setTimeout(() => {
+        setAdded(false);
+        cartIcon?.classList.remove("cart-pulse");
+      }, 1200);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   if (loading) return <Loading />;
   if (error) return <p className="error">{error}</p>;
@@ -48,38 +80,66 @@ const WineDetailPage = () => {
   return (
     <>
       <Header />
-      <main className="wine-detail-container">
-        <div className="wine-detail-image">
-          <img src={wine.img || "/placeholder-wine.png"} alt={wine.nome} />
-        </div>
 
-        <div className="wine-detail-info">
-          <div className="wine-detail-tags">
-            <span className="tag">{wine.tipo}</span>
-            <span className="year">{wine.ano}</span>
+      <main className="wd-page">
+        <section className="wd-grid">
+          <div className="wd-image-card">
+            <img src={wine.img || "/placeholder-wine.png"} alt={wine.nome} />
           </div>
 
-          <h1 className="wine-detail-title">{wine.nome}</h1>
-          <p className="wine-detail-producer">{wine.produtor}</p>
+          <div className="wd-info">
+            <div className="wd-meta">
+              <span className="wd-type">{wine.tipo}</span>
+              <span className="wd-year">{wine.ano}</span>
+            </div>
 
-          <div className="wine-detail-price">
-            <span>{wine.preco.toFixed(2)} €</span>
-            <small>Impostos incluídos</small>
+            <h1 className="wd-title">{wine.nome}</h1>
+            <p className="wd-producer">{wine.produtor}</p>
+
+            <div className="wd-price">
+              {wine.preco.toFixed(2)} €<span>IMPOSTOS INCLUÍDOS</span>
+            </div>
+
+            <div className="wd-actions">
+              <div className="wd-qty">
+                <button
+                  onClick={() => setQuantidade((q) => (q > 1 ? q - 1 : 1))}
+                >
+                  −
+                </button>
+
+                <span>{quantidade}</span>
+
+                <button onClick={() => setQuantidade((q) => q + 1)}>+</button>
+              </div>
+
+              <button
+                className={`wd-add-cart ${added ? "added" : ""}`}
+                onClick={handleAddToCart}
+                disabled={added}
+              >
+                {added ? "Adicionado ✓" : "Adicionar ao Carrinho →"}
+              </button>
+            </div>
+
+            <div className="wd-description">
+              <h3>Descrição</h3>
+              <p>{wine.descricao}</p>
+            </div>
+
+            <div className="wd-extra">
+              <div className="wd-extra-card">
+                <span>TEOR ALCOÓLICO</span>
+                <strong>14% Vol.</strong>
+              </div>
+
+              <div className="wd-extra-card">
+                <span>REGIÃO</span>
+                <strong>Douro</strong>
+              </div>
+            </div>
           </div>
-
-          <div className="wine-detail-actions">
-            <button className="qty-btn">−</button>
-            <span className="qty">1</span>
-            <button className="qty-btn">+</button>
-
-            <button className="add-cart-btn">Adicionar ao Carrinho</button>
-          </div>
-
-          <div className="wine-detail-description">
-            <h3>Descrição</h3>
-            <p>{wine.descricao}</p>
-          </div>
-        </div>
+        </section>
       </main>
     </>
   );

@@ -1,116 +1,209 @@
-.wine-detail-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 48px;
-  padding: 3rem;
+/* PAGE */
+.wd-page {
+  background-color: #fdfdfd; /* Fundo quase branco */
+  padding: 80px 0;
+}
+
+/* GRID */
+.wd-grid {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 520px 1fr;
+  gap: 80px;
 }
 
-.wine-detail-image {
-  background: #f8fafc;
-  border-radius: 24px;
+/* IMAGE CONTAINER — SEM QUADRADO VISÍVEL */
+.wd-image-card {
+  background: #fff1f1;
+  border-radius: 32px;
+  width: 520px;
+  height: 600px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 3rem;
+  align-items: center;
 }
 
-.wine-detail-image img {
-  max-height: 420px;
+/* IMAGEM */
+.wd-image-card img {
+  max-height: 440px;
+  max-width: 360px;
   object-fit: contain;
+  display: block;
+  mix-blend-mode: multiply;
 }
 
-.wine-detail-info {
+/* INFO */
+.wd-info {
   display: flex;
   flex-direction: column;
 }
 
-.wine-detail-tags {
+/* META */
+.wd-meta {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
-.tag {
-  background: #fef2f2;
-  color: #991b1b;
-  font-size: 11px;
+.wd-type {
+  background: #fde8e8;
+  color: #d32f2f;
+  font-size: 12px;
   font-weight: 700;
-  padding: 4px 10px;
+  padding: 6px 14px;
   border-radius: 999px;
+  text-transform: uppercase;
 }
 
-.year {
-  font-size: 13px;
+.wd-year {
   color: #94a3b8;
+  font-size: 14px;
 }
 
-.wine-detail-title {
+/* TITLE */
+.wd-title {
+  font-size: 44px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #0f172a;
+}
+
+.wd-producer {
+  color: #64748b;
+  margin-bottom: 32px;
+}
+
+/* PRICE */
+.wd-price {
   font-size: 32px;
   font-weight: 700;
-  color: #0f172a;
-  margin: 0;
-}
-
-.wine-detail-producer {
-  color: #64748b;
-  margin-bottom: 24px;
-}
-
-.wine-detail-price span {
-  font-size: 28px;
-  font-weight: 700;
   color: #d32f2f;
+  margin-bottom: 32px;
 }
 
-.wine-detail-price small {
+.wd-price span {
   display: block;
-  color: #94a3b8;
   font-size: 12px;
+  color: #94a3b8;
+  margin-top: 6px;
 }
 
-.wine-detail-actions {
+/* ACTIONS */
+.wd-actions {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 24px 0;
+  gap: 16px;
+  margin-bottom: 40px;
 }
 
-.qty-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid #e2e8f0;
-  background: #fff;
+.wd-qty {
+  display: flex;
+  gap: 18px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+}
+
+.wd-qty button {
+  border: none;
+  background: none;
+  font-size: 18px;
   cursor: pointer;
 }
 
-.add-cart-btn {
-  margin-left: auto;
-  background: #d32f2f;
-  color: #fff;
+.wd-add-cart {
+  flex: 1;
+  background: #f1f5f9;
   border: none;
-  padding: 12px 20px;
   border-radius: 999px;
+  padding: 14px 24px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.2s;
 }
 
-.wine-detail-description h3 {
-  margin-bottom: 8px;
-  font-size: 16px;
+.wd-add-cart:hover {
+  background: #d32f2f;
+  color: #fff;
 }
 
-.wine-detail-description p {
+/* DESCRIPTION */
+.wd-description h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.wd-description p {
+  font-size: 15px;
+  line-height: 1.7;
   color: #475569;
-  line-height: 1.6;
+  margin-bottom: 40px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .wine-detail-container {
+/* EXTRA */
+.wd-extra {
+  display: flex;
+  gap: 24px;
+}
+
+.wd-extra-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px 24px;
+  min-width: 180px;
+}
+
+.wd-extra-card span {
+  font-size: 12px;
+  color: #94a3b8;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.wd-extra-card strong {
+  font-size: 16px;
+  color: #0f172a;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .wd-grid {
     grid-template-columns: 1fr;
-    padding: 1.5rem;
+    gap: 48px;
   }
+
+  .wd-title {
+    font-size: 34px;
+  }
+}
+
+/* ===== BOTÃO ADICIONADO ===== */
+.wd-add-cart {
+  transition: all 0.25s ease;
+}
+
+.wd-add-cart.added {
+  background: #16a34a;
+  color: #ffffff;
+  transform: scale(0.96);
+}
+
+/* ===== PULSE NO CARRINHO ===== */
+@keyframes cartPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.cart-pulse {
+  animation: cartPulse 0.4s ease;
 }
