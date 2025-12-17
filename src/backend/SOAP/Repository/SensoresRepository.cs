@@ -15,7 +15,6 @@ namespace SOAP.Repository
         {
             _connectionFactory = connectionFactory;
         }
-
         public Models.Sensores InserirSensor(Models.Sensores sensor)
         {
             using (var conn = _connectionFactory.GetConnection())
@@ -26,6 +25,7 @@ namespace SOAP.Repository
                 cmd.Parameters.AddWithValue("@IdentificadorHardware", sensor.IdentificadorHardware);
                 cmd.Parameters.AddWithValue("@Tipo", sensor.Tipo);
                 cmd.Parameters.AddWithValue("@Estado", sensor.Estado);
+                cmd.Parameters.AddWithValue("@ImagemUrl", (object)sensor.ImagemUrl ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@AdegaId", sensor.AdegaId);
 
                 conn.Open();
@@ -40,14 +40,16 @@ namespace SOAP.Repository
                             IdentificadorHardware = reader["IdentificadorHardware"].ToString(),
                             Tipo = reader["Tipo"].ToString(),
                             Estado = Convert.ToBoolean(reader["Estado"]),
-                            ImagemUrl = reader["ImagemUrl"].ToString(),
+                            ImagemUrl = reader["ImagemUrl"] == DBNull.Value? null: reader["ImagemUrl"].ToString(),
                             AdegaId = Convert.ToInt32(reader["AdegaId"])
                         };
                     }
                 }
             }
+
             return null;
         }
+
 
         public List<Models.Sensores> TodosSensores()
         {
@@ -67,7 +69,7 @@ namespace SOAP.Repository
                             IdentificadorHardware = reader["IdentificadorHardware"].ToString(),
                             Tipo = reader["Tipo"].ToString(),
                             Estado = Convert.ToBoolean(reader["Estado"]),
-                            //ImagemUrl = reader["ImagemUrl"] == DBNull.Value ? null : reader["ImagemUrl"].ToString(),
+                            ImagemUrl = reader["ImagemUrl"].ToString(),
                             AdegaId = Convert.ToInt32(reader["AdegaId"])
                         });
                     }
@@ -96,7 +98,7 @@ namespace SOAP.Repository
                             IdentificadorHardware = reader["IdentificadorHardware"].ToString(),
                             Tipo = reader["Tipo"].ToString(),
                             Estado = Convert.ToBoolean(reader["Estado"]),
-                            //ImagemUrl = reader["ImagemUrl"] == DBNull.Value ? null : reader["ImagemUrl"].ToString(),
+                            ImagemUrl = reader["ImagemUrl"]?.ToString(),
                             AdegaId = Convert.ToInt32(reader["AdegaId"])
                         });
 
