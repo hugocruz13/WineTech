@@ -76,6 +76,8 @@ namespace BLL.Services
             if (!atualizou)
                 return false;
 
+            await _carrinhoDAL.EliminarCarrinhoPorUtilizador(utilizadorId);
+
             await _notificacaoBLL.InserirNotificacao(new Notificacao
             {
                 Titulo = "Compra concluída com sucesso",
@@ -83,8 +85,6 @@ namespace BLL.Services
                 Tipo = TipoNotificacao.Sucesso,
                 UtilizadorId = utilizadorId
             });
-
-            //apagar carrinho do utilizador
 
             return true;
         }

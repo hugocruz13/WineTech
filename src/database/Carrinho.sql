@@ -62,3 +62,14 @@ BEGIN
        AND UtilizadoresId = @UtilizadoresId;
 END;
 GO
+--Eliminar carrinho do utilizador
+CREATE OR ALTER PROCEDURE EliminarCarrinho
+    @UtilizadorId NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    DELETE FROM Carrinho
+    WHERE UtilizadoresId = @UtilizadorId;
+END;
+GO

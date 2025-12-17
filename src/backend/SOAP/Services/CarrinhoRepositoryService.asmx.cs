@@ -77,5 +77,19 @@ namespace SOAP.Services
             }
         }
 
+        [WebMethod]
+        public bool EliminarCarrinho(string utilizadoresId)
+        {
+            try
+            {
+                return _repository.EliminarCarrinho(utilizadoresId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao apagar carrinho");
+                throw new Exception("Erro ao apagar carrinho: " + ex.Message);
+            }
+        }
+
     }
 }

@@ -93,5 +93,17 @@ namespace SOAP.Repository
             }
         }
 
+        public bool EliminarCarrinho(string utilizadoresId)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("EliminarCarrinho", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UtilizadorId", utilizadoresId);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
     }
 }

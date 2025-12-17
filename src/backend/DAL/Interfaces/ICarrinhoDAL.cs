@@ -14,5 +14,6 @@ namespace DAL.Interfaces
         Task<List<Models.Carrinho>> AtualizarItem(Models.Carrinho itemCarrinho);
 
         Task<bool> EliminarItem(int vinhoId, string utilizadoresId);
+        Task<bool> EliminarCarrinhoPorUtilizador(string utilizadoresId);
     }
 }
