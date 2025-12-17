@@ -50,7 +50,7 @@ const WineCard = ({ id, title, subtitle, price, type, imageUrl, year }) => {
 
       <div className="wine-content">
         <div className="wine-meta">
-          <span className="wine-tag">{type}</span>
+          <span className={`wine-tag ${type?.toLowerCase()}`}>{type}</span>
           {year && <span className="wine-year">{year}</span>}
         </div>
 
