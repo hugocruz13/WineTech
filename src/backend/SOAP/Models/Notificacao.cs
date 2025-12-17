@@ -6,7 +6,6 @@ namespace SOAP.Models
     {
         Informacao,
         Alerta,
-        Aviso,
         Erro,
         Sucesso
     }

@@ -136,13 +136,10 @@ namespace ServiceNotificacao
         Alerta = 1,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Aviso = 2,
+        Erro = 2,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Erro = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        Sucesso = 4,
+        Sucesso = 3,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]

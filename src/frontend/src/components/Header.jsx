@@ -1,13 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import { Search, ShoppingCart, Wine, Warehouse, Bell } from "lucide-react";
+
 import ProfileDropdown from "./ProfileDropdown";
 import RoleVisibility from "./RoleVisibility";
 import "../styles/Header.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    const fetchUnreadNotifications = async () => {
+      try {
+        const token = await getAccessTokenSilently();
+
+        const res = await fetch(`${API_URL}/utilizador/notificacoes`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const json = await res.json();
+
+        const unread = (json.data || []).filter((n) => !n.lida).length;
+
+        setUnreadCount(unread);
+      } catch (err) {
+        console.error("Erro ao buscar notificações", err);
+      }
+    };
+
+    fetchUnreadNotifications();
+  }, [getAccessTokenSilently]);
 
   return (
     <header className="header-container">
@@ -35,9 +65,16 @@ const Header = () => {
             <Warehouse size={22} />
           </button>
         </RoleVisibility>
-        <button className="icon-btn">
-          <Bell size={22} onClick={() => navigate("/notificacoes")} />
+
+        <button
+          className="icon-btn notification-btn"
+          aria-label="Notificações"
+          onClick={() => navigate("/notificacoes")}
+        >
+          <Bell size={22} />
+          {unreadCount > 0 && <span className="notification-badge" />}
         </button>
+
         <button className="icon-btn" aria-label="Carrinho">
           <ShoppingCart size={22} />
         </button>

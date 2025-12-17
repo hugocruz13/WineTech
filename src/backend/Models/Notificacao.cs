@@ -8,7 +8,6 @@ namespace Models
     {
         Informacao,
         Alerta,
-        Aviso,
         Erro,
         Sucesso
     }
