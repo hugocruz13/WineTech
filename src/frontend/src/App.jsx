@@ -20,6 +20,7 @@ import RoleGuard from "./components/RoleGuard";
 import Loading from "./components/Loading";
 import WineDetailPage from "./pages/WineDetailPage";
 import NotificationsPage from "./pages/NotificationsPage";
+import CarrinhoPage from "./pages/CarrinhoPage";
 import JWT from "./pages/Jwt";
 
 function AppContent() {
@@ -64,6 +65,7 @@ function AppContent() {
           />
         }
       />
+      <Route path="/carrinho" element={<CarrinhoPage />} />
       <Route
         path="/dashboard"
         element={

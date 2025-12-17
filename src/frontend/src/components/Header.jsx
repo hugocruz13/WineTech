@@ -75,7 +75,11 @@ const Header = () => {
           {unreadCount > 0 && <span className="notification-badge" />}
         </button>
 
-        <button className="icon-btn" aria-label="Carrinho">
+        <button
+          className="icon-btn"
+          aria-label="Carrinho"
+          onClick={() => navigate("/carrinho")}
+        >
           <ShoppingCart size={22} />
         </button>
 
