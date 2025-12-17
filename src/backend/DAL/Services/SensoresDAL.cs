@@ -50,22 +50,5 @@ namespace DAL.Services
                 .ToList();
             });
         }
-        public async Task<List<Models.Leituras>> ObterLeiturasPorSensor(int sensorId)
-        {
-            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
-            {
-                var response = await client.ObterLeiturasPorSensorAsync(sensorId);
-
-                return response.Body.ObterLeiturasPorSensorResult
-                    .Select(item => new Models.Leituras
-                    {
-                        Id = item.Id,
-                        SensorId = item.SensorId,
-                        Valor = (float)item.Valor,
-                        DataHora = item.DataHora
-                    })
-                    .ToList();
-            });
-        }
     }
 }
