@@ -83,5 +83,11 @@ namespace BLL.Services
             };
             return await _carrinhoDAL.AtualizarItem(carrinhoFinal);
         }
+        public async Task<bool> EliminarItem(int vinhoId, string utilizadoresId)
+        {
+            if (vinhoId <= 0)
+                throw new ArgumentException("ID inválido.");
+            return await _carrinhoDAL.EliminarItem(vinhoId,utilizadoresId);
+        }
     }
 }

@@ -48,3 +48,17 @@ BEGIN
         VALUES (Fonte.VinhosId, Fonte.UtilizadoresId, Fonte.Quantidade);
 END;
 GO
+
+--Eliminar vinho de um Carrinho
+CREATE OR ALTER PROCEDURE EliminarItem
+    @VinhosId INT,
+    @UtilizadoresId NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    DELETE FROM Carrinho
+     WHERE VinhosId = @VinhosId
+       AND UtilizadoresId = @UtilizadoresId;
+END;
+GO

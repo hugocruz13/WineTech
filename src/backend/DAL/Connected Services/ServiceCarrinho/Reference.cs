@@ -94,7 +94,7 @@ namespace ServiceCarrinho
         System.Threading.Tasks.Task<ServiceCarrinho.AtualizarItemResponse> AtualizarItemAsync(ServiceCarrinho.AtualizarItemRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/EliminarItem", ReplyAction="*")]
-        System.Threading.Tasks.Task<bool> EliminarItemAsync(int itemId, int utilizadoresId);
+        System.Threading.Tasks.Task<ServiceCarrinho.EliminarItemResponse> EliminarItemAsync(ServiceCarrinho.EliminarItemRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -337,6 +337,90 @@ namespace ServiceCarrinho
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class EliminarItemRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="EliminarItem", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceCarrinho.EliminarItemRequestBody Body;
+        
+        public EliminarItemRequest()
+        {
+        }
+        
+        public EliminarItemRequest(ServiceCarrinho.EliminarItemRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class EliminarItemRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int vinhoId;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        public string utilizadoresId;
+        
+        public EliminarItemRequestBody()
+        {
+        }
+        
+        public EliminarItemRequestBody(int vinhoId, string utilizadoresId)
+        {
+            this.vinhoId = vinhoId;
+            this.utilizadoresId = utilizadoresId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class EliminarItemResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="EliminarItemResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceCarrinho.EliminarItemResponseBody Body;
+        
+        public EliminarItemResponse()
+        {
+        }
+        
+        public EliminarItemResponse(ServiceCarrinho.EliminarItemResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class EliminarItemResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public bool EliminarItemResult;
+        
+        public EliminarItemResponseBody()
+        {
+        }
+        
+        public EliminarItemResponseBody(bool EliminarItemResult)
+        {
+            this.EliminarItemResult = EliminarItemResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     public interface CarrinhoRepositoryServiceSoapChannel : ServiceCarrinho.CarrinhoRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -422,9 +506,19 @@ namespace ServiceCarrinho
             return ((ServiceCarrinho.CarrinhoRepositoryServiceSoap)(this)).AtualizarItemAsync(inValue);
         }
         
-        public System.Threading.Tasks.Task<bool> EliminarItemAsync(int itemId, int utilizadoresId)
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceCarrinho.EliminarItemResponse> ServiceCarrinho.CarrinhoRepositoryServiceSoap.EliminarItemAsync(ServiceCarrinho.EliminarItemRequest request)
         {
-            return base.Channel.EliminarItemAsync(itemId, utilizadoresId);
+            return base.Channel.EliminarItemAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceCarrinho.EliminarItemResponse> EliminarItemAsync(int vinhoId, string utilizadoresId)
+        {
+            ServiceCarrinho.EliminarItemRequest inValue = new ServiceCarrinho.EliminarItemRequest();
+            inValue.Body = new ServiceCarrinho.EliminarItemRequestBody();
+            inValue.Body.vinhoId = vinhoId;
+            inValue.Body.utilizadoresId = utilizadoresId;
+            return ((ServiceCarrinho.CarrinhoRepositoryServiceSoap)(this)).EliminarItemAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

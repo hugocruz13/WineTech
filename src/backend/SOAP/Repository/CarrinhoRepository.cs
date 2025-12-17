@@ -78,14 +78,14 @@ namespace SOAP.Repository
 
             return ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId);
         }
-        public bool EliminarItem(int itemId, int utilizadoresId)
+        public bool EliminarItem(int vinhoId, string utilizadoresId)
         {
             using (var conn = _connectionFactory.GetConnection())
             using (var cmd = new SqlCommand("EliminarItem", conn))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@Id", itemId);
+                cmd.Parameters.AddWithValue("@VinhosId", vinhoId);
                 cmd.Parameters.AddWithValue("@UtilizadoresId", utilizadoresId);
 
                 conn.Open();
