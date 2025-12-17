@@ -1,6 +1,7 @@
 ﻿using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace API.Controllers
 {
@@ -55,9 +56,9 @@ namespace API.Controllers
         public async Task<IActionResult> MarcarNotificacaoComoLida(int id)
         {
             var result = await _notificacaobll.MarcarNotificacaoComoLida(id);
-            if (!result)
+            if (result == null)
                 return NotFound(new { success = false, message = "Notificação não encontrada." });
-            return Ok(new { success = true, message = "Notificação marcada como lida." });
+            return Ok(new { success = true, data = result });
         }
     }
 }

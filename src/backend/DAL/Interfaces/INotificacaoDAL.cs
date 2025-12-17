@@ -7,7 +7,7 @@ namespace DAL.Interfaces
     {
         Task<Models.Notificacao> InserirNotificacao(Models.Notificacao notificacao);
         Task<List<Models.Notificacao>> ObterNotificacoesPorUtilizador(string utilizadorId);
-        Task<bool> MarcarNotificacaoComoLida(int idNotificacao);
+        Task<Models.Notificacao> MarcarNotificacaoComoLida(int idNotificacao);
 
     }
 }

@@ -58,7 +58,7 @@ namespace BLL.Services
             return await _notificacaoDAL.ObterNotificacoesPorUtilizador(utilizadorId);
         }
 
-        public async Task<bool> MarcarNotificacaoComoLida(int idNotificacao)
+        public async Task<Notificacao> MarcarNotificacaoComoLida(int idNotificacao)
         {
             return await _notificacaoDAL.MarcarNotificacaoComoLida(idNotificacao);
         }

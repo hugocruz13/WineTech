@@ -67,7 +67,7 @@ namespace SOAP.Services
         }
 
         [WebMethod]
-        public bool MarcarNotificacaoComoLida(int notificacaoId)
+        public Notificacao MarcarNotificacaoComoLida(int notificacaoId)
         {
             if (notificacaoId <= 0)
             {

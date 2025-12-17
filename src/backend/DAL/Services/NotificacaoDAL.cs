@@ -57,12 +57,24 @@ namespace DAL.Services
             });
         }
 
-        public async Task<bool> MarcarNotificacaoComoLida(int idNotificacao)
+        public async Task<Models.Notificacao> MarcarNotificacaoComoLida(int idNotificacao)
         {
             return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
             {
                 var response = await client.MarcarNotificacaoComoLidaAsync(idNotificacao);
-                return response;
+                var item = response.Body.MarcarNotificacaoComoLidaResult;
+                if (item == null)
+                    return null;
+                return new Models.Notificacao
+                {
+                    Id = item.Id,
+                    Titulo = item.Titulo,
+                    Mensagem = item.Mensagem,
+                    Tipo = (Models.TipoNotificacao)item.Tipo,
+                    Lida = item.Lida,
+                    CreatedAt = item.CreatedAt,
+                    UtilizadorId = item.UtilizadorId
+                };
             });
         }
     }

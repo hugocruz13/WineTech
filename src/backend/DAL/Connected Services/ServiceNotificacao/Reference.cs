@@ -154,7 +154,7 @@ namespace ServiceNotificacao
         System.Threading.Tasks.Task<ServiceNotificacao.ObterNotificacoesPorUtilizadorResponse> ObterNotificacoesPorUtilizadorAsync(ServiceNotificacao.ObterNotificacoesPorUtilizadorRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/MarcarNotificacaoComoLida", ReplyAction="*")]
-        System.Threading.Tasks.Task<bool> MarcarNotificacaoComoLidaAsync(int notificacaoId);
+        System.Threading.Tasks.Task<ServiceNotificacao.MarcarNotificacaoComoLidaResponse> MarcarNotificacaoComoLidaAsync(ServiceNotificacao.MarcarNotificacaoComoLidaRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -317,6 +317,86 @@ namespace ServiceNotificacao
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class MarcarNotificacaoComoLidaRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MarcarNotificacaoComoLida", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceNotificacao.MarcarNotificacaoComoLidaRequestBody Body;
+        
+        public MarcarNotificacaoComoLidaRequest()
+        {
+        }
+        
+        public MarcarNotificacaoComoLidaRequest(ServiceNotificacao.MarcarNotificacaoComoLidaRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class MarcarNotificacaoComoLidaRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int notificacaoId;
+        
+        public MarcarNotificacaoComoLidaRequestBody()
+        {
+        }
+        
+        public MarcarNotificacaoComoLidaRequestBody(int notificacaoId)
+        {
+            this.notificacaoId = notificacaoId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class MarcarNotificacaoComoLidaResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="MarcarNotificacaoComoLidaResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceNotificacao.MarcarNotificacaoComoLidaResponseBody Body;
+        
+        public MarcarNotificacaoComoLidaResponse()
+        {
+        }
+        
+        public MarcarNotificacaoComoLidaResponse(ServiceNotificacao.MarcarNotificacaoComoLidaResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class MarcarNotificacaoComoLidaResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceNotificacao.Notificacao MarcarNotificacaoComoLidaResult;
+        
+        public MarcarNotificacaoComoLidaResponseBody()
+        {
+        }
+        
+        public MarcarNotificacaoComoLidaResponseBody(ServiceNotificacao.Notificacao MarcarNotificacaoComoLidaResult)
+        {
+            this.MarcarNotificacaoComoLidaResult = MarcarNotificacaoComoLidaResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     internal interface NotificacaoRepositoryServiceSoapChannel : ServiceNotificacao.NotificacaoRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -388,9 +468,18 @@ namespace ServiceNotificacao
             return ((ServiceNotificacao.NotificacaoRepositoryServiceSoap)(this)).ObterNotificacoesPorUtilizadorAsync(inValue);
         }
         
-        public System.Threading.Tasks.Task<bool> MarcarNotificacaoComoLidaAsync(int notificacaoId)
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceNotificacao.MarcarNotificacaoComoLidaResponse> ServiceNotificacao.NotificacaoRepositoryServiceSoap.MarcarNotificacaoComoLidaAsync(ServiceNotificacao.MarcarNotificacaoComoLidaRequest request)
         {
-            return base.Channel.MarcarNotificacaoComoLidaAsync(notificacaoId);
+            return base.Channel.MarcarNotificacaoComoLidaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceNotificacao.MarcarNotificacaoComoLidaResponse> MarcarNotificacaoComoLidaAsync(int notificacaoId)
+        {
+            ServiceNotificacao.MarcarNotificacaoComoLidaRequest inValue = new ServiceNotificacao.MarcarNotificacaoComoLidaRequest();
+            inValue.Body = new ServiceNotificacao.MarcarNotificacaoComoLidaRequestBody();
+            inValue.Body.notificacaoId = notificacaoId;
+            return ((ServiceNotificacao.NotificacaoRepositoryServiceSoap)(this)).MarcarNotificacaoComoLidaAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
