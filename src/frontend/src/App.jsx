@@ -40,6 +40,10 @@ function AppContent() {
 
     pendingRef.current.push(notification);
     setTick((t) => t + 1);
+
+    window.dispatchEvent(
+      new CustomEvent("notification:received", { detail: notification })
+    );
   });
 
   useEffect(() => {

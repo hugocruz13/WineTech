@@ -16,18 +16,15 @@ const Header = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
-    const fetchUnreadNotifications = async () => {
+    const fetchUnread = async () => {
       try {
         const token = await getAccessTokenSilently();
 
         const res = await fetch(`${API_URL}/api/utilizador/notificacoes`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const json = await res.json();
-
         const unread = (json.data || []).filter((n) => !n.lida).length;
 
         setUnreadCount(unread);
@@ -36,8 +33,32 @@ const Header = () => {
       }
     };
 
-    fetchUnreadNotifications();
+    fetchUnread();
   }, [getAccessTokenSilently]);
+
+  useEffect(() => {
+    const onNotification = () => {
+      setUnreadCount((c) => c + 1);
+    };
+
+    window.addEventListener("notification:received", onNotification);
+
+    return () => {
+      window.removeEventListener("notification:received", onNotification);
+    };
+  }, []);
+
+  useEffect(() => {
+    const onRead = () => {
+      setUnreadCount((c) => Math.max(0, c - 1));
+    };
+
+    window.addEventListener("notification:read", onRead);
+
+    return () => {
+      window.removeEventListener("notification:read", onRead);
+    };
+  }, []);
 
   return (
     <header className="header-container">

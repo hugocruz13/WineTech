@@ -17,32 +17,20 @@ const NotificationsPage = ({ notifications, setNotifications }) => {
         const token = await getAccessTokenSilently();
 
         const res = await fetch(`${API_URL}/api/utilizador/notificacoes`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
         const json = await res.json();
-
-        setNotifications((prev) => {
-          const existingIds = new Set(prev.map((n) => n.id));
-          const merged = [...prev];
-
-          for (const n of json.data || []) {
-            if (!existingIds.has(n.id)) {
-              merged.push(n);
-            }
-          }
-
-          return merged;
-        });
+        setNotifications(json.data || []);
       } catch (err) {
         console.error("Erro ao buscar notificações", err);
       }
     };
 
-    fetchNotificacoes();
-  }, [getAccessTokenSilently, setNotifications]);
+    if (notifications.length === 0) {
+      fetchNotificacoes();
+    }
+  }, [getAccessTokenSilently, notifications.length, setNotifications]);
 
   const handleMarkAsRead = async (id) => {
     try {
@@ -58,6 +46,8 @@ const NotificationsPage = ({ notifications, setNotifications }) => {
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
       );
+
+      window.dispatchEvent(new CustomEvent("notification:read"));
     } catch (err) {
       console.error("Erro ao marcar notificação como lida", err);
     }
