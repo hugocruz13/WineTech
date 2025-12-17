@@ -79,6 +79,148 @@ namespace ServiceCarrinho
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CarrinhoDetalhe", Namespace="http://tempuri.org/")]
+    internal partial class CarrinhoDetalhe : object
+    {
+        
+        private int VinhosIdField;
+        
+        private string NomeVinhoField;
+        
+        private string ProdutorField;
+        
+        private int AnoField;
+        
+        private string TipoField;
+        
+        private string DescricaoField;
+        
+        private string ImagemUrlField;
+        
+        private double PrecoField;
+        
+        private int QuantidadeField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        internal int VinhosId
+        {
+            get
+            {
+                return this.VinhosIdField;
+            }
+            set
+            {
+                this.VinhosIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=1)]
+        internal string NomeVinho
+        {
+            get
+            {
+                return this.NomeVinhoField;
+            }
+            set
+            {
+                this.NomeVinhoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        internal string Produtor
+        {
+            get
+            {
+                return this.ProdutorField;
+            }
+            set
+            {
+                this.ProdutorField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=3)]
+        internal int Ano
+        {
+            get
+            {
+                return this.AnoField;
+            }
+            set
+            {
+                this.AnoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=4)]
+        internal string Tipo
+        {
+            get
+            {
+                return this.TipoField;
+            }
+            set
+            {
+                this.TipoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=5)]
+        internal string Descricao
+        {
+            get
+            {
+                return this.DescricaoField;
+            }
+            set
+            {
+                this.DescricaoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=6)]
+        internal string ImagemUrl
+        {
+            get
+            {
+                return this.ImagemUrlField;
+            }
+            set
+            {
+                this.ImagemUrlField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=7)]
+        internal double Preco
+        {
+            get
+            {
+                return this.PrecoField;
+            }
+            set
+            {
+                this.PrecoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=8)]
+        internal int Quantidade
+        {
+            get
+            {
+                return this.QuantidadeField;
+            }
+            set
+            {
+                this.QuantidadeField = value;
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceCarrinho.CarrinhoRepositoryServiceSoap")]
     internal interface CarrinhoRepositoryServiceSoap
@@ -98,6 +240,9 @@ namespace ServiceCarrinho
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/EliminarCarrinho", ReplyAction="*")]
         System.Threading.Tasks.Task<ServiceCarrinho.EliminarCarrinhoResponse> EliminarCarrinhoAsync(ServiceCarrinho.EliminarCarrinhoRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterDetalhesCarrinho", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceCarrinho.ObterDetalhesCarrinhoResponse> ObterDetalhesCarrinhoAsync(ServiceCarrinho.ObterDetalhesCarrinhoRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -504,6 +649,86 @@ namespace ServiceCarrinho
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterDetalhesCarrinhoRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterDetalhesCarrinho", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceCarrinho.ObterDetalhesCarrinhoRequestBody Body;
+        
+        public ObterDetalhesCarrinhoRequest()
+        {
+        }
+        
+        public ObterDetalhesCarrinhoRequest(ServiceCarrinho.ObterDetalhesCarrinhoRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterDetalhesCarrinhoRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string utilizadoresId;
+        
+        public ObterDetalhesCarrinhoRequestBody()
+        {
+        }
+        
+        public ObterDetalhesCarrinhoRequestBody(string utilizadoresId)
+        {
+            this.utilizadoresId = utilizadoresId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterDetalhesCarrinhoResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterDetalhesCarrinhoResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceCarrinho.ObterDetalhesCarrinhoResponseBody Body;
+        
+        public ObterDetalhesCarrinhoResponse()
+        {
+        }
+        
+        public ObterDetalhesCarrinhoResponse(ServiceCarrinho.ObterDetalhesCarrinhoResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterDetalhesCarrinhoResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceCarrinho.CarrinhoDetalhe[] ObterDetalhesCarrinhoResult;
+        
+        public ObterDetalhesCarrinhoResponseBody()
+        {
+        }
+        
+        public ObterDetalhesCarrinhoResponseBody(ServiceCarrinho.CarrinhoDetalhe[] ObterDetalhesCarrinhoResult)
+        {
+            this.ObterDetalhesCarrinhoResult = ObterDetalhesCarrinhoResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     internal interface CarrinhoRepositoryServiceSoapChannel : ServiceCarrinho.CarrinhoRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -616,6 +841,20 @@ namespace ServiceCarrinho
             inValue.Body = new ServiceCarrinho.EliminarCarrinhoRequestBody();
             inValue.Body.utilizadoresId = utilizadoresId;
             return ((ServiceCarrinho.CarrinhoRepositoryServiceSoap)(this)).EliminarCarrinhoAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceCarrinho.ObterDetalhesCarrinhoResponse> ServiceCarrinho.CarrinhoRepositoryServiceSoap.ObterDetalhesCarrinhoAsync(ServiceCarrinho.ObterDetalhesCarrinhoRequest request)
+        {
+            return base.Channel.ObterDetalhesCarrinhoAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceCarrinho.ObterDetalhesCarrinhoResponse> ObterDetalhesCarrinhoAsync(string utilizadoresId)
+        {
+            ServiceCarrinho.ObterDetalhesCarrinhoRequest inValue = new ServiceCarrinho.ObterDetalhesCarrinhoRequest();
+            inValue.Body = new ServiceCarrinho.ObterDetalhesCarrinhoRequestBody();
+            inValue.Body.utilizadoresId = utilizadoresId;
+            return ((ServiceCarrinho.CarrinhoRepositoryServiceSoap)(this)).ObterDetalhesCarrinhoAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

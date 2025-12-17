@@ -105,5 +105,39 @@ namespace SOAP.Repository
             }
         }
 
+        public List<CarrinhoDetalhe> ObterDetalhesCarrinho(string utilizadoresId)
+        {
+            List<CarrinhoDetalhe> lista = new List<CarrinhoDetalhe>();
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterDetalhesCarrinho", conn))
+            {
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UtilizadoresId", utilizadoresId);
+
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new CarrinhoDetalhe
+                        {
+                            VinhosId = reader.GetInt32(0),
+                            NomeVinho = reader.GetString(1),
+                            Produtor = reader.GetString(2),
+                            Ano = reader.GetInt32(3),
+                            Tipo = reader.GetString(4),
+                            Descricao = reader.GetString(5),
+                            ImagemUrl = reader.GetString(6),
+                            Preco = Math.Round((double)reader.GetFloat(7), 2),
+                            Quantidade = reader.GetInt32(8)
+                        });
+
+                    }
+                }
+            }
+            return lista;
+        }
+
     }
 }

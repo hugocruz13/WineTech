@@ -91,5 +91,19 @@ namespace SOAP.Services
             }
         }
 
+        [WebMethod]
+        public List<CarrinhoDetalhe> ObterDetalhesCarrinho(string utilizadoresId)
+        {
+            try
+            {
+                return _repository.ObterDetalhesCarrinho(utilizadoresId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter detalhes do carrinho");
+                throw new Exception("Erro ao obter detalhes do carrinho: " + ex.Message);
+            }
+        }
+
     }
 }

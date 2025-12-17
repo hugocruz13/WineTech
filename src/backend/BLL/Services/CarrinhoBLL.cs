@@ -1,10 +1,9 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
-using DAL.Services;
+using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -20,17 +19,17 @@ namespace BLL.Services
             _adegaDAL = adegaDAL;
         }
 
-        public async Task<List<Models.Carrinho>> ObterCarrinhoPorUtilizador(string utilizadoresId)
+        public async Task<List<Carrinho>> ObterCarrinhoPorUtilizador(string utilizadoresId)
         {
             if (string.IsNullOrWhiteSpace(utilizadoresId))
                 throw new ArgumentException("Utilizador inválido.", nameof(utilizadoresId));
 
             var itens = await _carrinhoDAL.ObterCarrinhoPorUtilizador(utilizadoresId);
 
-            return itens ?? new List<Models.Carrinho>();
+            return itens ?? new List<Carrinho>();
         }
 
-        public async Task<List<Models.Carrinho>> InserirItem(Models.Carrinho itemCarrinho)
+        public async Task<List<Carrinho>> InserirItem(Models.Carrinho itemCarrinho)
         {
             if (itemCarrinho == null)
                 throw new ArgumentNullException(nameof(itemCarrinho));
@@ -46,7 +45,7 @@ namespace BLL.Services
 
             return await AtualizarItem(itemCarrinho);
         }
-        public async Task<List<Models.Carrinho>> AtualizarItem(Models.Carrinho itemCarrinho)
+        public async Task<List<Carrinho>> AtualizarItem(Models.Carrinho itemCarrinho)
         {
             if (itemCarrinho == null)
                 throw new ArgumentException("Dados inválidos para a atualização do carrinho.");
@@ -60,7 +59,7 @@ namespace BLL.Services
             if (itemCarrinho.Quantidade <= 0)
                 throw new ArgumentException("Quantidade a adicionar inválida.");
 
-            List<Models.Carrinho> carrinhoAtual = await _carrinhoDAL.ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId)?? new List<Models.Carrinho>();
+            List<Carrinho> carrinhoAtual = await _carrinhoDAL.ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId) ?? new List<Carrinho>();
 
             var quantidadeJaNoCarrinho = carrinhoAtual.Where(c => c.VinhosId == itemCarrinho.VinhosId).Sum(c => c.Quantidade);
 
@@ -87,7 +86,14 @@ namespace BLL.Services
         {
             if (vinhoId <= 0)
                 throw new ArgumentException("ID inválido.");
-            return await _carrinhoDAL.EliminarItem(vinhoId,utilizadoresId);
+            return await _carrinhoDAL.EliminarItem(vinhoId, utilizadoresId);
+        }
+
+        public async Task<List<CarrinhoDetalhe>> ObterDetalhesCarrinho(string utilizadoresId)
+        {
+            if (string.IsNullOrWhiteSpace(utilizadoresId))
+                throw new ArgumentException("Utilizador inválido.", nameof(utilizadoresId));
+            return await _carrinhoDAL.ObterDetalhesCarrinho(utilizadoresId);
         }
     }
 }

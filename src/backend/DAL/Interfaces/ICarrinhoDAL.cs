@@ -15,5 +15,6 @@ namespace DAL.Interfaces
 
         Task<bool> EliminarItem(int vinhoId, string utilizadoresId);
         Task<bool> EliminarCarrinhoPorUtilizador(string utilizadoresId);
+        Task<List<Models.CarrinhoDetalhe>> ObterDetalhesCarrinho(string utilizadoresId);
     }
 }

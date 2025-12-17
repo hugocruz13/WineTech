@@ -78,5 +78,27 @@ namespace DAL.Services
                 return response.Body.EliminarCarrinhoResult;
             });
         }
+
+        public async Task<List<Models.CarrinhoDetalhe>> ObterDetalhesCarrinho(string utilizadoresId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.ObterDetalhesCarrinhoAsync(utilizadoresId);
+                return response.Body.ObterDetalhesCarrinhoResult
+                .Select(item => new Models.CarrinhoDetalhe
+                {
+                    VinhosId = item.VinhosId,
+                    NomeVinho = item.NomeVinho,
+                    Produtor = item.Produtor,
+                    Ano = item.Ano,
+                    Tipo = item.Tipo,
+                    Descricao = item.Descricao,
+                    ImagemUrl = item.ImagemUrl,
+                    Preco = item.Preco,
+                    Quantidade = item.Quantidade
+                })
+                .ToList();
+            });
+        }
     }
 }

@@ -14,6 +14,7 @@ BEGIN
     WHERE UtilizadoresId = @UtilizadoresId
 END;
 GO
+
 --Adicionar um vinho ao carrinho
 CREATE OR ALTER PROCEDURE InserirItemCarrinho
     @UtilizadoresId NVARCHAR(100),
@@ -71,5 +72,37 @@ BEGIN
 
     DELETE FROM Carrinho
     WHERE UtilizadoresId = @UtilizadorId;
+END;
+GO
+
+-- Carrinho por utilizador detalhado
+CREATE OR ALTER PROCEDURE ObterDetalhesCarrinho
+    @UtilizadoresId NVARCHAR(100)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        v.Id              AS VinhoId,
+        v.Nome,
+        v.Produtor,
+        v.Ano,
+        v.Tipo,
+        v.Descricao,
+        v.ImagemUrl,
+        v.Preco,
+        SUM(c.Quantidade) AS QuantidadeTotal
+    FROM Carrinho c
+    INNER JOIN Vinhos v ON v.Id = c.VinhosId
+    WHERE c.UtilizadoresId = @UtilizadoresId
+    GROUP BY
+        v.Id,
+        v.Nome,
+        v.Produtor,
+        v.Ano,
+        v.Tipo,
+        v.Descricao,
+        v.ImagemUrl,
+        v.Preco;
 END;
 GO

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,5 +15,6 @@ namespace BLL.Interfaces
         Task<List<Models.Carrinho>> AtualizarItem(Models.Carrinho itemCarrinho);
 
         Task<bool>  EliminarItem(int vinhoId, string utilizadoresId);
+        Task<List<CarrinhoDetalhe>> ObterDetalhesCarrinho(string utilizadoresId);
     }
 }

@@ -2,8 +2,10 @@
 using API.Services;
 using BLL.Interfaces;
 using BLL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using System.Reflection.PortableExecutable;
 
 namespace API.Controllers
 {
@@ -21,6 +23,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "owner,user")]
         public async Task<IActionResult> Get()
         {
             var sub = User.FindFirst("sub")?.Value;
@@ -40,6 +43,33 @@ namespace API.Controllers
 
             return Ok(new { success = true, data = data });
         }
+
+        [Authorize(Roles = "owner,user")]
+        [HttpGet("detalhes")]
+        public async Task<IActionResult> GetDetalhes()
+        {
+            var sub = User.FindFirst("sub")?.Value;
+
+            if (string.IsNullOrEmpty(sub))
+                return Unauthorized(new { success = false, message = "Utilizador não autenticado." });
+
+            List<CarrinhoDetalhe> itens = await _carrinhoBLL.ObterDetalhesCarrinho(sub);
+
+            var data = itens.Select(c => new
+            {
+                VinhosId = c.VinhosId,
+                NomeVinho = c.NomeVinho,
+                Produtor = c.Produtor,
+                Ano = c.Ano,
+                Tipo = c.Tipo,
+                Descricao = c.Descricao,
+                ImagemUrl =c.ImagemUrl,
+                Preco = c.Preco,
+                Quantidade = c.Quantidade
+            }).ToList();
+            return Ok(new { success = true, data = data });
+        }
+
         [HttpPost]
         public async Task<ActionResult> Post([FromQuery] InserirItemCarrinhoDTO dto)
         {
