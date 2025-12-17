@@ -64,11 +64,11 @@ namespace SOAP.Services
             }
         }
         [WebMethod]
-        public bool EliminarItem(int itemId, int utilizadoresId)
+        public bool EliminarItem(int vinhoId, string utilizadoresId)
         {
             try
             {
-                return _repository.EliminarItem(itemId, utilizadoresId);
+                return _repository.EliminarItem(vinhoId, utilizadoresId);
             }
             catch (Exception ex)
             {

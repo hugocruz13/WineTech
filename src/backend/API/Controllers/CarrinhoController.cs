@@ -126,6 +126,25 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete([FromQuery] int vinhoId, string utilizadoresId)
+        {
+            try
+            {
+                bool sucesso = await _carrinhoBLL.EliminarItem(vinhoId, utilizadoresId);
+                if (!sucesso)
+                    return NotFound(new { success = false, message = "Vinho não encontrado." });
+                return Ok(new { success = true, message = "Vinho removido com sucesso." });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
     }
 
 }

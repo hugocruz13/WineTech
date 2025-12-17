@@ -60,5 +60,14 @@ namespace DAL.Services
 
             return await ObterCarrinhoPorUtilizador(itemCarrinho.UtilizadoresId);
         }
+        public async Task<bool> EliminarItem(int vinhoId, string utilizadoresId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.EliminarItemAsync(vinhoId, utilizadoresId);
+
+                return response.Body.EliminarItemResult;
+            });
+        }
     }
 }

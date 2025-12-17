@@ -13,6 +13,6 @@ namespace BLL.Interfaces
 
         Task<List<Models.Carrinho>> AtualizarItem(Models.Carrinho itemCarrinho);
 
-        //bool ApagarItem(int itemId, int utilizadoresId);
+        Task<bool>  EliminarItem(int vinhoId, string utilizadoresId);
     }
 }
