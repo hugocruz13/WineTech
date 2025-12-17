@@ -12,12 +12,10 @@ namespace API.Controllers
     public class CarrinhoController : ControllerBase
     {
         private readonly ICarrinhoBLL _carrinhoBLL;
-        private readonly IStorageService _storageService;
 
-        public CarrinhoController(ICarrinhoBLL carrinhoBLL, IStorageService storageService)
+        public CarrinhoController(ICarrinhoBLL carrinhoBLL)
         {
             _carrinhoBLL = carrinhoBLL;
-            _storageService = storageService;
         }
 
         [HttpGet]

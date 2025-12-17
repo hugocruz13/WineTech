@@ -24,7 +24,6 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Se o item já existir no carrinho, incrementa a quantidade
     IF EXISTS (
         SELECT 1
         FROM Carrinho
@@ -33,7 +32,7 @@ BEGIN
     )
     BEGIN
         UPDATE Carrinho
-        SET Quantidade = Quantidade + @Quantidade
+        SET Quantidade = @Quantidade
         WHERE UtilizadoresId = @UtilizadoresId
           AND VinhosId = @VinhosId;
     END
@@ -44,6 +43,7 @@ BEGIN
     END
 END;
 GO
+
 
 --Atualizar quantidade 
 CREATE OR ALTER PROCEDURE AtualizarItem
