@@ -3,13 +3,13 @@ CREATE OR ALTER PROCEDURE InserirNotificacao
     @Titulo NVARCHAR(100),
     @Mensagem NVARCHAR(255),
     @Tipo NVARCHAR(50),
-    @UtilizadorId NVARCHAR(100)
+    @UtilizadoresId NVARCHAR(100)
 AS
 BEGIN
     SET NOCOUNT ON;
 
     INSERT INTO Notificacoes (Titulo,Mensagem, Tipo,UtilizadoresId)
-    VALUES (@Titulo, @Mensagem,@Tipo , @UtilizadorId);
+    VALUES (@Titulo, @Mensagem,@Tipo , @UtilizadoresId);
 
     DECLARE @NovoId INT = SCOPE_IDENTITY();
 
