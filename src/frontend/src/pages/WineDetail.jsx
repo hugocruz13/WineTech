@@ -15,7 +15,7 @@ const WineDetail = () => {
   useEffect(() => {
     const fetchWine = async () => {
       try {
-        const response = await fetch(`${API_URL}/vinho/${id}`);
+        const response = await fetch(`${API_URL}/api/vinho/${id}`);
         if (!response.ok) {
           throw new Error("Erro ao carregar vinho");
         }

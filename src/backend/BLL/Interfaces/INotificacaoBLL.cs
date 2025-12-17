@@ -11,5 +11,6 @@ namespace BLL.Interfaces
         Task<Notificacao> InserirNotificacao(Notificacao notificacao);
         Task<List<Notificacao>> ObterNotificacoesPorUtilizador(string utilizadorId);
         Task<Notificacao> MarcarNotificacaoComoLida(int idNotificacao);
+        Task NotificacaoTesteParaUtilizador(string utilizadorId);
     }
 }

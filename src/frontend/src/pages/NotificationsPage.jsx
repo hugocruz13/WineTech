@@ -4,6 +4,7 @@ import { Bell } from "lucide-react";
 import Header from "../components/Header";
 import { notificationConfig } from "../utils/notificationConfig";
 import "../styles/NotificationPage.css";
+import * as signalR from "@microsoft/signalr";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,11 +13,47 @@ const NotificationsPage = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
+    let connection;
+
+    const startSignalR = async () => {
+      const token = await getAccessTokenSilently();
+
+      connection = new signalR.HubConnectionBuilder()
+        .withUrl(`${API_URL}/hubs/notifications`, {
+          accessTokenFactory: () => token,
+        })
+        .withAutomaticReconnect()
+        .build();
+
+      connection.on("ReceiveNotification", (notification) => {
+        setNotifications((prev) => {
+          const exists = prev.some((n) => n.id === notification.id);
+          if (exists) return prev;
+          return [notification, ...prev];
+        });
+      });
+
+      try {
+        await connection.start();
+        console.log("SignalR ligado");
+      } catch (err) {
+        console.error("Erro SignalR", err);
+      }
+    };
+
+    startSignalR();
+
+    return () => {
+      if (connection) connection.stop();
+    };
+  }, [getAccessTokenSilently]);
+
+  useEffect(() => {
     const fetchNotificacoes = async () => {
       try {
         const token = await getAccessTokenSilently();
 
-        const res = await fetch(`${API_URL}/utilizador/notificacoes`, {
+        const res = await fetch(`${API_URL}/api/utilizador/notificacoes`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -36,14 +73,13 @@ const NotificationsPage = () => {
     try {
       const token = await getAccessTokenSilently();
 
-      await fetch(`${API_URL}/utilizador/notificacoes/${id}/lida`, {
+      await fetch(`${API_URL}/api/utilizador/notificacoes/${id}/lida`, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      // Atualizar estado local
       setNotifications((prev) =>
         prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
       );

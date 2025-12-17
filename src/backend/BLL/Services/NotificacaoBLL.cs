@@ -7,15 +7,17 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class NotificacaoBLL: INotificacaoBLL
+    public class NotificacaoBLL : INotificacaoBLL
     {
         private readonly INotificacaoDAL _notificacaoDAL;
-       private readonly IUtilizadorDAL _utilizadorDAL;
+        private readonly IUtilizadorDAL _utilizadorDAL;
+        private readonly INotificationRealtimeService _realtime;
 
-        public NotificacaoBLL(INotificacaoDAL notificacaoDAL, IUtilizadorDAL utilizadorDAL)
+        public NotificacaoBLL(INotificacaoDAL notificacaoDAL, IUtilizadorDAL utilizadorDAL, INotificationRealtimeService realtime)
         {
             _notificacaoDAL = notificacaoDAL;
             _utilizadorDAL = utilizadorDAL;
+            _realtime = realtime;
         }
 
         public async Task<Notificacao> InserirNotificacao(Notificacao notificacao)
@@ -40,7 +42,12 @@ namespace BLL.Services
                 throw new System.ArgumentException("Utilizador inválido para a notificação.");
             }
 
-            return await _notificacaoDAL.InserirNotificacao(notificacao);
+            var criada = await _notificacaoDAL.InserirNotificacao(notificacao);
+
+            await _realtime.SendToUserAsync(criada.UtilizadorId, criada);
+
+            return criada;
+
         }
 
         public async Task<List<Notificacao>> ObterNotificacoesPorUtilizador(string utilizadorId)
@@ -62,5 +69,29 @@ namespace BLL.Services
         {
             return await _notificacaoDAL.MarcarNotificacaoComoLida(idNotificacao);
         }
+
+        public async Task NotificacaoTesteParaUtilizador(string utilizadorId)
+        {
+            if (string.IsNullOrWhiteSpace(utilizadorId))
+                throw new ArgumentException("Utilizador inválido");
+
+            var utilizador = await _utilizadorDAL.GetUserByIdAsync(utilizadorId);
+
+            if (utilizador == null)
+                throw new ArgumentException("Utilizador não encontrado");
+
+            var notificacao = new Notificacao
+            {
+                UtilizadorId = utilizador.Id,
+                Titulo = "Notificação de teste",
+                Mensagem = $"Olá {utilizador.Nome}, esta é uma notificação em tempo real 🚀",
+                Tipo = TipoNotificacao.Alerta,
+                CreatedAt = DateTime.UtcNow,
+                Lida = false
+            };
+
+            await InserirNotificacao(notificacao);
+        }
+
     }
 }

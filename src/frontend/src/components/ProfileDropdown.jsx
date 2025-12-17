@@ -20,7 +20,7 @@ const ProfileDropdown = ({ open, onToggle }) => {
       try {
         const token = await getAccessTokenSilently();
 
-        const res = await fetch(`${API_URL}/utilizador/perfil`, {
+        const res = await fetch(`${API_URL}/api/utilizador/perfil`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

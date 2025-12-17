@@ -1,4 +1,5 @@
 ﻿using BLL.Interfaces;
+using BLL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -59,6 +60,16 @@ namespace API.Controllers
             if (result == null)
                 return NotFound(new { success = false, message = "Notificação não encontrada." });
             return Ok(new { success = true, data = result });
+        }
+
+        [Authorize]
+        [HttpGet("notificacoes/teste")]
+        public async Task<IActionResult> GetNotificacoes()
+        {
+            var sub = User.FindFirst("sub")?.Value;
+
+            await _notificacaobll.NotificacaoTesteParaUtilizador(sub);
+            return Ok("Notificação enviada");
         }
     }
 }

@@ -1,6 +1,8 @@
 using API.Filters.API.Filters;
+using API.Hubs;
 using API.Services;
 using Azure.Storage.Blobs;
+using BLL.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
@@ -67,6 +69,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             RoleClaimType = "https://isi.com/roles"
         };
+
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    path.StartsWithSegments("/hubs/notifications"))
+                {
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
@@ -76,6 +95,11 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<EnsureUserExistsFilter>();
 });
+
+builder.Services.AddSignalR();
+
+// SignalR
+builder.Services.AddScoped<INotificationRealtimeService, NotificationRealtimeService>();
 
 // Registo do filtro no DI
 builder.Services.AddScoped<EnsureUserExistsFilter>();
@@ -90,6 +114,9 @@ builder.Services.AddSingleton(x => new BlobServiceClient("UseDevelopmentStorage=
 builder.Services.AddScoped<IStorageService, BlobStorageService>();
 
 var app = builder.Build();
+
+// SignalR
+app.MapHub<NotificationHub>("/hubs/notifications");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

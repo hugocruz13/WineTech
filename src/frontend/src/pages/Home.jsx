@@ -14,7 +14,7 @@ const Home = () => {
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const response = await fetch(`${API_URL}/adega/stock`);
+        const response = await fetch(`${API_URL}/api/adega/stock`);
 
         if (!response.ok) {
           throw new Error("Erro ao carregar vinhos");

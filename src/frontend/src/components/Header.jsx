@@ -15,12 +15,30 @@ const Header = () => {
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
 
+  const testNotification = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const res = await fetch(`${API_URL}/api/utilizador/notificacoes/teste`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const text = await res.text();
+      console.log(text);
+    } catch (err) {
+      console.error("Erro ao testar notificação", err);
+    }
+  };
+
   useEffect(() => {
     const fetchUnreadNotifications = async () => {
       try {
         const token = await getAccessTokenSilently();
 
-        const res = await fetch(`${API_URL}/utilizador/notificacoes`, {
+        const res = await fetch(`${API_URL}/api/utilizador/notificacoes`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -86,6 +104,7 @@ const Header = () => {
           }
         />
       </div>
+      <button onClick={testNotification}>Testar notificação</button>
     </header>
   );
 };
