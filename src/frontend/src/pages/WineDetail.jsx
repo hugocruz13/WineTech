@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import "../styles/WineDetail.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,11 +12,18 @@ const WineDetail = () => {
   const [wine, setWine] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const fetchWine = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/vinho/${id}`);
+        const token = await getAccessTokenSilently();
+
+        const response = await fetch(`${API_URL}/api/vinho/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (!response.ok) {
           throw new Error("Erro ao carregar vinho");
         }
