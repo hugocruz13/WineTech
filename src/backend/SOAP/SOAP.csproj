@@ -76,6 +76,7 @@
     <Content Include="Services\AdegaRepositoryService.asmx" />
     <Content Include="Services\CarrinhoRepositoryService.asmx" />
     <Content Include="Services\CompraRepositoryService.asmx" />
+    <Content Include="Services\LeiturasRepositoryService.asmx" />
     <Content Include="Services\NotificacaoRepositoryService.asmx" />
     <Content Include="Services\SensoresRepositoryService.asmx" />
     <Content Include="Services\UtilizadorRepositoryService.asmx" />
@@ -101,6 +102,7 @@
     <Compile Include="Repository\CompraRepository.cs" />
     <Compile Include="Repository\DbConnectionFactory.cs" />
     <Compile Include="Models\StockInput.cs" />
+    <Compile Include="Repository\LeiturasRepository.cs" />
     <Compile Include="Repository\NotificacaoRepository.cs" />
     <Compile Include="Repository\SensoresRepository.cs" />
     <Compile Include="Repository\UtilizadorRepository.cs" />
@@ -115,6 +117,10 @@
     </Compile>
     <Compile Include="Services\CompraRepositoryService.asmx.cs">
       <DependentUpon>CompraRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\LeiturasRepositoryService.asmx.cs">
+      <DependentUpon>LeiturasRepositoryService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\NotificacaoRepositoryService.asmx.cs">

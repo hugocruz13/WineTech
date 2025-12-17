@@ -1,0 +1,54 @@
+﻿using NLog;
+using SOAP.Repository;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Services;
+
+namespace SOAP.Services
+{
+
+    [WebService(Namespace = "http://tempuri.org/")]
+    [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
+    [System.ComponentModel.ToolboxItem(false)]
+    public class LeiturasRepositoryService : WebService
+    {
+        private readonly LeiturasRepository _repository;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        public LeiturasRepositoryService()
+        {
+            var connectionFactory = new DbConnectionFactory();
+            _repository = new LeiturasRepository(connectionFactory);
+        }
+
+        [WebMethod]
+        public List<Models.Leituras> InserirLeitura(Models.Leituras leitura)
+        {
+            try
+            {
+                return _repository.InserirLeitura(leitura);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao inserir leitura");
+                throw new Exception("Erro ao inserir leitura: " + ex.Message);
+            }
+        }
+
+        [WebMethod]
+        public List<Models.Leituras> ObterLeiturasPorSensor(int sensorId)
+        {
+            try
+            {
+                return _repository.ObterLeiturasPorSensor(sensorId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter Sensores");
+                throw new Exception("Erro ao obter Sensores: " + ex.Message);
+            }
+        }
+    }
+}
