@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import WineCard from "../components/WineCard";
 import Loading from "../components/Loading";
-import "../styles/Home.css";
+import "../styles/HomePage.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const Home = () => {
+const HomePage = () => {
   const [wines, setWines] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -59,4 +59,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

@@ -13,12 +13,12 @@ import "react-toastify/dist/ReactToastify.css";
 import useNotificationSocket from "./hooks/useNotificationSocket";
 import { showNotificationToast } from "./utils/notificationToast";
 
-import SignIn from "./pages/SignIn";
-import Home from "./pages/Home";
-import Dashboard from "./pages/Dashboard";
+import SignInPage from "./pages/SignInPage";
+import HomePage from "./pages/HomePage";
+import DashboardPage from "./pages/DashboardPage";
 import RoleGuard from "./components/RoleGuard";
 import Loading from "./components/Loading";
-import WineDetail from "./pages/WineDetail";
+import WineDetailPage from "./pages/WineDetailPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import JWT from "./pages/Jwt";
 
@@ -53,8 +53,8 @@ function AppContent() {
 
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/vinho/:id" element={<WineDetail />} />
+      <Route path="/" element={<HomePage />} />
+      <Route path="/vinho/:id" element={<WineDetailPage />} />
       <Route
         path="/notificacoes"
         element={
@@ -68,7 +68,7 @@ function AppContent() {
         path="/dashboard"
         element={
           <RoleGuard role="owner">
-            <Dashboard />
+            <DashboardPage />
           </RoleGuard>
         }
       />
@@ -81,7 +81,7 @@ function App() {
   const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) return <Loading />;
-  if (!isAuthenticated) return <SignIn />;
+  if (!isAuthenticated) return <SignInPage />;
 
   return (
     <Router>

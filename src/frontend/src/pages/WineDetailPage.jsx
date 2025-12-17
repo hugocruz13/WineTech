@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import "../styles/WineDetail.css";
-import { useAuth0 } from "@auth0/auth0-react";
+import "../styles/WineDetailPage.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const WineDetail = () => {
+const WineDetailPage = () => {
   const { id } = useParams();
   const [wine, setWine] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -85,4 +85,4 @@ const WineDetail = () => {
   );
 };
 
-export default WineDetail;
+export default WineDetailPage;

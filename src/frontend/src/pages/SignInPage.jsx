@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import "../styles/SignIn.css";
+import "../styles/SignInPage.css";
 
-const SignIn = () => {
+const SignInPage = () => {
   const { loginWithRedirect } = useAuth0();
 
   return (
@@ -17,4 +17,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignInPage;
