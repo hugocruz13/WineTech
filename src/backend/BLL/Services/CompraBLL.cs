@@ -30,7 +30,10 @@ namespace BLL.Services
             var carrinhos = await _carrinhoDAL.ObterCarrinhoPorUtilizador(utilizadorId);
 
             if (carrinhos == null || !carrinhos.Any())
+            {
+                await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Erro na compra", Mensagem = "O seu carrinho está vazio.", Tipo = TipoNotificacao.Erro, UtilizadorId = utilizadorId });
                 return false;
+            }
 
             if (string.IsNullOrEmpty(utilizadorId))
                 throw new ArgumentException("User ID cannot be null or empty", nameof(utilizadorId));
@@ -41,8 +44,13 @@ namespace BLL.Services
                 return false;
 
             Compra compra = await _compraDAL.CriarCompra(new Compra { UtilizadorId = utilizadorId });
+
             if (compra == null)
+            {
+                await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Erro na compra", Mensagem = "Erro ao iniciar a compra. Tente novamente mais tarde.", Tipo = TipoNotificacao.Erro, UtilizadorId = utilizadorId });
                 return false;
+            }
+
 
             double total = 0;
 
@@ -56,7 +64,10 @@ namespace BLL.Services
                     return false;
 
                 if (stockIds.Count < item.Quantidade)
+                {
+                    await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Erro na compra", Mensagem = $"Stock insuficiente para o vinho '{vinho.Nome}'.", Tipo = TipoNotificacao.Erro, UtilizadorId = utilizadorId });
                     return false;
+                }
 
                 total += vinho.Preco * item.Quantidade;
 
@@ -64,7 +75,10 @@ namespace BLL.Services
 
                 bool criada = await _compraDAL.CriarLinha(linha);
                 if (!criada)
+                {
+                    await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Erro na compra", Mensagem = $"Erro ao processar o vinho '{vinho.Nome}'.", Tipo = TipoNotificacao.Erro, UtilizadorId = utilizadorId });
                     return false;
+                }
 
                 bool finalizada = await _compraDAL.FinalizarCompra(linha);
                 if (!finalizada)
@@ -73,18 +87,21 @@ namespace BLL.Services
 
             compra.ValorTotal = total;
             bool atualizou = await _compraDAL.AtualizarValorTotal(compra);
+
             if (!atualizou)
-                return false;
-
-            await _carrinhoDAL.EliminarCarrinhoPorUtilizador(utilizadorId);
-
-            await _notificacaoBLL.InserirNotificacao(new Notificacao
             {
-                Titulo = "Compra concluída com sucesso",
-                Mensagem = "A sua encomenda foi processada com sucesso. Obrigado pela sua preferência.",
-                Tipo = TipoNotificacao.Sucesso,
-                UtilizadorId = utilizadorId
-            });
+                await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Erro na compra", Mensagem = "Erro ao calcular o valor total da compra.", Tipo = TipoNotificacao.Erro, UtilizadorId = utilizadorId });
+                return false;
+            }
+
+            bool x = await _carrinhoDAL.EliminarCarrinhoPorUtilizador(utilizadorId);
+
+            if (x == false)
+            {
+                await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Aviso", Mensagem = "A compra foi concluída, mas ocorreu um erro ao limpar o carrinho.", Tipo = TipoNotificacao.Informacao, UtilizadorId = utilizadorId });
+            }
+
+            await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Compra concluída com sucesso", Mensagem = "A sua encomenda foi processada com sucesso. Obrigado pela sua preferência.", Tipo = TipoNotificacao.Sucesso, UtilizadorId = utilizadorId });
 
             return true;
         }
