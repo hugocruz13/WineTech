@@ -69,29 +69,5 @@ namespace BLL.Services
         {
             return await _notificacaoDAL.MarcarNotificacaoComoLida(idNotificacao);
         }
-
-        public async Task NotificacaoTesteParaUtilizador(string utilizadorId)
-        {
-            if (string.IsNullOrWhiteSpace(utilizadorId))
-                throw new ArgumentException("Utilizador inválido");
-
-            var utilizador = await _utilizadorDAL.GetUserByIdAsync(utilizadorId);
-
-            if (utilizador == null)
-                throw new ArgumentException("Utilizador não encontrado");
-
-            var notificacao = new Notificacao
-            {
-                UtilizadorId = utilizador.Id,
-                Titulo = "Notificação de teste",
-                Mensagem = $"Olá {utilizador.Nome}, esta é uma notificação em tempo real 🚀",
-                Tipo = TipoNotificacao.Alerta,
-                CreatedAt = DateTime.UtcNow,
-                Lida = false
-            };
-
-            await InserirNotificacao(notificacao);
-        }
-
     }
 }

@@ -14,6 +14,8 @@ namespace API.Hubs
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, userId);
             }
+
+            await base.OnConnectedAsync();
         }
     }
 }

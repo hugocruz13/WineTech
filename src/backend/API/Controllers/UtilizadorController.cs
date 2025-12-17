@@ -61,15 +61,5 @@ namespace API.Controllers
                 return NotFound(new { success = false, message = "Notificação não encontrada." });
             return Ok(new { success = true, data = result });
         }
-
-        [Authorize]
-        [HttpGet("notificacoes/teste")]
-        public async Task<IActionResult> GetNotificacoes()
-        {
-            var sub = User.FindFirst("sub")?.Value;
-
-            await _notificacaobll.NotificacaoTesteParaUtilizador(sub);
-            return Ok("Notificação enviada");
-        }
     }
 }

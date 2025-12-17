@@ -14,13 +14,15 @@ namespace BLL.Services
         private readonly IVinhoDAL _vinhoDAL;
         private readonly IUtilizadorDAL _utilizadorDAL;
         private readonly ICarrinhoDAL _carrinhoDAL;
+        private readonly INotificacaoBLL _notificacaoBLL;
 
-        public CompraBLL(ICompraDAL compraDAL, IVinhoDAL vinhoDAL, IUtilizadorDAL utilizadorDAL, ICarrinhoDAL carrinhoDAL)
+        public CompraBLL(ICompraDAL compraDAL, IVinhoDAL vinhoDAL, IUtilizadorDAL utilizadorDAL, ICarrinhoDAL carrinhoDAL, INotificacaoBLL notificacaoBLL)
         {
             _compraDAL = compraDAL;
             _vinhoDAL = vinhoDAL;
             _utilizadorDAL = utilizadorDAL;
             _carrinhoDAL = carrinhoDAL;
+            _notificacaoBLL = notificacaoBLL;
         }
 
         public async Task<bool> ProcessarCarrinho(string utilizadorId)
@@ -73,6 +75,14 @@ namespace BLL.Services
             bool atualizou = await _compraDAL.AtualizarValorTotal(compra);
             if (!atualizou)
                 return false;
+
+            await _notificacaoBLL.InserirNotificacao(new Notificacao
+            {
+                Titulo = "Compra concluída com sucesso",
+                Mensagem = "A sua encomenda foi processada com sucesso. Obrigado pela sua preferência.",
+                Tipo = TipoNotificacao.Sucesso,
+                UtilizadorId = utilizadorId
+            });
 
             //apagar carrinho do utilizador
 
