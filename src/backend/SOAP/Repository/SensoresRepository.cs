@@ -67,7 +67,7 @@ namespace SOAP.Repository
                             IdentificadorHardware = reader["IdentificadorHardware"].ToString(),
                             Tipo = reader["Tipo"].ToString(),
                             Estado = Convert.ToBoolean(reader["Estado"]),
-                            ImagemUrl = reader["ImagemUrl"].ToString(),
+                            //ImagemUrl = reader["ImagemUrl"] == DBNull.Value ? null : reader["ImagemUrl"].ToString(),
                             AdegaId = Convert.ToInt32(reader["AdegaId"])
                         });
                     }
@@ -75,6 +75,64 @@ namespace SOAP.Repository
             }
             return lista;
         }
+        public List<Models.Sensores> ObterSensoresPorAdega(int adegaId)
+        {
+            List<Models.Sensores> lista = new List<Models.Sensores>();
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterSensoresPorAdega", conn))
+            {
+
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdegaId", adegaId);
+
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Models.Sensores
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            IdentificadorHardware = reader["IdentificadorHardware"].ToString(),
+                            Tipo = reader["Tipo"].ToString(),
+                            Estado = Convert.ToBoolean(reader["Estado"]),
+                            //ImagemUrl = reader["ImagemUrl"] == DBNull.Value ? null : reader["ImagemUrl"].ToString(),
+                            AdegaId = Convert.ToInt32(reader["AdegaId"])
+                        });
+
+                    }
+                }
+            }
+            return lista;
+        }
+        public List<Models.Leituras> ObterLeiturasPorSensor(int sensorId)
+        {
+            List<Models.Leituras> lista = new List<Models.Leituras>();
+
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterLeiturasPorSensor", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@SensorId", sensorId);
+
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Models.Leituras
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            SensorId = Convert.ToInt32(reader["SensorId"]),
+                            Valor = Convert.ToSingle(reader["Valor"]),
+                            DataHora = Convert.ToDateTime(reader["DataHora"])
+                        });
+                    }
+                }
+            }
+            return lista;
+        }
+
 
     }
 }

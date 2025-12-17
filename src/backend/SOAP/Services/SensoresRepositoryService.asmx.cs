@@ -53,5 +53,31 @@ namespace SOAP.Services
                 throw new Exception("Erro ao listar todos os sensores: " + ex.Message);
             }
         }
+        [WebMethod]
+        public List<Models.Sensores> ObterSensoresPorAdega(int adegaId)
+        {
+            try
+            {
+                return _repository.ObterSensoresPorAdega(adegaId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter Sensores");
+                throw new Exception("Erro ao obter Sensores: " + ex.Message);
+            }
+        }
+        [WebMethod]
+        public List<Models.Leituras> ObterLeiturasPorSensor(int sensorId)
+        {
+            try
+            {
+                return _repository.ObterLeiturasPorSensor(sensorId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter Sensores");
+                throw new Exception("Erro ao obter Sensores: " + ex.Message);
+            }
+        }
     }
 }
