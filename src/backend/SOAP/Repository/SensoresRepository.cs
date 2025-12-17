@@ -107,34 +107,5 @@ namespace SOAP.Repository
             }
             return lista;
         }
-        public List<Models.Leituras> ObterLeiturasPorSensor(int sensorId)
-        {
-            List<Models.Leituras> lista = new List<Models.Leituras>();
-
-            using (var conn = _connectionFactory.GetConnection())
-            using (var cmd = new SqlCommand("ObterLeiturasPorSensor", conn))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@SensorId", sensorId);
-
-                conn.Open();
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        lista.Add(new Models.Leituras
-                        {
-                            Id = Convert.ToInt32(reader["Id"]),
-                            SensorId = Convert.ToInt32(reader["SensorId"]),
-                            Valor = Convert.ToSingle(reader["Valor"]),
-                            DataHora = Convert.ToDateTime(reader["DataHora"])
-                        });
-                    }
-                }
-            }
-            return lista;
-        }
-
-
     }
 }

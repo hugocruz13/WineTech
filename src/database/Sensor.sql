@@ -57,21 +57,4 @@ BEGIN
 END;
 GO
 
---Obter leituras de um sensor
-CREATE OR ALTER PROCEDURE ObterLeiturasPorSensor
-    @SensorId INT
-AS
-BEGIN
-    SET NOCOUNT ON;
-
-    SELECT
-        Id,
-        SensorId,
-        Valor,
-        DataHora
-    FROM Leituras
-    WHERE SensorId = @SensorId
-    ORDER BY DataHora DESC;
-END;
-GO
 
