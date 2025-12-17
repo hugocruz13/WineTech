@@ -1,0 +1,67 @@
+--Criar e Associar um Sensor a uma Adega
+CREATE OR ALTER PROCEDURE InserirSensor
+    @IdentificadorHardware NVARCHAR(255),
+    @Tipo NVARCHAR(255),
+    @Estado BIT,
+    @AdegaId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO Sensores (IdentificadorHardware, Tipo, Estado, AdegaId)
+    VALUES (@IdentificadorHardware, @Tipo, @Estado, @AdegaId);
+END;
+GO
+
+--Obter todos os Sensores
+CREATE OR ALTER PROCEDURE ObterSensores
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        Id,
+        IdentificadorHardware,
+        Tipo,
+        Estado,
+        AdegaId
+    FROM Sensores;
+END;
+GO
+
+--Obter Sensores de uma Adega especifíca
+CREATE OR ALTER PROCEDURE ObterSensoresPorAdega
+    @AdegaId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        Id,
+        IdentificadorHardware,
+        Tipo,
+        Estado,
+        AdegaId
+    FROM Sensores
+    WHERE AdegaId = @AdegaId;
+END;
+GO
+
+--Obter leituras de um sensor
+CREATE OR ALTER PROCEDURE ObterLeiturasPorSensor
+    @SensorId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        Id,
+        SensorId,
+        Valor,
+        DataHora
+    FROM Leituras
+    WHERE SensorId = @SensorId
+    ORDER BY DataHora DESC;
+END;
+GO
+
