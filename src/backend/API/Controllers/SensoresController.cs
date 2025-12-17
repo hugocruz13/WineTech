@@ -73,6 +73,82 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
+        [HttpGet]
+        public async Task<ActionResult> Get()
+        {
+            try
+            {
+                List<Models.Sensores> sensores = await _sensoresBLL.TodosSensores();
+                var data = sensores.Select(a => new
+                {
+                    id = a.Id,
+                    identificadorHardware = a.IdentificadorHardware,
+                    tipo = a.Tipo,
+                    estado = a.Estado,
+                    imagemUrl = a.ImagemUrl,
+                    adegaId = a.AdegaId,
+                }).ToList();
+
+                return Ok(new { success = true, data = data });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("{adegaId}")]
+        public async Task<IActionResult> Get(int adegaId)
+        {
+            try
+            {
+                if (adegaId <= 0)
+                    return BadRequest(new { success = false, message = "Adega inválida." });
+
+                List<Models.Sensores> sensores = await _sensoresBLL.ObterSensoresPorAdega(adegaId);
+
+                var data = sensores.Select(s => new
+                {
+                    id = s.Id,
+                    identificadorHardware = s.IdentificadorHardware,
+                    tipo = s.Tipo,
+                    estado = s.Estado,
+                    imagemUrl = s.ImagemUrl,
+                    adegaId = s.AdegaId
+                }).ToList();
+
+                return Ok(new { success = true, data = data });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
+        [HttpGet("{sensorId}/leituras")]
+        public async Task<IActionResult> GetLeiturasPorSensor(int sensorId)
+        {
+            try
+            {
+                if (sensorId <= 0)
+                    return BadRequest(new { success = false, message = "Sensor inválido." });
+
+                List<Models.Leituras> leituras = await _sensoresBLL.ObterLeiturasPorSensor(sensorId);
+
+                var data = leituras.Select(l => new
+                {
+                    id = l.Id,
+                    sensorId = l.SensorId,
+                    valor = l.Valor,
+                    dataHora = l.DataHora
+                }).ToList();
+
+                return Ok(new { success = true, data = data });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
 
     }
 }

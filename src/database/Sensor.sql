@@ -32,6 +32,7 @@ BEGIN
         IdentificadorHardware,
         Tipo,
         Estado,
+        ImagemUrl,
         AdegaId
     FROM Sensores;
 END;
@@ -49,6 +50,7 @@ BEGIN
         IdentificadorHardware,
         Tipo,
         Estado,
+        ImagemUrl,
         AdegaId
     FROM Sensores
     WHERE AdegaId = @AdegaId;

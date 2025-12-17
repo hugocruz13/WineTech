@@ -79,5 +79,6 @@ namespace SOAP.Services
                 throw new Exception("Erro ao obter Sensores: " + ex.Message);
             }
         }
+
     }
 }
