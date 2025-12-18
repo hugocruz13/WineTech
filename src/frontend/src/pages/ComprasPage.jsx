@@ -56,7 +56,7 @@ export default function ComprasPage() {
 
       <div className={styles.ordersContainer}>
         <div className={styles.ordersHeader}>
-          <h2 className={styles.ordersTitle}>As Minhas Encomendas</h2>
+          <h2 className={styles.ordersTitle}>As Minhas Compras</h2>
           <p className={styles.ordersSubtitle}>
             Consulte o histórico das suas compras e reveja os detalhes de cada
             encomenda.

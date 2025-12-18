@@ -1,4 +1,5 @@
 ﻿using NLog;
+using SOAP.Models;
 using SOAP.Repository;
 using System;
 using System.Collections.Generic;
@@ -48,6 +49,20 @@ namespace SOAP.Services
             {
                 Logger.Error(ex, "Erro ao obter Sensores");
                 throw new Exception("Erro ao obter Sensores: " + ex.Message);
+            }
+        }
+
+        [WebMethod]
+        public LeiturasStock ObterLeiturasStock(int stockId)
+        {
+            try
+            {
+                return _repository.ObterLeiturasStock(stockId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter LeiturasStock");
+                throw new Exception("Erro ao obter LeiturasStock: " + ex.Message);
             }
         }
     }

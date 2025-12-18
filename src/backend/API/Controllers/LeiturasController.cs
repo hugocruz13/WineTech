@@ -79,5 +79,22 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
+
+        [HttpGet("{stockId}/leituras/stock")]
+        public async Task<IActionResult> GetUltimaLeituraPorSensor(int stockId)
+        {
+            try
+            {
+                if (stockId <= 0)
+                    return BadRequest(new { success = false, message = "Sensor inválido." });
+
+                LeiturasStock leiturasStock = await _leiturasBLL.ObterUltimaLeituraPorSensor(stockId);
+                return Ok(new { success = true, data = leiturasStock });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
     }
 }

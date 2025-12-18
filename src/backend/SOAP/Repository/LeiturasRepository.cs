@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 
 namespace SOAP.Repository
 {
@@ -68,6 +66,64 @@ namespace SOAP.Repository
                 }
             }
             return lista;
+        }
+
+        public LeiturasStock ObterLeiturasStock(int stockId)
+        {
+            var stock = new LeiturasStock
+            {
+                Temperatura = new List<Temp>(),
+                Humidade = new List<Hum>(),
+                Luminosidade = new List<Lum>()
+            };
+
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterLeiturasPorStock", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StockId", stockId);
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string tipo = reader["TipoSensor"].ToString();
+                        DateTime dataHora = Convert.ToDateTime(reader["DataHora"]);
+                        double valor = Convert.ToDouble(reader["Valor"]);
+
+                        switch (tipo)
+                        {
+                            case "Temperatura":
+                                stock.Temperatura.Add(new Temp
+                                {
+                                    temperatura = valor,
+                                    dataHora = dataHora
+                                });
+                                break;
+
+                            case "Humidade":
+                                stock.Humidade.Add(new Hum
+                                {
+                                    humidade = valor,
+                                    dataHora = dataHora
+                                });
+                                break;
+
+                            case "Luminosidade":
+                                stock.Luminosidade.Add(new Lum
+                                {
+                                    luminosidade = Convert.ToInt32(valor),
+                                    dataHora = dataHora
+                                });
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return stock;
         }
     }
 }

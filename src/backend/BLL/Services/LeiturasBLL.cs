@@ -5,18 +5,21 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Models;
 
 namespace BLL.Services
 {
     public class LeiturasBLL : ILeiturasBLL
     {
         private readonly ILeiturasDAL _leiturasDAL;
+        private readonly IAdegaBLL _adegaBLL;
 
-        public LeiturasBLL(ILeiturasDAL leiturasDAL)
+        public LeiturasBLL(ILeiturasDAL leiturasDAL, IAdegaBLL adegaBLL)
         {
             _leiturasDAL = leiturasDAL;
+            _adegaBLL = adegaBLL;
         }
-        public async Task<Models.Leituras> InserirLeitura(Models.Leituras leitura)
+        public async Task<Leituras> InserirLeitura(Leituras leitura)
         {
             if (leitura == null)
                 throw new ArgumentNullException(nameof(leitura));
@@ -29,14 +32,22 @@ namespace BLL.Services
 
             return await _leiturasDAL.InserirLeitura(leitura);
         }
-        public async Task<List<Models.Leituras>> ObterLeiturasPorSensor(int sensorId)
+        public async Task<List<Leituras>> ObterLeiturasPorSensor(int sensorId)
         {
             if (sensorId <= 0)
                 throw new ArgumentException("Sensor inválido.", nameof(sensorId));
 
             var leituras = await _leiturasDAL.ObterLeiturasPorSensor(sensorId);
 
-            return leituras ?? new List<Models.Leituras>();
+            return leituras ?? new List<Leituras>();
+        }
+
+        public async Task<LeiturasStock> ObterUltimaLeituraPorSensor(int stockId)
+        {
+            if (stockId <= 0)
+                throw new ArgumentException("Sensor inválido.", nameof(stockId));            
+
+            return await _leiturasDAL.ObterLeiturasStock(stockId);
         }
     }
 }
