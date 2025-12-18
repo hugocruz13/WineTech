@@ -25,4 +25,11 @@ namespace IoT.Api.ApiModels
         GERADO,
         DESCONHECIDO 
     }
+    public enum TipoSensor
+    {
+        Temperatura,
+        Luminosidade,
+        Humidade,
+        DESCONHECIDO
+    }
 }

@@ -1,4 +1,5 @@
-﻿using IoT.Sensores;
+﻿using IoT.Logica;
+using IoT.Sensores;
 using System;
 using System.Globalization;
 using System.IO.Ports;
@@ -14,31 +15,28 @@ namespace IoT
         static async Task Main(string[] args)
         {
             Console.WriteLine("=== IoT iniciado ===");
-            var apiClient = new ApiClient();
+            var apiClient = new ApiClient(); 
 
-            // Ciclo infinito para simular o serviço a correr 24/7
+            // Ciclo infinito
             while (true)
             {
                 try
                 {
                     Console.WriteLine($"\n--- Ciclo iniciado: {DateTime.Now.ToLongTimeString()} ---");
 
-                    await apiClient.GetSensores();
+
+                    var listaSensores = await apiClient.GetSensores();
+
+
+                    await SensorCache.VerificarNovosSensores(listaSensores);
+
 
                     if (SensorCache.SensoresEmMemoria.Count > 0)
                     {
                         foreach (var sensor in SensorCache.SensoresEmMemoria)
                         {
-                            float valorSimulado = (float)new Random().NextDouble() * 100;
 
-                            var leitura = new IoT.Api.ApiModels.LeituraDTO
-                            {
-                                SensorId = sensor.Id,
-                                Valor = valorSimulado,
-                            };
-
-                            Console.WriteLine($"-> A enviar leitura para Sensor {sensor.Id} ({sensor.Tipo})...");
-                            await apiClient.InserirLeitura(leitura);
+                            await ValueResolver.ConfigurarSensor(sensor);
                         }
                     }
                     else
@@ -57,3 +55,4 @@ namespace IoT
         }
     }
 }
+

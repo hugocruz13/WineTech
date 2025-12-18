@@ -12,7 +12,7 @@ public class ApiClient
     private static readonly JsonSerializerOptions _jsonOptions =
         new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-    public async Task InserirLeitura(IoT.Api.ApiModels.LeituraDTO leitura)
+    public async static Task InserirLeitura(IoT.Api.ApiModels.LeituraDTO leitura)
     {
         var client = new HttpClient();
 
