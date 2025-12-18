@@ -41,30 +41,31 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
+    DECLARE @DataEntradaStock DATETIME2;
     DECLARE @DataCompra DATETIME2;
 
-    -- Obter a data da compra associada ao stock
+    -- Data em que a garrafa entrou em stock
+    SELECT @DataEntradaStock = CreatedAt
+    FROM Stock
+    WHERE Id = @StockId;
+
+    -- Data da compra (se j� foi comprada)
     SELECT @DataCompra = MAX(c.DataCompra)
     FROM LinhasCompra lc
     INNER JOIN Compras c ON c.Id = lc.ComprasId
     WHERE lc.StockId = @StockId;
 
     SELECT
-        se.Tipo AS TipoSensor,
+        se.Tipo       AS TipoSensor,
         le.Valor,
         le.DataHora
     FROM Stock st
-    INNER JOIN Adega a
-        ON a.Id = st.AdegaId
-    INNER JOIN Sensores se
-        ON se.AdegaId = a.Id
-    INNER JOIN Leituras le
-        ON le.SensorId = se.Id
+    INNER JOIN Adega a       ON a.Id = st.AdegaId
+    INNER JOIN Sensores se  ON se.AdegaId = a.Id
+    INNER JOIN Leituras le  ON le.SensorId = se.Id
     WHERE st.Id = @StockId
-      AND le.DataHora >= st.CreatedAt
-      AND le.DataHora <= ISNULL(@DataCompra, GETDATE())
-    ORDER BY se.Tipo, le.DataHora;
+      AND le.DataHora >= @DataEntradaStock
+      AND le.DataHora <= ISNULL(@DataCompra, SYSDATETIME())
+    ORDER BY le.DataHora;
 END;
 GO
-
-EXEC ObterLeiturasPorStock 3

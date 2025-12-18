@@ -88,12 +88,43 @@ namespace API.Controllers
                 if (stockId <= 0)
                     return BadRequest(new { success = false, message = "Sensor inválido." });
 
-                LeiturasStock leiturasStock = await _leiturasBLL.ObterUltimaLeituraPorSensor(stockId);
-                return Ok(new { success = true, data = leiturasStock });
+                LeiturasStock leiturasStock =
+                    await _leiturasBLL.ObterUltimaLeituraPorSensor(stockId);
+
+                if (leiturasStock == null)
+                    return Ok(new { success = true, data = (object)null });
+
+                var data = new
+                {
+                    temperatura = leiturasStock.Temperatura.Select(t => new
+                    {
+                        temperatura = t.temperatura,
+                        dataHora = t.dataHora.ToString("HH:mm")
+                    }),
+
+                    humidade = leiturasStock.Humidade.Select(h => new
+                    {
+                        humidade = h.humidade,
+                        dataHora = h.dataHora.ToString("HH:mm")
+                    }),
+
+                    luminosidade = leiturasStock.Luminosidade.Select(l => new
+                    {
+                        luminosidade = l.luminosidade,
+                        dataHora = l.dataHora.ToString("HH:mm")
+                    })
+                };
+
+                return Ok(new { success = true, data });
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Erro ao obter leituras",
+                    error = ex.Message
+                });
             }
         }
     }

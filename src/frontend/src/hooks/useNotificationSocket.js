@@ -27,7 +27,7 @@ export default function useNotificationSocket(onNotification) {
       connection.on("ReceiveNotification", onNotification);
 
       await connection.start();
-      console.log("🔌 SignalR global ligado");
+      console.log("SignalR global ligado");
     };
 
     start();

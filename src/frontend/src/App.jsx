@@ -22,6 +22,7 @@ import RoleGuard from "./components/RoleGuard";
 import Loading from "./components/Loading";
 import WineDetailPage from "./pages/WineDetailPage";
 import NotificationsPage from "./pages/NotificationsPage";
+import IotClientePage from "./pages/IotClientePage";
 import CarrinhoPage from "./pages/CarrinhoPage";
 import JWT from "./pages/Jwt";
 
@@ -74,6 +75,8 @@ function AppContent() {
       <Route path="/compras" element={<ComprasPage />} />
       <Route path="/compra/:id" element={<ComprasDetalhes />} />
       <Route path="/carrinho" element={<CarrinhoPage />} />
+      <Route path="/iot/:stockId" element={<IotClientePage />} />
+
       <Route
         path="/dashboard"
         element={

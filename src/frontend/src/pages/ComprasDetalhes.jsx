@@ -1,5 +1,6 @@
 import Header from "../components/Header";
 import Loading from "../components/Loading";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CreditCard, Mail } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -11,6 +12,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 export default function CompraDetalhe() {
   const { id } = useParams();
   const { getAccessTokenSilently } = useAuth0();
+  const navigate = useNavigate();
 
   const [dados, setDados] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -125,6 +127,7 @@ export default function CompraDetalhe() {
                     <button
                       className={styles.iotBtn}
                       title="Consultar temperatura da garrafa"
+                      onClick={() => navigate(`/iot/${item.stockId}`)}
                     >
                       Ver IoT
                     </button>
