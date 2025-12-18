@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import WineCard from "../components/WineCard";
 import Loading from "../components/Loading";
-import "../styles/HomePage.css";
+import styles from "../styles/HomePage.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -19,6 +19,7 @@ const HomePage = () => {
         if (!response.ok) {
           throw new Error("Erro ao carregar vinhos");
         }
+
         const result = await response.json();
         setWines(result.data);
       } catch (err) {
@@ -34,11 +35,12 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <main className="home-container">
-        {loading && <Loading />}
-        {error && <p className="error">{error}</p>}
 
-        <div className="wine-grid">
+      <main className={styles.homeContainer}>
+        {loading && <Loading />}
+        {error && <p className={styles.error}>{error}</p>}
+
+        <div className={styles.wineGrid}>
           {wines.length > 0
             ? wines.map((wine) => (
                 <WineCard

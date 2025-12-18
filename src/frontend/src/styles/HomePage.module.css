@@ -1,12 +1,12 @@
 /* Container principal */
-.home-container {
+.homeContainer {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
 /* Grid de vinhos */
-.wine-grid {
+.wineGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1.8rem;
@@ -24,21 +24,21 @@
 
 /* Tablets */
 @media (max-width: 1024px) {
-  .wine-grid {
+  .wineGrid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 /* Tablets pequenos */
 @media (max-width: 768px) {
-  .wine-grid {
+  .wineGrid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 /* Mobile */
 @media (max-width: 480px) {
-  .wine-grid {
+  .wineGrid {
     grid-template-columns: 1fr;
   }
 }

@@ -1,10 +1,8 @@
 ﻿using DAL.Helpers;
 using DAL.Interfaces;
 using ServiceLeituras;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Services
@@ -20,14 +18,14 @@ namespace DAL.Services
         {
             return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
             {
-                var soapModel = new ServiceLeituras.Leituras{ SensorId = leitura.SensorId, Valor = leitura.Valor };
+                var soapModel = new ServiceLeituras.Leituras { SensorId = leitura.SensorId, Valor = leitura.Valor };
                 var response = await client.InserirLeituraAsync(soapModel);
                 var item = response.Body.InserirLeituraResult;
 
                 if (item == null)
                     return null;
 
-                return new Models.Leituras{ Id = item.Id, SensorId = item.SensorId, Valor = (float)item.Valor, DataHora = item.DataHora };
+                return new Models.Leituras { Id = item.Id, SensorId = item.SensorId, Valor = (float)item.Valor, DataHora = item.DataHora };
             });
         }
 
@@ -41,8 +39,31 @@ namespace DAL.Services
                 if (items == null)
                     return new List<Models.Leituras>();
 
-                return items.Select(item => new Models.Leituras{ Id = item.Id,SensorId = item.SensorId,Valor = (float)item.Valor,DataHora = item.DataHora}).ToList();
+                return items.Select(item => new Models.Leituras { Id = item.Id, SensorId = item.SensorId, Valor = (float)item.Valor, DataHora = item.DataHora }).ToList();
+            });
+        }
+
+        public async Task<Models.LeiturasStock> ObterLeiturasStock(int stockId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.ObterLeiturasStockAsync(stockId);
+                var item = response.Body.ObterLeiturasStockResult;
+                if (item == null)
+                    return null;
+                return new Models.LeiturasStock
+                {
+                    Temperatura = item.Temperatura.Select(t => new Models.Temp { temperatura = t.temperatura, dataHora = t.dataHora }).ToList(),
+                    Humidade = item.Humidade.Select(h => new Models.Hum { humidade = h.humidade, dataHora = h.dataHora }).ToList(),
+                    Luminosidade = item.Luminosidade.Select(l => new Models.Lum { luminosidade = l.luminosidade, dataHora = l.dataHora }).ToList()
+                };
             });
         }
     }
 }
+
+
+
+
+
+

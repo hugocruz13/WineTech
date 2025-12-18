@@ -1,10 +1,10 @@
-.page-container {
+.pageContainer {
   min-height: 100vh;
   background: #faf7f7;
 }
 
 /* ===== LAYOUT ===== */
-.carrinho-page {
+.carrinhoPage {
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px;
@@ -13,55 +13,55 @@
 }
 
 /* ===== ESQUERDA ===== */
-.carrinho-left {
+.carrinhoLeft {
   flex: 2;
 }
 
-.titulo-carrinho {
+.tituloCarrinho {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   margin-bottom: 30px;
 }
 
-.titulo-carrinho h1 {
+.tituloCarrinho h1 {
   font-size: 36px;
   font-weight: 800;
   letter-spacing: -0.5px;
 }
 
-.titulo-carrinho span {
+.tituloCarrinho span {
   font-size: 14px;
   color: #9a6b6b;
 }
 
 /* ===== ITEM ===== */
-.carrinho-item {
+.carrinhoItem {
   background: #fff;
   border-radius: 20px;
   padding: 24px;
   display: grid;
-  grid-template-columns: 90px 1fr 140px; /* 🔑 chave do layout */
+  grid-template-columns: 90px 1fr 140px;
   gap: 24px;
   align-items: center;
   margin-bottom: 20px;
   position: relative;
 }
 
-.carrinho-item img {
+.carrinhoItem img {
   width: 90px;
   height: 140px;
   object-fit: contain;
 }
 
 /* ===== INFO ===== */
-.vinho-info h3 {
+.vinhoInfo h3 {
   font-size: 18px;
   font-weight: 600;
   margin: 0;
 }
 
-.vinho-info p {
+.vinhoInfo p {
   font-size: 14px;
   color: #9a6b6b;
   margin: 6px 0 10px;
@@ -91,8 +91,8 @@
   cursor: pointer;
 }
 
-/* ===== PREÇO (CORRIGIDO) ===== */
-.vinho-preco {
+/* ===== PREÇO ===== */
+.vinhoPreco {
   text-align: right;
   display: flex;
   flex-direction: column;
@@ -100,13 +100,13 @@
   gap: 4px;
 }
 
-.vinho-preco span {
+.vinhoPreco span {
   font-size: 13px;
   font-weight: 500;
   color: #c4002a;
 }
 
-.vinho-preco strong {
+.vinhoPreco strong {
   font-size: 20px;
   font-weight: 700;
   color: #1f1f1f;
@@ -139,7 +139,7 @@
 }
 
 /* ===== DIREITA ===== */
-.carrinho-right {
+.carrinhoRight {
   flex: 1;
   background: #fff;
   border-radius: 20px;
@@ -149,7 +149,7 @@
   top: 120px;
 }
 
-.carrinho-right h2 {
+.carrinhoRight h2 {
   font-size: 22px;
   font-weight: 700;
   margin-bottom: 20px;

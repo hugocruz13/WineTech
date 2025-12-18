@@ -5,7 +5,7 @@ import { Trash2, Minus, Plus, ArrowLeft, ArrowRight } from "lucide-react";
 
 import Loading from "../components/Loading";
 import Header from "../components/Header";
-import "../styles/CarrinhoPage.css";
+import styles from "../styles/CarrinhoPage.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -132,27 +132,27 @@ const CarrinhoPage = () => {
   );
 
   return (
-    <div className="page-container">
+    <div className={styles.pageContainer}>
       <Header />
 
-      <main className="carrinho-page">
-        <div className="carrinho-left">
-          <div className="titulo-carrinho">
+      <main className={styles.carrinhoPage}>
+        <div className={styles.carrinhoLeft}>
+          <div className={styles.tituloCarrinho}>
             <h1>O Teu Carrinho</h1>
             <span>{items.length} itens</span>
           </div>
 
           {items.map((item) => (
-            <div className="carrinho-item" key={item.vinhosId}>
+            <div className={styles.carrinhoItem} key={item.vinhosId}>
               <img src={item.imagemUrl} alt={item.nomeVinho} />
 
-              <div className="vinho-info">
+              <div className={styles.vinhoInfo}>
                 <h3>{item.nomeVinho}</h3>
                 <p>
                   {item.produtor} • {item.tipo} • {item.ano}
                 </p>
 
-                <div className="quantidade">
+                <div className={styles.quantidade}>
                   <button onClick={() => removerQuantidade(item.vinhosId)}>
                     <Minus size={16} />
                   </button>
@@ -165,13 +165,13 @@ const CarrinhoPage = () => {
                 </div>
               </div>
 
-              <div className="vinho-preco">
+              <div className={styles.vinhoPreco}>
                 <span>€{item.preco.toFixed(2)} / un</span>
                 <strong>€{(item.preco * item.quantidade).toFixed(2)}</strong>
               </div>
 
               <button
-                className="remover"
+                className={styles.remover}
                 onClick={() => removerDoCarrinho(item.vinhosId)}
               >
                 <Trash2 size={18} />
@@ -179,40 +179,40 @@ const CarrinhoPage = () => {
             </div>
           ))}
 
-          <button className="continuar" onClick={() => navigate("/")}>
+          <button className={styles.continuar} onClick={() => navigate("/")}>
             <ArrowLeft size={16} />
             Continuar a comprar
           </button>
         </div>
 
-        <div className="carrinho-right">
+        <div className={styles.carrinhoRight}>
           <h2>Resumo do Pedido</h2>
 
-          <div className="linha">
+          <div className={styles.linha}>
             <span>Subtotal</span>
             <span>€{subtotal.toFixed(2)}</span>
           </div>
 
-          <div className="linha">
+          <div className={styles.linha}>
             <span>Impostos (IVA incluído)</span>
             <span>-</span>
           </div>
 
           <hr />
 
-          <div className="total">
+          <div className={styles.total}>
             <span>Total</span>
             <span>€{subtotal.toFixed(2)}</span>
           </div>
 
-          <button className="finalizar">
+          <button className={styles.finalizar}>
             Finalizar Compra
             <ArrowRight size={18} />
           </button>
 
-          <p className="seguro">PAGAMENTO 100% SEGURO</p>
+          <p className={styles.seguro}>PAGAMENTO 100% SEGURO</p>
 
-          <div className="pagamentos">
+          <div className={styles.pagamentos}>
             <span>MB WAY</span>
             <span>VISA</span>
             <span>MC</span>

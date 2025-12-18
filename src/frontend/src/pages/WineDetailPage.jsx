@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import "../styles/WineDetailPage.css";
+import styles from "../styles/WineDetailPage.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -60,11 +60,11 @@ const WineDetailPage = () => {
       setAdded(true);
 
       const cartIcon = document.querySelector(".cart-icon");
-      cartIcon?.classList.add("cart-pulse");
+      cartIcon?.classList.add(styles.cartPulse);
 
       setTimeout(() => {
         setAdded(false);
-        cartIcon?.classList.remove("cart-pulse");
+        cartIcon?.classList.remove(styles.cartPulse);
       }, 1200);
     } catch (err) {
       console.error(err);
@@ -72,34 +72,34 @@ const WineDetailPage = () => {
   };
 
   if (loading) return <Loading />;
-  if (error) return <p className="error">{error}</p>;
+  if (error) return <p className={styles.error}>{error}</p>;
   if (!wine) return null;
 
   return (
     <>
       <Header />
 
-      <main className="wd-page">
-        <section className="wd-grid">
-          <div className="wd-image-card">
+      <main className={styles.wdPage}>
+        <section className={styles.wdGrid}>
+          <div className={styles.wdImageCard}>
             <img src={wine.img || "/placeholder-wine.png"} alt={wine.nome} />
           </div>
 
-          <div className="wd-info">
-            <div className="wd-meta">
-              <span className="wd-type">{wine.tipo}</span>
-              <span className="wd-year">{wine.ano}</span>
+          <div className={styles.wdInfo}>
+            <div className={styles.wdMeta}>
+              <span className={styles.wdType}>{wine.tipo}</span>
+              <span className={styles.wdYear}>{wine.ano}</span>
             </div>
 
-            <h1 className="wd-title">{wine.nome}</h1>
-            <p className="wd-producer">{wine.produtor}</p>
+            <h1 className={styles.wdTitle}>{wine.nome}</h1>
+            <p className={styles.wdProducer}>{wine.produtor}</p>
 
-            <div className="wd-price">
+            <div className={styles.wdPrice}>
               {wine.preco.toFixed(2)} €<span>IMPOSTOS INCLUÍDOS</span>
             </div>
 
-            <div className="wd-actions">
-              <div className="wd-qty">
+            <div className={styles.wdActions}>
+              <div className={styles.wdQty}>
                 <button
                   onClick={() => setQuantidade((q) => (q > 1 ? q - 1 : 1))}
                 >
@@ -112,7 +112,7 @@ const WineDetailPage = () => {
               </div>
 
               <button
-                className={`wd-add-cart ${added ? "added" : ""}`}
+                className={`${styles.wdAddCart} ${added ? styles.added : ""}`}
                 onClick={handleAddToCart}
                 disabled={added}
               >
@@ -120,18 +120,18 @@ const WineDetailPage = () => {
               </button>
             </div>
 
-            <div className="wd-description">
+            <div className={styles.wdDescription}>
               <h3>Descrição</h3>
               <p>{wine.descricao}</p>
             </div>
 
-            <div className="wd-extra">
-              <div className="wd-extra-card">
+            <div className={styles.wdExtra}>
+              <div className={styles.wdExtraCard}>
                 <span>TEOR ALCOÓLICO</span>
                 <strong>14% Vol.</strong>
               </div>
 
-              <div className="wd-extra-card">
+              <div className={styles.wdExtraCard}>
                 <span>REGIÃO</span>
                 <strong>Douro</strong>
               </div>
