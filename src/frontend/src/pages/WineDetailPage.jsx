@@ -13,8 +13,6 @@ const WineDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [quantidade, setQuantidade] = useState(1);
-
-  // 🔥 novo estado para animação
   const [added, setAdded] = useState(false);
 
   const { getAccessTokenSilently } = useAuth0();

@@ -16,6 +16,8 @@ import { showNotificationToast } from "./utils/notificationToast";
 import SignInPage from "./pages/SignInPage";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
+import ComprasDetalhes from "./pages/ComprasDetalhes";
+import ComprasPage from "./pages/ComprasPage";
 import RoleGuard from "./components/RoleGuard";
 import Loading from "./components/Loading";
 import WineDetailPage from "./pages/WineDetailPage";
@@ -69,6 +71,8 @@ function AppContent() {
           />
         }
       />
+      <Route path="/compras" element={<ComprasPage />} />
+      <Route path="/compra/:id" element={<ComprasDetalhes />} />
       <Route path="/carrinho" element={<CarrinhoPage />} />
       <Route
         path="/dashboard"

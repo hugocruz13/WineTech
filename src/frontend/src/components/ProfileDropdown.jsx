@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { User, LogOut, ShoppingBag } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useNavigate } from "react-router-dom";
 import "../styles/ProfileDropdown.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ProfileDropdown = ({ open, onToggle }) => {
   const [apiUser, setApiUser] = useState(null);
+
   const { logout, getAccessTokenSilently } = useAuth0();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout({ logoutParams: { returnTo: window.location.origin } });
@@ -15,8 +18,6 @@ const ProfileDropdown = ({ open, onToggle }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      console.log(import.meta.env.VITE_API_URL);
-
       try {
         const token = await getAccessTokenSilently();
 
@@ -25,6 +26,10 @@ const ProfileDropdown = ({ open, onToggle }) => {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        if (!res.ok) {
+          throw new Error("Erro ao carregar perfil");
+        }
 
         const data = await res.json();
         setApiUser(data);
@@ -59,13 +64,26 @@ const ProfileDropdown = ({ open, onToggle }) => {
 
           <ul className="profile-menu">
             <li>
-              <button className="menu-item">
+              <button
+                className="menu-item"
+                onClick={() => {
+                  navigate("/perfil");
+                  onToggle();
+                }}
+              >
                 <User size={16} className="menu-icon" />
                 <span>Ver Perfil</span>
               </button>
             </li>
+
             <li>
-              <button className="menu-item">
+              <button
+                className="menu-item"
+                onClick={() => {
+                  navigate("/compras");
+                  onToggle();
+                }}
+              >
                 <ShoppingBag size={16} className="menu-icon" />
                 <span>Minhas Compras</span>
               </button>

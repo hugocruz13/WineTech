@@ -1,12 +1,12 @@
 import Header from "../components/Header";
 
-const DashboardPage = () => {
+const ComprasDetalhes = () => {
   return (
     <>
       <Header />
-      <h1>DashboardPage</h1>
+      <h1>ComprasDetalhes</h1>
     </>
   );
 };
 
-export default DashboardPage;
+export default ComprasDetalhes;

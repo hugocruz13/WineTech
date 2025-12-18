@@ -82,7 +82,11 @@ const Header = () => {
 
       <div className="actions-section">
         <RoleVisibility role="owner">
-          <button className="icon-btn" aria-label="Adegas">
+          <button
+            className="icon-btn"
+            aria-label="Adegas"
+            onClick={() => navigate("/dashboard")}
+          >
             <Warehouse size={22} />
           </button>
         </RoleVisibility>
