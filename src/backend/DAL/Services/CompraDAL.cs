@@ -132,7 +132,12 @@ namespace DAL.Services
                         Ano = item.Ano,
                         Tipo = item.Tipo,
                         Quantidade = item.Quantidade,
-                        Preco = item.Preco
+                        Preco = item.Preco,
+                        ImgVinho = item.ImgVinho,
+                        NomeUtilizador = item.NomeUtilizador,
+                        EmailUtilizador = item.EmailUtilizador,
+                        ImagemUtilizador = item.ImagemUtilizador,
+                        StockId = item.StockId
                     });
                 }
                 return result;

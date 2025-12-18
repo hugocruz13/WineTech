@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import WineCard from "../components/WineCard";
 import Loading from "../components/Loading";
-import OrderCard from "../components/OrderCard";
 import "../styles/HomePage.css";
 
 const API_URL = import.meta.env.VITE_API_URL;

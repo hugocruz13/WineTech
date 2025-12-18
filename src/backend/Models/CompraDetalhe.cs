@@ -16,5 +16,10 @@ namespace Models
         public string Tipo { get; set; }
         public float Preco { get; set; }
         public int Quantidade { get; set; }
+        public string ImgVinho { get; set; }
+        public string NomeUtilizador { get; set; }
+        public string EmailUtilizador { get; set; }
+        public string ImagemUtilizador { get; set; }
+        public int StockId { get; set; }
     }
 }

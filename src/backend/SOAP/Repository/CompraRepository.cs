@@ -175,7 +175,12 @@ namespace SOAP.Repository
                             Ano = reader.GetInt32(6),
                             Tipo = reader.GetString(7),
                             Quantidade = reader.GetInt32(8),
-                            Preco = reader.GetFloat(9)
+                            Preco = reader.GetFloat(9),
+                            ImgVinho = reader.IsDBNull(11) ? null : reader.GetString(10),
+                            NomeUtilizador = reader.IsDBNull(11) ? null : reader.GetString(11),
+                            EmailUtilizador = reader.IsDBNull(12) ? null : reader.GetString(12),
+                            ImagemUtilizador = reader.IsDBNull(13) ? null : reader.GetString(13),
+                            StockId = reader.GetInt32(14)
                         });
                     }
                 }

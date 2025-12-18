@@ -86,6 +86,11 @@ namespace API.Controllers
                 tipo = a.Tipo,
                 quantidade = a.Quantidade,
                 preco = a.Preco,
+                imgVinho = a.ImgVinho,
+                nomeUtilizador = a.NomeUtilizador,
+                emailUtilizador = a.EmailUtilizador,
+                imagemUtilizador = a.ImagemUtilizador,
+                stockId = a.StockId
             }).ToList();
 
             return Ok(new { success = true, data = data });

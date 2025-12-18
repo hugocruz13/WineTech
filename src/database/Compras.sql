@@ -117,11 +117,17 @@ BEGIN
         v.Ano,
         v.Tipo,
         COUNT(*) AS Quantidade,
-        v.Preco AS PrecoUnitario
+        v.Preco AS PrecoUnitario,
+        v.ImagemUrl,
+        u.Nome,
+        u.Email,
+        u.ImgUrl,
+        lc.Id AS StockId
     FROM Compras c
     JOIN LinhasCompra lc ON lc.ComprasId = c.Id
     JOIN Stock s ON s.Id = lc.StockId
     JOIN Vinhos v ON v.Id = s.VinhosId
+    JOIN Utilizadores u ON c.UtilizadoresId = u.Id
     WHERE c.Id = @CompraId
     GROUP BY 
         c.Id,
@@ -132,7 +138,12 @@ BEGIN
         v.Produtor,
         v.Ano,
         v.Tipo,
-        v.Preco;
+        v.Preco,
+        v.ImagemUrl,
+        u.Nome,
+        u.Email,
+        u.ImgUrl,
+        lc.Id 
 END;
 GO
 

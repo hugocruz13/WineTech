@@ -201,6 +201,16 @@ namespace ServiceCompra
         
         private int QuantidadeField;
         
+        private string ImgVinhoField;
+        
+        private string NomeUtilizadorField;
+        
+        private string EmailUtilizadorField;
+        
+        private string ImagemUtilizadorField;
+        
+        private int StockIdField;
+        
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         internal int IdCompra
         {
@@ -328,6 +338,71 @@ namespace ServiceCompra
             set
             {
                 this.QuantidadeField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=10)]
+        internal string ImgVinho
+        {
+            get
+            {
+                return this.ImgVinhoField;
+            }
+            set
+            {
+                this.ImgVinhoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=11)]
+        internal string NomeUtilizador
+        {
+            get
+            {
+                return this.NomeUtilizadorField;
+            }
+            set
+            {
+                this.NomeUtilizadorField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=12)]
+        internal string EmailUtilizador
+        {
+            get
+            {
+                return this.EmailUtilizadorField;
+            }
+            set
+            {
+                this.EmailUtilizadorField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=13)]
+        internal string ImagemUtilizador
+        {
+            get
+            {
+                return this.ImagemUtilizadorField;
+            }
+            set
+            {
+                this.ImagemUtilizadorField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=14)]
+        internal int StockId
+        {
+            get
+            {
+                return this.StockIdField;
+            }
+            set
+            {
+                this.StockIdField = value;
             }
         }
     }
