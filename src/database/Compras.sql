@@ -122,7 +122,7 @@ BEGIN
         u.Nome,
         u.Email,
         u.ImgUrl,
-        lc.Id AS StockId
+        s.Id AS StockId
     FROM Compras c
     JOIN LinhasCompra lc ON lc.ComprasId = c.Id
     JOIN Stock s ON s.Id = lc.StockId
@@ -143,7 +143,7 @@ BEGIN
         u.Nome,
         u.Email,
         u.ImgUrl,
-        lc.Id 
+        s.Id 
 END;
 GO
 
