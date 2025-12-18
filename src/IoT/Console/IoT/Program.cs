@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IoT.Logica;
+using IoT.Sensores;
+using System;
 using System.Globalization;
 using System.IO.Ports;
 using System.Net.Http;
@@ -12,45 +14,45 @@ namespace IoT
     {
         static async Task Main(string[] args)
         {
-            SerialPort porta = new SerialPort("COM3", 9600);
-            porta.Open();
+            Console.WriteLine("=== IoT iniciado ===");
+            var apiClient = new ApiClient(); 
 
-            HttpClient client = new HttpClient();
-
+            // Ciclo infinito
             while (true)
             {
                 try
                 {
-                    string linha = porta.ReadLine();
-                    Console.WriteLine(linha);
+                    Console.WriteLine($"\n--- Ciclo iniciado: {DateTime.Now.ToLongTimeString()} ---");
 
-                    string[] valores = linha.Split(',');
 
-                    float temp = float.Parse(valores[0], CultureInfo.InvariantCulture);
-                    float humi = float.Parse(valores[1], CultureInfo.InvariantCulture);
-                    int ldr = int.Parse(valores[2]);
+                    var listaSensores = await apiClient.GetSensores();
 
-                    var dados = new
+
+                    await SensorCache.VerificarNovosSensores(listaSensores);
+
+
+                    if (SensorCache.SensoresEmMemoria.Count > 0)
                     {
-                        temperature = temp,
-                        humidity = humi,
-                        lightIntensity = ldr
-                    };
+                        foreach (var sensor in SensorCache.SensoresEmMemoria)
+                        {
 
-                    string json = JsonSerializer.Serialize(dados);
-
-                    string apiUrl = "https://localhost:7148/api/sensor/data";
-
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-
-                    Console.WriteLine(response.StatusCode);
+                            await ValueResolver.ConfigurarSensor(sensor);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("-> Nenhum sensor em memória. À espera de configuração...");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro: " + ex.Message);
+                    Console.WriteLine("Erro no ciclo: " + ex.Message);
                 }
+
+                Console.WriteLine("A aguardar 5 segundos...");
+                await Task.Delay(5000);
             }
         }
     }
 }
+

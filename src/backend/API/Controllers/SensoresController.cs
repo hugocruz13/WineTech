@@ -89,7 +89,7 @@ namespace API.Controllers
                     adegaId = a.AdegaId,
                 }).ToList();
 
-                return Ok(new { success = true, data = data });
+                return Ok(data);
             }
             catch (Exception ex)
             {
