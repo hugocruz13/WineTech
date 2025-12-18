@@ -16,6 +16,16 @@
   width: 100%;
 }
 
+.title {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 30px;
+}
+
 .button {
   padding: 12px 24px;
   font-size: 16px;
@@ -26,14 +36,4 @@
   cursor: pointer;
   width: 100%;
   font-weight: bold;
-}
-
-h1 {
-  color: #333;
-  margin-bottom: 10px;
-}
-
-p {
-  color: #666;
-  margin-bottom: 30px;
 }

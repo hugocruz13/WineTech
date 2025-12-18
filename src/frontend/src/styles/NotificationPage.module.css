@@ -1,24 +1,24 @@
-.notifications-page {
+.notificationsPage {
   max-width: 920px;
   margin: 40px auto;
   padding: 0 16px;
 }
 
-.notifications-header {
+.notificationsHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 28px;
 }
 
-.notifications-header h1 {
+.notificationsHeader h1 {
   margin: 0;
   font-size: 30px;
   font-weight: 700;
   color: #111827;
 }
 
-.notifications-header p {
+.notificationsHeader p {
   margin-top: 6px;
   color: #6b7280;
   font-size: 15px;
@@ -29,7 +29,7 @@
   font-size: 14px;
 }
 
-.page-notifications-list {
+.pageNotificationsList {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -38,7 +38,7 @@
   gap: 16px;
 }
 
-.page-item {
+.pageItem {
   display: flex;
   gap: 16px;
   padding: 20px;
@@ -49,7 +49,7 @@
   position: relative;
 }
 
-.page-item.unread {
+.unread {
   border-left: 4px solid;
 }
 
@@ -67,7 +67,7 @@
   flex: 1;
 }
 
-.content-header {
+.contentHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -99,7 +99,7 @@
   white-space: nowrap;
 }
 
-.mark-read {
+.markRead {
   margin-top: 10px;
   background: none;
   border: none;
@@ -110,11 +110,12 @@
   padding: 0;
 }
 
-.mark-read:hover {
+.markRead:hover {
   text-decoration: underline;
 }
 
-.page-item.info {
+/* ===== TIPOS ===== */
+.info {
   border-left-color: #3b82f6;
 }
 
@@ -123,7 +124,7 @@
   color: #2563eb;
 }
 
-.page-item.alert {
+.alert {
   border-left-color: #f59e0b;
 }
 
@@ -132,7 +133,7 @@
   color: #d97706;
 }
 
-.page-item.error {
+.error {
   border-left-color: #ef4444;
 }
 
@@ -141,7 +142,7 @@
   color: #dc2626;
 }
 
-.page-item.success {
+.success {
   border-left-color: #22c55e;
 }
 

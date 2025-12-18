@@ -1,11 +1,11 @@
 /* PAGE */
-.wd-page {
-  background-color: #fdfdfd; /* Fundo quase branco */
+.wdPage {
+  background-color: #fdfdfd;
   padding: 80px 0;
 }
 
 /* GRID */
-.wd-grid {
+.wdGrid {
   max-width: 1200px;
   margin: auto;
   padding: 0 32px;
@@ -14,8 +14,8 @@
   gap: 80px;
 }
 
-/* IMAGE CONTAINER — SEM QUADRADO VISÍVEL */
-.wd-image-card {
+/* IMAGE */
+.wdImageCard {
   background: #fff1f1;
   border-radius: 32px;
   width: 520px;
@@ -25,8 +25,7 @@
   align-items: center;
 }
 
-/* IMAGEM */
-.wd-image-card img {
+.wdImageCard img {
   max-height: 440px;
   max-width: 360px;
   object-fit: contain;
@@ -35,19 +34,19 @@
 }
 
 /* INFO */
-.wd-info {
+.wdInfo {
   display: flex;
   flex-direction: column;
 }
 
 /* META */
-.wd-meta {
+.wdMeta {
   display: flex;
   gap: 12px;
   margin-bottom: 12px;
 }
 
-.wd-type {
+.wdType {
   background: #fde8e8;
   color: #d32f2f;
   font-size: 12px;
@@ -57,33 +56,33 @@
   text-transform: uppercase;
 }
 
-.wd-year {
+.wdYear {
   color: #94a3b8;
   font-size: 14px;
 }
 
 /* TITLE */
-.wd-title {
+.wdTitle {
   font-size: 44px;
   font-weight: 700;
   margin-bottom: 8px;
   color: #0f172a;
 }
 
-.wd-producer {
+.wdProducer {
   color: #64748b;
   margin-bottom: 32px;
 }
 
 /* PRICE */
-.wd-price {
+.wdPrice {
   font-size: 32px;
   font-weight: 700;
   color: #d32f2f;
   margin-bottom: 32px;
 }
 
-.wd-price span {
+.wdPrice span {
   display: block;
   font-size: 12px;
   color: #94a3b8;
@@ -91,13 +90,13 @@
 }
 
 /* ACTIONS */
-.wd-actions {
+.wdActions {
   display: flex;
   gap: 16px;
   margin-bottom: 40px;
 }
 
-.wd-qty {
+.wdQty {
   display: flex;
   gap: 18px;
   padding: 12px 22px;
@@ -106,14 +105,14 @@
   border: 1px solid #e5e7eb;
 }
 
-.wd-qty button {
+.wdQty button {
   border: none;
   background: none;
   font-size: 18px;
   cursor: pointer;
 }
 
-.wd-add-cart {
+.wdAddCart {
   flex: 1;
   background: #f1f5f9;
   border: none;
@@ -122,21 +121,27 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: all 0.25s ease;
 }
 
-.wd-add-cart:hover {
+.wdAddCart:hover {
   background: #d32f2f;
   color: #fff;
 }
 
+.added {
+  background: #16a34a;
+  color: #ffffff;
+  transform: scale(0.96);
+}
+
 /* DESCRIPTION */
-.wd-description h3 {
+.wdDescription h3 {
   font-size: 18px;
   margin-bottom: 10px;
 }
 
-.wd-description p {
+.wdDescription p {
   font-size: 15px;
   line-height: 1.7;
   color: #475569;
@@ -144,54 +149,43 @@
 }
 
 /* EXTRA */
-.wd-extra {
+.wdExtra {
   display: flex;
   gap: 24px;
 }
 
-.wd-extra-card {
+.wdExtraCard {
   background: #ffffff;
   border-radius: 18px;
   padding: 20px 24px;
   min-width: 180px;
 }
 
-.wd-extra-card span {
+.wdExtraCard span {
   font-size: 12px;
   color: #94a3b8;
   display: block;
   margin-bottom: 6px;
 }
 
-.wd-extra-card strong {
+.wdExtraCard strong {
   font-size: 16px;
   color: #0f172a;
 }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
-  .wd-grid {
+  .wdGrid {
     grid-template-columns: 1fr;
     gap: 48px;
   }
 
-  .wd-title {
+  .wdTitle {
     font-size: 34px;
   }
 }
 
-/* ===== BOTÃO ADICIONADO ===== */
-.wd-add-cart {
-  transition: all 0.25s ease;
-}
-
-.wd-add-cart.added {
-  background: #16a34a;
-  color: #ffffff;
-  transform: scale(0.96);
-}
-
-/* ===== PULSE NO CARRINHO ===== */
+/* CART PULSE */
 @keyframes cartPulse {
   0% {
     transform: scale(1);
@@ -204,6 +198,10 @@
   }
 }
 
-.cart-pulse {
+.cartPulse {
   animation: cartPulse 0.4s ease;
+}
+
+.error {
+  color: #d32f2f;
 }

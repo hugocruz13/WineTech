@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-import "../styles/ComprasPage.css";
+import styles from "../styles/ComprasPage.module.css";
+
 import Header from "../components/Header";
 import OrderCard from "../components/OrderCard";
 import Loading from "../components/Loading";
@@ -52,23 +53,24 @@ export default function ComprasPage() {
   return (
     <>
       <Header />
-      <div className="orders-container">
-        <div className="orders-header">
-          <h2 className="orders-title">As Minhas Encomendas</h2>
-          <p className="orders-subtitle">
+
+      <div className={styles.ordersContainer}>
+        <div className={styles.ordersHeader}>
+          <h2 className={styles.ordersTitle}>As Minhas Encomendas</h2>
+          <p className={styles.ordersSubtitle}>
             Consulte o histórico das suas compras e reveja os detalhes de cada
             encomenda.
           </p>
         </div>
 
         {loading && <Loading />}
-        {error && <p className="error">{error}</p>}
+        {error && <p className={styles.error}>{error}</p>}
 
         {!loading && !error && orders.length === 0 && (
           <p>Não existem encomendas.</p>
         )}
 
-        <div className="orders-list">
+        <div className={styles.ordersList}>
           {!loading &&
             !error &&
             orders.map((order) => (

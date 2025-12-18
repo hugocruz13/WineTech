@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 
-.wine-card {
+.wineCard {
   width: 280px;
   background-color: #ffffff;
   border-radius: 18px;
@@ -11,7 +11,7 @@
 }
 
 /* Imagem */
-.wine-image-wrapper {
+.wineImageWrapper {
   position: relative;
   height: 260px;
   background: linear-gradient(180deg, #fdecec, #fff);
@@ -20,30 +20,25 @@
   justify-content: center;
 }
 
-.wine-image {
+.wineImage {
   height: 85%;
   object-fit: contain;
   mix-blend-mode: multiply;
 }
 
-.favorite-btn:hover {
-  color: #d32f2f;
-  background-color: #ffffff;
-}
-
 /* Conteúdo */
-.wine-content {
+.wineContent {
   padding: 16px;
 }
 
-.wine-meta {
+.wineMeta {
   display: flex;
   gap: 8px;
   align-items: center;
   margin-bottom: 8px;
 }
 
-.wine-tag {
+.wineTag {
   font-size: 11px;
   font-weight: 700;
   padding: 4px 10px;
@@ -52,62 +47,55 @@
   letter-spacing: 0.5px;
 }
 
-/* TINTO */
-.wine-tag.tinto {
+/* TIPOS */
+.tinto {
   background-color: #fee2e2;
   color: #991b1b;
 }
 
-/* ROSÉ */
-.wine-tag.rosé,
-.wine-tag.rose {
+.rose,
+.rosé {
   background-color: #ffe4e6;
   color: #be123c;
 }
 
-/* BRANCO */
-.wine-tag.branco {
+.branco {
   background-color: #fef9c3;
   color: #92400e;
 }
 
-/* VERDE */
-.wine-tag.verde {
+.verde {
   background-color: #dcfce7;
   color: #166534;
 }
 
-/* ESPUMANTE */
-.wine-tag.espumante {
+.espumante {
   background-color: #fef3c7;
   color: #92400e;
 }
 
-/* PORTO */
-.wine-tag.porto {
+.porto {
   background-color: #ede9fe;
   color: #5b21b6;
 }
 
-/* LICOROSO */
-.wine-tag.licoroso {
+.licoroso {
   background-color: #fff7ed;
   color: #9a3412;
 }
 
-/* DOCE */
-.wine-tag.doce {
+.doce {
   background-color: #fdf2f8;
   color: #9d174d;
 }
 
-.wine-year {
+.wineYear {
   font-size: 11px;
   color: #94a3b8;
   font-weight: 600;
 }
 
-.wine-title {
+.wineTitle {
   font-size: 18px;
   font-weight: 700;
   color: #0f172a;
@@ -115,27 +103,27 @@
   line-height: 1.3;
 }
 
-.wine-producer {
+.wineProducer {
   font-size: 13px;
   color: #64748b;
   margin: 0 0 16px;
 }
 
 /* Footer */
-.wine-footer {
+.wineFooter {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.wine-price {
+.winePrice {
   font-size: 20px;
   font-weight: 700;
   color: #d32f2f;
 }
 
 /* Botão */
-.add-cart-btn {
+.addCartBtn {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -150,7 +138,7 @@
   transition: background-color 0.2s, color 0.2s;
 }
 
-.add-cart-btn:hover {
+.addCartBtn:hover {
   background-color: #d32f2f;
   color: #ffffff;
 }

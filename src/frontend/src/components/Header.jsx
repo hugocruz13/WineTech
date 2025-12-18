@@ -5,7 +5,7 @@ import { Search, ShoppingCart, Wine, Warehouse, Bell } from "lucide-react";
 
 import ProfileDropdown from "./ProfileDropdown";
 import RoleVisibility from "./RoleVisibility";
-import "../styles/Header.css";
+import styles from "../styles/Header.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -42,10 +42,8 @@ const Header = () => {
     };
 
     window.addEventListener("notification:received", onNotification);
-
-    return () => {
+    return () =>
       window.removeEventListener("notification:received", onNotification);
-    };
   }, []);
 
   useEffect(() => {
@@ -54,36 +52,33 @@ const Header = () => {
     };
 
     window.addEventListener("notification:read", onRead);
-
-    return () => {
-      window.removeEventListener("notification:read", onRead);
-    };
+    return () => window.removeEventListener("notification:read", onRead);
   }, []);
 
   return (
-    <header className="header-container">
-      <div className="logo-section" onClick={() => navigate("/")}>
-        <div className="logo-icon">
+    <header className={styles.headerContainer}>
+      <div className={styles.logoSection} onClick={() => navigate("/")}>
+        <div className={styles.logoIcon}>
           <Wine size={28} strokeWidth={2.5} />
         </div>
-        <h1 className="logo-text">VinhaTech</h1>
+        <h1 className={styles.logoText}>VinhaTech</h1>
       </div>
 
-      <div className="search-section">
-        <div className="search-bar">
-          <Search className="search-icon" size={20} />
+      <div className={styles.searchSection}>
+        <div className={styles.searchBar}>
+          <Search className={styles.searchIcon} size={20} />
           <input
             type="text"
             placeholder="Procurar vinhos, produtores..."
-            className="search-input"
+            className={styles.searchInput}
           />
         </div>
       </div>
 
-      <div className="actions-section">
+      <div className={styles.actionsSection}>
         <RoleVisibility role="owner">
           <button
-            className="icon-btn"
+            className={styles.iconBtn}
             aria-label="Adegas"
             onClick={() => navigate("/dashboard")}
           >
@@ -92,16 +87,16 @@ const Header = () => {
         </RoleVisibility>
 
         <button
-          className="icon-btn notification-btn"
+          className={`${styles.iconBtn} ${styles.notificationBtn}`}
           aria-label="Notificações"
           onClick={() => navigate("/notificacoes")}
         >
           <Bell size={22} />
-          {unreadCount > 0 && <span className="notification-badge" />}
+          {unreadCount > 0 && <span className={styles.notificationBadge} />}
         </button>
 
         <button
-          className="icon-btn"
+          className={styles.iconBtn}
           aria-label="Carrinho"
           onClick={() => navigate("/carrinho")}
         >

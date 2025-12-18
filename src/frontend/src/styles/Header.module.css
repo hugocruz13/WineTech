@@ -1,30 +1,30 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 
-.header-container {
+.headerContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  background-color: #fdfdfd; /* Fundo quase branco */
+  background-color: #fdfdfd;
   border-bottom: 1px solid #f1f5f9;
   font-family: "Inter", sans-serif;
   box-sizing: border-box;
 }
 
-.logo-section {
+.logoSection {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
 }
 
-.logo-icon {
+.logoIcon {
   color: #d32f2f;
   display: flex;
   align-items: center;
 }
 
-.logo-text {
+.logoText {
   font-size: 1.25rem;
   font-weight: 700;
   color: #0f172a;
@@ -32,14 +32,14 @@
   margin: 0;
 }
 
-.search-section {
+.searchSection {
   flex: 1;
   display: flex;
   justify-content: center;
   padding: 0 2rem;
 }
 
-.search-bar {
+.searchBar {
   display: flex;
   align-items: center;
   background-color: #f1f5f9;
@@ -50,16 +50,16 @@
   transition: box-shadow 0.2s ease;
 }
 
-.search-bar:focus-within {
+.searchBar:focus-within {
   box-shadow: 0 0 0 2px #e2e8f0;
 }
 
-.search-icon {
+.searchIcon {
   color: #94a3b8;
   margin-right: 0.75rem;
 }
 
-.search-input {
+.searchInput {
   border: none;
   background: transparent;
   outline: none;
@@ -68,17 +68,17 @@
   font-size: 0.9rem;
 }
 
-.search-input::placeholder {
+.searchInput::placeholder {
   color: #94a3b8;
 }
 
-.actions-section {
+.actionsSection {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
 
-.icon-btn {
+.iconBtn {
   background: none;
   border: none;
   cursor: pointer;
@@ -91,11 +91,11 @@
   transition: color 0.2s;
 }
 
-.icon-btn:hover {
+.iconBtn:hover {
   color: #000;
 }
 
-.notification-badge {
+.notificationBadge {
   position: absolute;
   top: -2px;
   right: -2px;
@@ -106,7 +106,7 @@
   border-radius: 50%;
 }
 
-.user-avatar {
+.userAvatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -119,16 +119,16 @@
   cursor: pointer;
 }
 
-.user-avatar:hover {
+.userAvatar:hover {
   background-color: #cbd5e1;
 }
 
-@media (max-width: 768px) {
-  .search-section {
-    display: none;
-  }
+.notificationBtn {
+  position: relative;
 }
 
-.notification-btn {
-  position: relative;
+@media (max-width: 768px) {
+  .searchSection {
+    display: none;
+  }
 }

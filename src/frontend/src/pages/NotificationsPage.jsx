@@ -4,7 +4,7 @@ import { Bell } from "lucide-react";
 
 import Header from "../components/Header";
 import { notificationConfig } from "../utils/notificationConfig";
-import "../styles/NotificationPage.css";
+import styles from "../styles/NotificationPage.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -57,8 +57,8 @@ const NotificationsPage = ({ notifications, setNotifications }) => {
     <>
       <Header />
 
-      <main className="notifications-page">
-        <header className="notifications-header">
+      <main className={styles.notificationsPage}>
+        <header className={styles.notificationsHeader}>
           <div>
             <h1>Notificações</h1>
             <p>Gerencie suas atualizações de pedidos e ofertas.</p>
@@ -66,10 +66,10 @@ const NotificationsPage = ({ notifications, setNotifications }) => {
         </header>
 
         {notifications.length === 0 && (
-          <p className="empty">Sem notificações</p>
+          <p className={styles.empty}>Sem notificações</p>
         )}
 
-        <ul className="page-notifications-list">
+        <ul className={styles.pageNotificationsList}>
           {notifications.map((n) => {
             const config = notificationConfig[n.tipo] || {};
             const Icon = config.icon || Bell;
@@ -77,18 +77,22 @@ const NotificationsPage = ({ notifications, setNotifications }) => {
             return (
               <li
                 key={n.id}
-                className={`page-item ${config.className} ${
-                  !n.lida ? "unread" : ""
-                }`}
+                className={[
+                  styles.pageItem,
+                  styles[config.className],
+                  !n.lida && styles.unread,
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
               >
-                <div className="icon">
+                <div className={styles.icon}>
                   <Icon size={18} />
                 </div>
 
-                <div className="content">
-                  <div className="content-header">
+                <div className={styles.content}>
+                  <div className={styles.contentHeader}>
                     <h3>{n.titulo}</h3>
-                    <span className="time">
+                    <span className={styles.time}>
                       {new Date(n.createdAt).toLocaleString("pt-PT", {
                         dateStyle: "short",
                         timeStyle: "short",
@@ -100,7 +104,7 @@ const NotificationsPage = ({ notifications, setNotifications }) => {
 
                   {!n.lida && (
                     <button
-                      className="mark-read"
+                      className={styles.markRead}
                       onClick={() => handleMarkAsRead(n.id)}
                     >
                       Marcar como lida

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { CreditCard, Mail } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import "../styles/CompraDetalhe.css";
+import styles from "../styles/CompraDetalhe.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -39,7 +39,7 @@ export default function CompraDetalhe() {
   }, [id, getAccessTokenSilently]);
 
   if (loading) return <Loading />;
-  if (error) return <p className="error">{error}</p>;
+  if (error) return <p className={styles.error}>{error}</p>;
   if (!dados.length) return null;
 
   const compra = dados[0];
@@ -52,22 +52,22 @@ export default function CompraDetalhe() {
   return (
     <>
       <Header />
-      <div className="page">
-        <h1 className="titulo">Encomenda #{compra.idCompra}</h1>
+      <div className={styles.page}>
+        <h1 className={styles.titulo}>Encomenda #{compra.idCompra}</h1>
 
-        <div className="topo">
-          <div className="card">
+        <div className={styles.topo}>
+          <div className={styles.card}>
             <h3>DADOS DO CLIENTE</h3>
 
-            <div className="cliente">
+            <div className={styles.cliente}>
               <img
                 src={compra.imagemUtilizador}
                 alt="Avatar"
-                className="avatar"
+                className={styles.avatar}
               />
 
               <div>
-                <p className="nome">{compra.nomeUtilizador}</p>
+                <p className={styles.nome}>{compra.nomeUtilizador}</p>
                 <p>
                   <Mail size={14} /> {compra.emailUtilizador}
                 </p>
@@ -75,30 +75,30 @@ export default function CompraDetalhe() {
             </div>
           </div>
 
-          <div className="card">
+          <div className={styles.card}>
             <h3>RESUMO FINANCEIRO</h3>
 
-            <div className="resumo">
+            <div className={styles.resumo}>
               <div>
-                <p className="label">Método de Pagamento</p>
-                <p className="pagamento">
+                <p className={styles.label}>Método de Pagamento</p>
+                <p className={styles.pagamento}>
                   <CreditCard size={14} /> Visa **** 4242
                 </p>
               </div>
 
-              <div className="total-box">
-                <p className="label">Valor Total</p>
+              <div className={styles.totalBox}>
+                <p className={styles.label}>Valor Total</p>
                 <span>€ {subtotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="card-itens">
+        <div className={styles.cardItens}>
           <h3>Itens do Pedido</h3>
 
-          <table>
-            <thead>
+          <table className={styles.table}>
+            <thead className={styles.thead}>
               <tr>
                 <th>Produto</th>
                 <th>Preço Unit.</th>
@@ -106,10 +106,10 @@ export default function CompraDetalhe() {
               </tr>
             </thead>
 
-            <tbody>
+            <tbody className={styles.tbody}>
               {dados.map((item) => (
                 <tr key={item.stockId}>
-                  <td className="produto">
+                  <td className={styles.produto}>
                     <img src={item.imgVinho} alt={item.nome} />
                     <div>
                       <strong>{item.nome}</strong>
@@ -123,7 +123,7 @@ export default function CompraDetalhe() {
 
                   <td>
                     <button
-                      className="iot-btn"
+                      className={styles.iotBtn}
                       title="Consultar temperatura da garrafa"
                     >
                       Ver IoT
@@ -134,16 +134,16 @@ export default function CompraDetalhe() {
             </tbody>
           </table>
 
-          <div className="totais">
+          <div className={styles.totais}>
             <div>
               <span>Subtotal</span>
               <span>€ {subtotal.toFixed(2)}</span>
             </div>
             <div>
               <span>Portes de Envio</span>
-              <span className="gratis">Grátis</span>
+              <span className={styles.gratis}>Grátis</span>
             </div>
-            <div className="total">
+            <div className={styles.total}>
               <span>Total</span>
               <span>€ {subtotal.toFixed(2)}</span>
             </div>
