@@ -78,7 +78,7 @@
     <Compile Include="Api\ApiModels\SensorDTO.cs" />
     <Compile Include="Hardware\ArduinoReader.cs" />
     <Compile Include="Jobs\RefreshTime.cs" />
-    <Compile Include="Lógica\ValueResolver.cs" />
+    <Compile Include="Logica\ValueResolver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sensores\SensorCache.cs" />

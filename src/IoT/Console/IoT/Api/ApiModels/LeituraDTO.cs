@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace IoT.Api.ApiModels
 {
-    internal class LeituraDTO
+    public class LeituraDTO
     {
+        public int SensorId { get; set; }
+
+        public float Valor { get; set; }
     }
 }

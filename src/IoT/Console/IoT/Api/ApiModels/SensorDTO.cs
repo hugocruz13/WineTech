@@ -6,7 +6,23 @@ using System.Threading.Tasks;
 
 namespace IoT.Api.ApiModels
 {
-    internal class SensorDTO
+    public class SensorDTO
     {
+        public int Id { get; set; }
+
+        public string IdentificadorHardware { get; set; }
+
+        public string Tipo { get; set; }
+
+        public bool Estado { get; set; }
+
+        public int AdegaId { get; set; }
+    }
+    public enum TipoHardware
+    {
+        REAL_DHT,
+        REAL_LDR,
+        GERADO,
+        DESCONHECIDO 
     }
 }

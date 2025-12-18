@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IoT.Sensores;
+using System;
 using System.Globalization;
 using System.IO.Ports;
 using System.Net.Http;
@@ -12,44 +13,46 @@ namespace IoT
     {
         static async Task Main(string[] args)
         {
-            SerialPort porta = new SerialPort("COM3", 9600);
-            porta.Open();
+            Console.WriteLine("=== IoT iniciado ===");
+            var apiClient = new ApiClient();
 
-            HttpClient client = new HttpClient();
-
+            // Ciclo infinito para simular o serviço a correr 24/7
             while (true)
             {
                 try
                 {
-                    string linha = porta.ReadLine();
-                    Console.WriteLine(linha);
+                    Console.WriteLine($"\n--- Ciclo iniciado: {DateTime.Now.ToLongTimeString()} ---");
 
-                    string[] valores = linha.Split(',');
+                    await apiClient.GetSensores();
 
-                    float temp = float.Parse(valores[0], CultureInfo.InvariantCulture);
-                    float humi = float.Parse(valores[1], CultureInfo.InvariantCulture);
-                    int ldr = int.Parse(valores[2]);
-
-                    var dados = new
+                    if (SensorCache.SensoresEmMemoria.Count > 0)
                     {
-                        temperature = temp,
-                        humidity = humi,
-                        lightIntensity = ldr
-                    };
+                        foreach (var sensor in SensorCache.SensoresEmMemoria)
+                        {
+                            float valorSimulado = (float)new Random().NextDouble() * 100;
 
-                    string json = JsonSerializer.Serialize(dados);
+                            var leitura = new IoT.Api.ApiModels.LeituraDTO
+                            {
+                                SensorId = sensor.Id,
+                                Valor = valorSimulado,
+                            };
 
-                    string apiUrl = "https://localhost:7148/api/sensor/data";
-
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-
-                    Console.WriteLine(response.StatusCode);
+                            Console.WriteLine($"-> A enviar leitura para Sensor {sensor.Id} ({sensor.Tipo})...");
+                            await apiClient.InserirLeitura(leitura);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("-> Nenhum sensor em memória. À espera de configuração...");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Erro: " + ex.Message);
+                    Console.WriteLine("Erro no ciclo: " + ex.Message);
                 }
+
+                Console.WriteLine("A aguardar 5 segundos...");
+                await Task.Delay(5000);
             }
         }
     }

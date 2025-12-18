@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromQuery] InserirLeituraDTO dto)
+        public async Task<ActionResult> Post([FromBody] InserirLeituraDTO dto)
         {
             try
             {
