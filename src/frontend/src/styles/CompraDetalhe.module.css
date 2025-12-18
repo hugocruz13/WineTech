@@ -2,7 +2,7 @@
 /* BASE / PAGE */
 /* ============================= */
 .page {
-  padding: 32px 350px;
+  padding: 32px 250px;
   background: #fdfdfd;
   min-height: 100vh;
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
