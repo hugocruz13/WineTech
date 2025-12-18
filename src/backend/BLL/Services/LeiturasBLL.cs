@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using DAL.Services;
+using BLL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BLL.Services
 {
-    public class LeiturasBLL
+    public class LeiturasBLL : ILeiturasBLL
     {
         private readonly ILeiturasDAL _leiturasDAL;
 
