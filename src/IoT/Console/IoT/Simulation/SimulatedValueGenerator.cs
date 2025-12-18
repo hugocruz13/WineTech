@@ -19,12 +19,12 @@ namespace IoT.Simulation
             switch (tipoEnum)
             {
                 case TipoSensor.Temperatura:
-                    // entre 15.0 e 30.0 (Adega fresca a ambiente)
+                    // entre 15.0 e 30.0 
                     valor = 15 + (_random.NextDouble() * 15);
                     break;
 
                 case TipoSensor.Humidade:
-                    // entre 50% e 80% (Humidade comum em adegas)
+                    // entre 50% e 80% 
                     valor = 50 + (_random.NextDouble() * 30);
                     break;
 
@@ -37,13 +37,13 @@ namespace IoT.Simulation
                     valor = 0;
                     break;
             }
-            // Aqui o 'valor' já está definido pelo switch.
+
             Console.WriteLine($" -> [GERADO] Tipo: {tipoEnum} | Valor Calculado: {valor}");
             var leitura = new LeituraDTO{ SensorId = sensorId, Valor = (float)Math.Round(valor, 2)};
 
             try
             {
-                ApiClient.InserirLeitura(leitura).Wait();
+                ApiClient.InserirLeitura(leitura);
             }
             catch (Exception ex)
             {

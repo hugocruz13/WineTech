@@ -1,5 +1,6 @@
 ﻿using IoT.Logica;
 using IoT.Sensores;
+using IoT.Workers;
 using System;
 using System.Globalization;
 using System.IO.Ports;
@@ -10,47 +11,27 @@ using System.Threading.Tasks;
 
 namespace IoT
 {
-    internal class Program
+    namespace IoT
     {
-        static async Task Main(string[] args)
+        internal class Program
         {
-            Console.WriteLine("=== IoT iniciado ===");
-            var apiClient = new ApiClient(); 
-
-            // Ciclo infinito
-            while (true)
+            static async Task Main(string[] args)
             {
-                try
+                Console.WriteLine("=== IoT Gateway Iniciado ===");
+
+
+                var apiClient = new ApiClient();
+
+                var sensorWorker = new JobGet(apiClient);
+                var leituraWorker = new JobPost();
+
+                var tarefas = new[]
                 {
-                    Console.WriteLine($"\n--- Ciclo iniciado: {DateTime.Now.ToLongTimeString()} ---");
+                sensorWorker.StartAsync(),
+                leituraWorker.StartAsync()
+                };
 
-
-                    var listaSensores = await apiClient.GetSensores();
-
-
-                    await SensorCache.VerificarNovosSensores(listaSensores);
-
-
-                    if (SensorCache.SensoresEmMemoria.Count > 0)
-                    {
-                        foreach (var sensor in SensorCache.SensoresEmMemoria)
-                        {
-
-                            await ValueResolver.ConfigurarSensor(sensor);
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("-> Nenhum sensor em memória. À espera de configuração...");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Erro no ciclo: " + ex.Message);
-                }
-
-                Console.WriteLine("A aguardar 5 segundos...");
-                await Task.Delay(5000);
+                await Task.WhenAll(tarefas);
             }
         }
     }

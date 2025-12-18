@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using IoT.Hardware;
 namespace IoT.Logica
 {
     public class ValueResolver
@@ -17,7 +17,7 @@ namespace IoT.Logica
             {
                 case TipoHardware.REAL_DHT:
                 case TipoHardware.REAL_LDR:
-                    //ConfigurarHardwareReal(sensor);
+                    ArduinoReader.ConfigurarSensorReal(sensor.Id, sensor.Tipo);
                     break;
 
                 case TipoHardware.GERADO:
@@ -25,7 +25,7 @@ namespace IoT.Logica
                     break;
 
                 default:
-                    Console.WriteLine($"Hardware não identificado: {sensor.IdentificadorHardware}");
+                    Console.WriteLine($" -> [AVISO] Hardware '{hardwareEnum}'");
                     break;
             }
             return Task.CompletedTask;
