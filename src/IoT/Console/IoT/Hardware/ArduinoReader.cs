@@ -46,7 +46,7 @@ namespace IoT.Hardware
         {
             try
             {
-                porta = new SerialPort("COM3", 9600);
+                porta = new SerialPort("COM5", 9600);
                 porta.Open();
                 ativo = true;
 

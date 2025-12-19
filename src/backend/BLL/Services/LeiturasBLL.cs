@@ -59,6 +59,7 @@ namespace BLL.Services
 
             return await _leiturasDAL.ObterLeiturasStock(stockId);
         }
+        //mudar aqui a logica uma vez que tenho que definir os ids dos sensores no switch
         private async Task VerificarAlerta(int sensorId)
         {
             var todasLeituras = await _leiturasDAL.ObterLeiturasPorSensor(sensorId);
@@ -70,9 +71,9 @@ namespace BLL.Services
 
             switch (sensorId)
             {
-                case 1: (min, max) = (15f, 30f); break; 
-                case 2: (min, max) = (50f, 80f); break; 
-                case 3: (min, max) = (0f, 1000f); break; 
+                case 1006: (min, max) = (15f, 30f); break; 
+                case 1005: (min, max) = (60f, 80f); break; 
+                case 1004: (min, max) = (0f, 500f); break; 
                 default: return; 
             }
 
