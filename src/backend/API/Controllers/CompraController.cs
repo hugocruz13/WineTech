@@ -96,7 +96,8 @@ namespace API.Controllers
                 nomeUtilizador = a.NomeUtilizador,
                 emailUtilizador = a.EmailUtilizador,
                 imagemUtilizador = a.ImagemUtilizador,
-                stockId = a.StockId
+                stockId = a.StockId,
+                cartao=a.Cartao
             }).ToList();
 
             return Ok(new { success = true, data = data });

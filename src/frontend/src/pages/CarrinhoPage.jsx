@@ -205,7 +205,14 @@ const CarrinhoPage = () => {
             <span>€{subtotal.toFixed(2)}</span>
           </div>
 
-          <button className={styles.finalizar}>
+          <button
+            className={styles.finalizar}
+            onClick={() => {
+              if (items.length > 0) {
+                navigate("/finalizar");
+              }
+            }}
+          >
             Finalizar Compra
             <ArrowRight size={18} />
           </button>
@@ -213,9 +220,8 @@ const CarrinhoPage = () => {
           <p className={styles.seguro}>PAGAMENTO 100% SEGURO</p>
 
           <div className={styles.pagamentos}>
-            <span>MB WAY</span>
             <span>VISA</span>
-            <span>MC</span>
+            <span>Master Card</span>
           </div>
         </div>
       </main>

@@ -14,6 +14,7 @@ import useNotificationSocket from "./hooks/useNotificationSocket";
 import { showNotificationToast } from "./utils/notificationToast";
 
 import SignInPage from "./pages/SignInPage";
+import FinalizarCompraPage from "./pages/FinalizarCompraPage";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import ComprasDetalhes from "./pages/ComprasDetalhes";
@@ -72,6 +73,7 @@ function AppContent() {
           />
         }
       />
+      <Route path="/finalizar" element={<FinalizarCompraPage />} />
       <Route path="/compras" element={<ComprasPage />} />
       <Route path="/compra/:id" element={<ComprasDetalhes />} />
       <Route path="/carrinho" element={<CarrinhoPage />} />

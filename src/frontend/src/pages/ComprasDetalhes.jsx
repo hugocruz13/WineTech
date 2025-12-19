@@ -84,7 +84,7 @@ export default function CompraDetalhe() {
               <div>
                 <p className={styles.label}>Método de Pagamento</p>
                 <p className={styles.pagamento}>
-                  <CreditCard size={14} /> Visa **** 4242
+                  <CreditCard size={14} /> Visa ****{compra.cartao}
                 </p>
               </div>
 
