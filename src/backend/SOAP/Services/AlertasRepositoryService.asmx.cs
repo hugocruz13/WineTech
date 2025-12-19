@@ -34,5 +34,18 @@ namespace SOAP.Services
                 throw new Exception("Erro ao inserir alerta: " + ex.Message);
             }
         }
+        [WebMethod]
+        public List<Models.Alertas> ObterAlertasPorSensor(int sensorId)
+        {
+            try
+            {
+                return _repository.ObterAlertasPorSensor(sensorId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter Alertas por sensor");
+                throw new Exception("Erro ao obter Alertas por sensor: " + ex.Message);
+            }
+        }
     }
 }

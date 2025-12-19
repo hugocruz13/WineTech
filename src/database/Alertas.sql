@@ -17,3 +17,22 @@ BEGIN
     WHERE Id = @NovoId;
 END;
 GO
+
+--Obter Alerta por Sensor
+CREATE OR ALTER PROCEDURE ObterAlertasPorSensor
+    @SensoresId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        Id,
+        SensoresId,
+        TipoAlerta,
+        Mensagem,
+        DataHora,
+        Resolvido
+    FROM Alertas
+    WHERE SensoresId = @SensoresId
+END;
+GO

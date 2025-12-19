@@ -45,5 +45,35 @@ namespace SOAP.Repository
             }
             return alertaCriado;
         }
+        public List<Models.Alertas> ObterAlertasPorSensor(int sensorId)
+        {
+            List<Models.Alertas> lista = new List<Models.Alertas>();
+
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterAlertasPorSensor", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@SensoresId", sensorId);
+
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new Models.Alertas
+                        {
+                            Id = Convert.ToInt32(reader["Id"]),
+                            SensoresId = Convert.ToInt32(reader["SensoresId"]),
+                            TipoAlerta = reader["TipoAlerta"].ToString(),
+                            Mensagem = reader["Mensagem"].ToString(),
+                            DataHora = Convert.ToDateTime(reader["DataHora"]),
+                            Resolvido = Convert.ToBoolean(reader["Resolvido"])
+                        });
+                    }
+                }
+            }
+            return lista;
+        }
+
     }
 }
