@@ -17,7 +17,7 @@ namespace DAL.Services
         {
             return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
             {
-                var soapModel = new ServiceCompra.Compra { UtilizadorId = compra.UtilizadorId };
+                var soapModel = new ServiceCompra.Compra { UtilizadorId = compra.UtilizadorId, Estado = compra.Estado };
                 var response = await client.CriarCompraAsync(soapModel);
                 var item = response.Body.CriarCompraResult;
 
@@ -29,7 +29,9 @@ namespace DAL.Services
                     Id = item.Id,
                     UtilizadorId = item.UtilizadorId,
                     ValorTotal = item.ValorTotal,
-                    DataCompra = item.DataCompra
+                    DataCompra = item.DataCompra,
+                    Estado = item.Estado,
+                    cartao = item.cartao
                 };
             });
         }
@@ -84,7 +86,7 @@ namespace DAL.Services
         {
             return await SoapClientHelper.ExecuteAsync<CompraRepositoryServiceSoapClient, bool>(CreateClient, async client =>
             {
-                var soapModel = new ServiceCompra.Compra { Id = compra.Id, UtilizadorId = compra.UtilizadorId, ValorTotal = compra.ValorTotal, DataCompra = compra.DataCompra };
+                var soapModel = new ServiceCompra.Compra { Id = compra.Id, UtilizadorId = compra.UtilizadorId, Estado = compra.Estado,ValorTotal = compra.ValorTotal, DataCompra = compra.DataCompra , cartao = compra.cartao};
                 var response = await client.AtualizarValorTotalAsync(soapModel);
                 return response.Body.AtualizarValorTotalResult;
             });

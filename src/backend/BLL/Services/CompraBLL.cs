@@ -15,53 +15,60 @@ namespace BLL.Services
         private readonly IUtilizadorDAL _utilizadorDAL;
         private readonly ICarrinhoDAL _carrinhoDAL;
         private readonly INotificacaoBLL _notificacaoBLL;
+        private readonly IPagamentoBLL _pagamentoBLL;
 
-        public CompraBLL(ICompraDAL compraDAL, IVinhoDAL vinhoDAL, IUtilizadorDAL utilizadorDAL, ICarrinhoDAL carrinhoDAL, INotificacaoBLL notificacaoBLL)
+        public CompraBLL(ICompraDAL compraDAL, IVinhoDAL vinhoDAL, IUtilizadorDAL utilizadorDAL, ICarrinhoDAL carrinhoDAL, INotificacaoBLL notificacaoBLL, IPagamentoBLL pagamentoBLL)
         {
             _compraDAL = compraDAL;
             _vinhoDAL = vinhoDAL;
             _utilizadorDAL = utilizadorDAL;
             _carrinhoDAL = carrinhoDAL;
             _notificacaoBLL = notificacaoBLL;
+            _pagamentoBLL = pagamentoBLL;
         }
 
-        public async Task<bool> ProcessarCarrinho(string utilizadorId)
+        public async Task<bool> ProcessarCarrinho(string utilizadorId, string numberCard, int mes, int ano)
         {
-            var carrinhos = await _carrinhoDAL.ObterCarrinhoPorUtilizador(utilizadorId);
+            if (string.IsNullOrEmpty(utilizadorId))
+                throw new ArgumentException(nameof(utilizadorId));
 
+            var carrinhos = await _carrinhoDAL.ObterCarrinhoPorUtilizador(utilizadorId);
             if (carrinhos == null || !carrinhos.Any())
             {
                 await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Erro na compra", Mensagem = "O seu carrinho está vazio.", Tipo = TipoNotificacao.Erro, UtilizadorId = utilizadorId });
                 return false;
             }
 
-            if (string.IsNullOrEmpty(utilizadorId))
-                throw new ArgumentException("User ID cannot be null or empty", nameof(utilizadorId));
-
             Utilizador utilizador = await _utilizadorDAL.GetUserByIdAsync(utilizadorId);
-
             if (utilizador == null)
                 return false;
 
-            Compra compra = await _compraDAL.CriarCompra(new Compra { UtilizadorId = utilizadorId });
+            bool pagamentoProcessado = await _pagamentoBLL.ValidarCartao(numberCard, mes, ano);
 
+            if (!pagamentoProcessado)
+            {
+                await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Erro no pagamento", Mensagem = "O pagamento não foi autorizado. Verifique os dados do cartão e tente novamente.", Tipo = TipoNotificacao.Erro, UtilizadorId = utilizadorId });
+                return false;
+            }
+
+            Compra compra = await _compraDAL.CriarCompra(new Compra { UtilizadorId = utilizadorId, Estado = "Processamento" });
             if (compra == null)
             {
                 await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Erro na compra", Mensagem = "Erro ao iniciar a compra. Tente novamente mais tarde.", Tipo = TipoNotificacao.Erro, UtilizadorId = utilizadorId });
                 return false;
             }
 
-
             double total = 0;
 
             foreach (var item in carrinhos)
             {
                 List<int> stockIds = await _compraDAL.ObterStockIds(new StockInput { VinhoId = item.VinhosId, Quantidade = item.Quantidade });
-
                 Vinho vinho = await _vinhoDAL.VinhoById(item.VinhosId);
 
                 if (vinho == null || stockIds == null || stockIds.Count == 0)
+                {
                     return false;
+                }
 
                 if (stockIds.Count < item.Quantidade)
                 {
@@ -86,6 +93,13 @@ namespace BLL.Services
             }
 
             compra.ValorTotal = total;
+            compra.Estado = "Concluída";
+
+            if (numberCard == null || numberCard.Length < 4 || !int.TryParse(numberCard.Substring(numberCard.Length - 4, 4), out int ultimos4))
+                throw new ArgumentException("Últimos 4 dígitos inválidos");
+
+            compra.cartao = ultimos4;
+
             bool atualizou = await _compraDAL.AtualizarValorTotal(compra);
 
             if (!atualizou)

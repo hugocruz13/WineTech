@@ -17,15 +17,16 @@ GO
 
 -- Criar uma compra
 CREATE OR ALTER PROCEDURE CriarCompra
-    @UtilizadorId nvarchar(100)
+    @UtilizadorId nvarchar(100),
+    @Estado nvarchar(100)
 AS
 BEGIN
     SET NOCOUNT ON;
 
     DECLARE @NovaCompraId INT;
 
-    INSERT INTO Compras (UtilizadoresId)
-    VALUES (@UtilizadorId);
+    INSERT INTO Compras (UtilizadoresId, Estado)
+    VALUES (@UtilizadorId, @Estado);
 
     SET @NovaCompraId = SCOPE_IDENTITY();
 
@@ -34,7 +35,9 @@ BEGIN
         @NovaCompraId AS Id,
         DataCompra,
         UtilizadoresId,
-        ValorTotal
+        ValorTotal,
+        Estado,
+        Cartao
     FROM Compras
     WHERE Id = @NovaCompraId;
 END
@@ -72,19 +75,24 @@ END
 GO
 
 
--- Atribuir Valor total 
 CREATE OR ALTER PROCEDURE AtualizarValorCompra
     @CompraId INT,
-    @Valor Decimal(19, 2)
+    @Valor DECIMAL(19,2),
+    @Estado NVARCHAR(100),
+    @Cartao int
 AS
 BEGIN
     SET NOCOUNT OFF;
 
     UPDATE Compras
-    SET ValorTotal = @Valor
+    SET 
+        ValorTotal = @Valor,
+        Estado = @Estado,
+        Cartao = @Cartao
     WHERE Id = @CompraId;
 END
 GO
+
 
 -- Compras Utilizador
 CREATE OR ALTER PROCEDURE ComprasPorUtilizador

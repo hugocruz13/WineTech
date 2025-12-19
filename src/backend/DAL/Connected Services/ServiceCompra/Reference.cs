@@ -81,7 +81,11 @@ namespace ServiceCompra
         
         private string UtilizadorIdField;
         
+        private string EstadoField;
+        
         private double ValorTotalField;
+        
+        private int cartaoField;
         
         private System.DateTime DataCompraField;
         
@@ -111,7 +115,20 @@ namespace ServiceCompra
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=2)]
+        internal string Estado
+        {
+            get
+            {
+                return this.EstadoField;
+            }
+            set
+            {
+                this.EstadoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=3)]
         internal double ValorTotal
         {
             get
@@ -124,7 +141,20 @@ namespace ServiceCompra
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=3)]
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=4)]
+        internal int cartao
+        {
+            get
+            {
+                return this.cartaoField;
+            }
+            set
+            {
+                this.cartaoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=5)]
         internal System.DateTime DataCompra
         {
             get

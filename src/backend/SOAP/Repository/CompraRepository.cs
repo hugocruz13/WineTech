@@ -48,6 +48,7 @@ namespace SOAP.Repository
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@UtilizadorId", compra.UtilizadorId);
+                cmd.Parameters.AddWithValue("@Estado", compra.Estado);
                 conn.Open();
 
                 using (var reader = cmd.ExecuteReader())
@@ -57,9 +58,11 @@ namespace SOAP.Repository
                         novaCompra = new Compra
                         {
                             Id = reader.GetInt32(0),
+                            DataCompra = reader.GetDateTime(1),
                             UtilizadorId = compra.UtilizadorId,
                             ValorTotal = compra.ValorTotal,
-                            DataCompra = reader.GetDateTime(1)
+                            Estado = reader.GetString(4),
+                            cartao = reader.IsDBNull(5) ? 0 : reader.GetInt32(5)
                         };
                     }
                 }
@@ -119,6 +122,8 @@ namespace SOAP.Repository
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@CompraId", compra.Id);
                 cmd.Parameters.AddWithValue("@Valor", compra.ValorTotal);
+                cmd.Parameters.AddWithValue("@Estado", compra.Estado);
+                cmd.Parameters.AddWithValue("@Cartao", compra.cartao);
                 conn.Open();
                 int rowsAffected = cmd.ExecuteNonQuery();
                 return rowsAffected > 0;

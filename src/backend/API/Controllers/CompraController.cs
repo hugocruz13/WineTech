@@ -1,4 +1,5 @@
-﻿using BLL.Interfaces;
+﻿using API.DTOs;
+using BLL.Interfaces;
 using BLL.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ namespace API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "owner,user")]
-        public async Task<IActionResult> Post()
+        public async Task<IActionResult> Post([FromBody] CompraDTO compra)
         {
             var sub = User.FindFirst("sub")?.Value;
 
@@ -30,7 +31,7 @@ namespace API.Controllers
 
             try
             {
-                bool sucesso = await _compraBLL.ProcessarCarrinho(sub);
+                bool sucesso = await _compraBLL.ProcessarCarrinho(sub, compra.CardNumber, compra.Mes , compra.Ano);
 
                 if (!sucesso)
                     return BadRequest(new { success = false, message = "Não foi possível processar o carrinho." });

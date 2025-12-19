@@ -1,0 +1,17 @@
+{
+  "ExtendedData": {
+    "inputs": [
+      "https://secure.ftipgw.com/ArgoFire/validate.asmx?WSDL"
+    ],
+    "collectionTypes": [
+      "System.Array",
+      "System.Collections.Generic.Dictionary`2"
+    ],
+    "internalTypeAccess": true,
+    "namespaceMappings": [
+      "*, ServiceCartao"
+    ],
+    "targetFramework": "netstandard2.0",
+    "typeReuseMode": "All"
+  }
+}
