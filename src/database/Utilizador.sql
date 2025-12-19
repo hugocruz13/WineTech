@@ -10,23 +10,29 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Garante exclusão mútua durante a verificação
-    IF NOT EXISTS (
-        SELECT 1
-        FROM Utilizadores WITH (UPDLOCK, HOLDLOCK)
-        WHERE Id = @Auth0UserId
-    )
-    BEGIN
-        INSERT INTO Utilizadores (Id, Nome, Email, ImgUrl)
-        VALUES (@Auth0UserId, @Nome, @Email, @ImgUrl);
-    END
+    BEGIN TRY
+        IF NOT EXISTS (
+            SELECT 1
+            FROM Utilizadores WITH (UPDLOCK, HOLDLOCK)
+            WHERE Id = @Auth0UserId
+        )
+        BEGIN
+            INSERT INTO Utilizadores (Id, Nome, Email, ImgUrl)
+            VALUES (@Auth0UserId, @Nome, @Email, @ImgUrl);
+        END
+    END TRY
+    BEGIN CATCH
+        IF ERROR_NUMBER() NOT IN (2627, 2601)
+            THROW;
+    END CATCH
 
-    -- Retorna sempre o utilizador
+    -- Retorna sempre o utilizador (exista ou tenha acabado de ser inserido)
     SELECT *
     FROM Utilizadores
     WHERE Id = @Auth0UserId;
 END;
 GO
+
 
 
 -- Get Utilizador pelo ID

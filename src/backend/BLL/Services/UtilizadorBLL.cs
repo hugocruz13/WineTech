@@ -20,11 +20,11 @@ namespace BLL.Services
 
         public async Task<Utilizador> RegisterUserAsync(Utilizador user)
         {
-            Utilizador existingUser = await _dal.GetUserByIdAsync(user.Id);
-            if (existingUser != null)
-            {
-                return existingUser;
-            }
+            //Utilizador existingUser = await _dal.GetUserByIdAsync(user.Id);
+            //if (existingUser != null)
+            //{
+            //    return existingUser;
+            //}
 
             return await _dal.AddUserAsync(user);
         }
