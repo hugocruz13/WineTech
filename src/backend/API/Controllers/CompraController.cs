@@ -70,7 +70,12 @@ namespace API.Controllers
         [Authorize(Roles = "owner,user")]
         public async Task<IActionResult> GetById(int id)
         {
-            List<CompraDetalhe> compra = await _compraBLL.ObterCompraPorId(id);
+            var sub = User.FindFirst("sub")?.Value;
+
+            if (string.IsNullOrEmpty(sub))
+                return Unauthorized(new { success = false, message = "Utilizador não autenticado." });
+
+            List<CompraDetalhe> compra = await _compraBLL.ObterCompraPorId(id, sub);
 
             if (compra == null)
                 return NotFound(new { success = false, message = "Compra não encontrada." });

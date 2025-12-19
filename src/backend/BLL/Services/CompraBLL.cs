@@ -133,12 +133,22 @@ namespace BLL.Services
             return await _compraDAL.ObterComprasUtilizador(utilizadorId);
         }
 
-        public async Task<List<CompraDetalhe>> ObterCompraPorId(int compraId)
+        public async Task<List<CompraDetalhe>> ObterCompraPorId(int compraId, string utilizadorId)
         {
             if (compraId <= 0)
                 throw new ArgumentException("Compra ID must be greater than zero", nameof(compraId));
 
-            return await _compraDAL.ObterDetalhesCompra(compraId);
+            var compra =  await _compraDAL.ObterDetalhesCompra(compraId);
+
+            foreach (var detalhe in compra)
+            {
+                if (detalhe.idUtilizador != utilizadorId)
+                {
+                       throw new UnauthorizedAccessException("Acesso negado à compra de outro utilizador.");
+                }
+            }
+
+            return compra;
         }
     }
 }

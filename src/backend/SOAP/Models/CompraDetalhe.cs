@@ -22,5 +22,7 @@ namespace SOAP.Models
         public string EmailUtilizador { get; set; }
         public string ImagemUtilizador { get; set; }
         public int StockId { get; set; }
+        public int Cartao { get; set; }
+        public string idUtilizador { get; set; }
     }
 }

@@ -185,7 +185,9 @@ namespace SOAP.Repository
                             NomeUtilizador = reader.IsDBNull(11) ? null : reader.GetString(11),
                             EmailUtilizador = reader.IsDBNull(12) ? null : reader.GetString(12),
                             ImagemUtilizador = reader.IsDBNull(13) ? null : reader.GetString(13),
-                            StockId = reader.GetInt32(14)
+                            StockId = reader.GetInt32(14),
+                            Cartao = reader.IsDBNull(15) ? 0 : reader.GetInt32(15),
+                            idUtilizador = reader.GetString(16)
                         });
                     }
                 }

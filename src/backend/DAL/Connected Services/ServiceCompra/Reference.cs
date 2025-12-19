@@ -241,6 +241,10 @@ namespace ServiceCompra
         
         private int StockIdField;
         
+        private int CartaoField;
+        
+        private string idUtilizadorField;
+        
         [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
         internal int IdCompra
         {
@@ -433,6 +437,32 @@ namespace ServiceCompra
             set
             {
                 this.StockIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=15)]
+        internal int Cartao
+        {
+            get
+            {
+                return this.CartaoField;
+            }
+            set
+            {
+                this.CartaoField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=16)]
+        internal string idUtilizador
+        {
+            get
+            {
+                return this.idUtilizadorField;
+            }
+            set
+            {
+                this.idUtilizadorField = value;
             }
         }
     }

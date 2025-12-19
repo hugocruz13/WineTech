@@ -130,7 +130,9 @@ BEGIN
         u.Nome,
         u.Email,
         u.ImgUrl,
-        s.Id AS StockId
+        s.Id AS StockId,
+        c.Cartao,
+        c.UtilizadoresId
     FROM Compras c
     JOIN LinhasCompra lc ON lc.ComprasId = c.Id
     JOIN Stock s ON s.Id = lc.StockId
@@ -151,9 +153,10 @@ BEGIN
         u.Nome,
         u.Email,
         u.ImgUrl,
-        s.Id 
+        s.Id ,
+        c.Cartao,
+        c.UtilizadoresId
 END;
 GO
-
 
 

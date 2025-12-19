@@ -139,7 +139,9 @@ namespace DAL.Services
                         NomeUtilizador = item.NomeUtilizador,
                         EmailUtilizador = item.EmailUtilizador,
                         ImagemUtilizador = item.ImagemUtilizador,
-                        StockId = item.StockId
+                        StockId = item.StockId,
+                        Cartao = item.Cartao,
+                        idUtilizador = item.idUtilizador
                     });
                 }
                 return result;
