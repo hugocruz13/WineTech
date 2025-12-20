@@ -1,3 +1,9 @@
+create database ISI;
+go
+
+use ISI;
+go
+
 create table Vinhos (
   Id        int identity not null, 
   Nome      nvarchar(255) not null, 
@@ -36,6 +42,7 @@ create table Utilizadores (
   Email     nvarchar(255) null, 
   ImgUrl    nvarchar(255) null, 
   CreatedAt datetime2(7) default GETDATE() not null, 
+  IsAdmin   bit not null, 
   primary key (Id));
 create table Compras (
   Id             int identity not null, 
