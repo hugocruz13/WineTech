@@ -6,7 +6,6 @@
         public string Nome { get; set; }
         public string Email { get; set; }
         public string ImgUrl { get; set; }
-
-        public Utilizador() { }
+        public bool IsAdmin { get; set; }
     }
 }

@@ -2,7 +2,8 @@ CREATE PROCEDURE RegistrarUtilizador
     @Auth0UserId NVARCHAR(100),
     @Nome NVARCHAR(100) = NULL,
     @Email NVARCHAR(255) = NULL,
-    @ImgUrl NVARCHAR(255) = NULL
+    @ImgUrl NVARCHAR(255) = NULL,
+    @IsAdmin BIT 
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -14,8 +15,8 @@ BEGIN
             WHERE Id = @Auth0UserId
         )
         BEGIN
-            INSERT INTO Utilizadores (Id, Nome, Email, ImgUrl)
-            VALUES (@Auth0UserId, @Nome, @Email, @ImgUrl);
+            INSERT INTO Utilizadores (Id, Nome, Email, ImgUrl, IsAdmin)
+            VALUES (@Auth0UserId, @Nome, @Email, @ImgUrl,@IsAdmin);
         END
     END TRY
     BEGIN CATCH
@@ -42,3 +43,18 @@ BEGIN
     WHERE Id = @Auth0UserId;
 END;
 GO
+
+-- Get apenas utilizadores administradores
+CREATE PROCEDURE UtilizadoresAdmin
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT *
+    FROM Utilizadores
+    WHERE IsAdmin = 1;
+END;
+GO
+
+
+

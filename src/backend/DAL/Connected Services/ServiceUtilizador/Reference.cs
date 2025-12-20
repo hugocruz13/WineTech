@@ -26,6 +26,8 @@ namespace ServiceUtilizador
         
         private string ImgUrlField;
         
+        private bool IsAdminField;
+        
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false)]
         internal string Id
         {
@@ -77,6 +79,19 @@ namespace ServiceUtilizador
                 this.ImgUrlField = value;
             }
         }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true, Order=4)]
+        internal bool IsAdmin
+        {
+            get
+            {
+                return this.IsAdminField;
+            }
+            set
+            {
+                this.IsAdminField = value;
+            }
+        }
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
@@ -89,6 +104,9 @@ namespace ServiceUtilizador
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetUserById", ReplyAction="*")]
         System.Threading.Tasks.Task<ServiceUtilizador.GetUserByIdResponse> GetUserByIdAsync(ServiceUtilizador.GetUserByIdRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetOwners", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceUtilizador.GetOwnersResponse> GetOwnersAsync(ServiceUtilizador.GetOwnersRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -251,6 +269,78 @@ namespace ServiceUtilizador
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class GetOwnersRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetOwners", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceUtilizador.GetOwnersRequestBody Body;
+        
+        public GetOwnersRequest()
+        {
+        }
+        
+        public GetOwnersRequest(ServiceUtilizador.GetOwnersRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute()]
+    internal partial class GetOwnersRequestBody
+    {
+        
+        public GetOwnersRequestBody()
+        {
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class GetOwnersResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetOwnersResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceUtilizador.GetOwnersResponseBody Body;
+        
+        public GetOwnersResponse()
+        {
+        }
+        
+        public GetOwnersResponse(ServiceUtilizador.GetOwnersResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class GetOwnersResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceUtilizador.Utilizador[] GetOwnersResult;
+        
+        public GetOwnersResponseBody()
+        {
+        }
+        
+        public GetOwnersResponseBody(ServiceUtilizador.Utilizador[] GetOwnersResult)
+        {
+            this.GetOwnersResult = GetOwnersResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     internal interface UtilizadorRepositoryServiceSoapChannel : ServiceUtilizador.UtilizadorRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -320,6 +410,19 @@ namespace ServiceUtilizador
             inValue.Body = new ServiceUtilizador.GetUserByIdRequestBody();
             inValue.Body.id = id;
             return ((ServiceUtilizador.UtilizadorRepositoryServiceSoap)(this)).GetUserByIdAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceUtilizador.GetOwnersResponse> ServiceUtilizador.UtilizadorRepositoryServiceSoap.GetOwnersAsync(ServiceUtilizador.GetOwnersRequest request)
+        {
+            return base.Channel.GetOwnersAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceUtilizador.GetOwnersResponse> GetOwnersAsync()
+        {
+            ServiceUtilizador.GetOwnersRequest inValue = new ServiceUtilizador.GetOwnersRequest();
+            inValue.Body = new ServiceUtilizador.GetOwnersRequestBody();
+            return ((ServiceUtilizador.UtilizadorRepositoryServiceSoap)(this)).GetOwnersAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

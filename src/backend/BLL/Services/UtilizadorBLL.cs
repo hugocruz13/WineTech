@@ -2,6 +2,7 @@
 using DAL.Interfaces;
 using Models;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -20,12 +21,6 @@ namespace BLL.Services
 
         public async Task<Utilizador> RegisterUserAsync(Utilizador user)
         {
-            //Utilizador existingUser = await _dal.GetUserByIdAsync(user.Id);
-            //if (existingUser != null)
-            //{
-            //    return existingUser;
-            //}
-
             return await _dal.AddUserAsync(user);
         }
 

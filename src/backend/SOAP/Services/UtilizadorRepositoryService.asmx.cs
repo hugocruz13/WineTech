@@ -1,6 +1,7 @@
 ﻿using SOAP.Models;
 using SOAP.Repository;
 using System;
+using System.Collections.Generic;
 using System.Web.Services;
 
 namespace SOAP.Services
@@ -48,6 +49,19 @@ namespace SOAP.Services
             try
             {
                 return _repository.GetUserById(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Database error: " + ex.Message);
+            }
+        }
+
+        [WebMethod]
+        public List<Utilizador> GetOwners()
+        {
+            try
+            {
+                return _repository.GetOwners();
             }
             catch (Exception ex)
             {

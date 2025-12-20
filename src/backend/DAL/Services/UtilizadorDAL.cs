@@ -1,6 +1,7 @@
 ﻿using DAL.Helpers;
 using DAL.Interfaces;
 using ServiceUtilizador;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DAL.Services
@@ -16,7 +17,7 @@ namespace DAL.Services
         {
             return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
             {
-                var soapModel = new ServiceUtilizador.Utilizador { Id = user.Id, Nome = user.Nome, Email = user.Email, ImgUrl = user.ImgUrl };
+                var soapModel = new ServiceUtilizador.Utilizador { Id = user.Id, Nome = user.Nome, Email = user.Email, ImgUrl = user.ImgUrl, IsAdmin = user.IsAdmin};
                 var response = await client.AddUserAsync(soapModel);
                 var item =  response.Body.AddUserResult;
                 if (item == null) return null;
@@ -32,6 +33,24 @@ namespace DAL.Services
                 var item = response.Body.GetUserByIdResult;
                 if (item == null) return null;
                 return new Models.Utilizador { Id = item.Id, Nome = item.Nome, Email = item.Email, ImgUrl = item.ImgUrl };
+            });
+        }
+
+        public async Task<List<Models.Utilizador>> GetOwnersAsync()
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.GetOwnersAsync();
+                var itemList = response.Body.GetOwnersResult;
+                var result = new System.Collections.Generic.List<Models.Utilizador>();
+                if (itemList != null)
+                {
+                    foreach (var item in itemList)
+                    {
+                        result.Add(new Models.Utilizador { Id = item.Id, Nome = item.Nome, Email = item.Email, ImgUrl = item.ImgUrl });
+                    }
+                }
+                return result;
             });
         }
     }
