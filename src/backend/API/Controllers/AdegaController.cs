@@ -2,6 +2,7 @@
 using API.Services;
 using BLL.Interfaces;
 using DAL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
@@ -30,6 +31,7 @@ namespace API.Controllers
         /// <returns>An HTTP 200 response containing a JSON object with a success flag and a list of wine cellars if the
         /// operation succeeds; otherwise, an HTTP 500 response with an error message.</returns>
         [HttpGet]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Get()
         {
             try
@@ -54,6 +56,7 @@ namespace API.Controllers
 
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Get(int id)
         {
             try
@@ -86,6 +89,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Post(CreateAdegaDTO adegaDTO)
         {
             try
@@ -129,6 +133,7 @@ namespace API.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Put(int id, [FromBody] UpdateAdegaDTO adegaDTO)
         {
             if (adegaDTO.Id != 0 && adegaDTO.Id != id)
@@ -169,6 +174,7 @@ namespace API.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Delete(int id)
         {
             try
@@ -189,6 +195,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/upload-image")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> UploadImage(int id, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -215,6 +222,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id}/stock")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> GetStockResumo(int id)
         {
             try
@@ -230,6 +238,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/stock")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> AdicionarStock(int id, [FromBody] AdegaStockDTO stock)
         {
             if (stock.AdegaId != 0 && stock.AdegaId != id)
@@ -252,6 +261,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}/stock/{vinhoId}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> AtualizarStock(int id, int vinhoId, [FromBody] AdegaStockDTO stock)
         {
             if (stock.AdegaId != 0 && stock.AdegaId != id)
@@ -277,6 +287,7 @@ namespace API.Controllers
         }
 
         [HttpGet("stock")]
+        [Authorize(Roles = "user,owner")]
         public async Task<ActionResult> GetStockResumoGlobal()
         {
             try

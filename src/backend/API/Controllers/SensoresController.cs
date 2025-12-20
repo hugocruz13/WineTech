@@ -74,6 +74,7 @@ namespace API.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Get()
         {
             try
@@ -98,6 +99,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{adegaId}")]
+        [Authorize(Roles = "owner")]
         public async Task<IActionResult> Get(int adegaId)
         {
             try

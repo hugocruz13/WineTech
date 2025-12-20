@@ -81,6 +81,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{stockId}/leituras/stock")]
+        [Authorize(Roles = "owner,user")]
         public async Task<IActionResult> GetUltimaLeituraPorSensor(int stockId)
         {
             try
@@ -127,5 +128,34 @@ namespace API.Controllers
                 });
             }
         }
+
+        [HttpGet("{stockId}/leituras/stock/existe")]
+        [Authorize(Roles = "owner,user")]
+        public async Task<IActionResult> Existe(int stockId)
+        {
+            try
+            {
+                if (stockId <= 0)
+                    return BadRequest(new { success = false, message = "Sensor inválido." });
+
+                LeiturasStock leiturasStock = await _leiturasBLL.ObterUltimaLeituraPorSensor(stockId);
+
+                if (leiturasStock == null)
+                    return Ok(new { success = true, data = false });
+
+                bool existe =(leiturasStock.Temperatura?.Any() ?? false) ||  (leiturasStock.Humidade?.Any() ?? false) ||  (leiturasStock.Luminosidade?.Any() ?? false);
+                return Ok(new { success = true, data = existe });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Erro ao verificar leituras",
+                    error = ex.Message
+                });
+            }
+        }
+
     }
 }

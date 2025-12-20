@@ -1,4 +1,5 @@
 ﻿using BLL.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,6 +16,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{sensorId}/alertas")]
+        [Authorize(Roles = "owner")]
         public async Task<IActionResult> GetAlertasPorSensor(int sensorId)
         {
             try

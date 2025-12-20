@@ -7,6 +7,7 @@ import Header from "../components/Header";
 import IotCard from "../components/IoT/IotCard";
 import IotLineChart from "../components/IoT/IotLineChart";
 import IotStats from "../components/IoT/IotStats";
+import { useAuth0 } from "@auth0/auth0-react"; // 👈 ADICIONAR
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -33,17 +34,25 @@ const IotClientePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { getAccessTokenSilently } = useAuth0(); // 👈 ADICIONAR
+
   useEffect(() => {
     const fetchIot = async () => {
       try {
+        const token = await getAccessTokenSilently();
+
         const res = await fetch(
-          `${API_URL}/api/Leituras/${stockId}/leituras/stock`
+          `${API_URL}/api/Leituras/${stockId}/leituras/stock`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         if (!res.ok) throw new Error();
 
         const json = await res.json();
-        console.log(json.data);
         setData(formatData(json.data));
       } catch {
         setError("Não foi possível carregar dados IoT");
@@ -53,7 +62,7 @@ const IotClientePage = () => {
     };
 
     fetchIot();
-  }, [stockId]);
+  }, [stockId, getAccessTokenSilently]);
 
   if (loading) return <Loading />;
   if (error) return <p className={styles.error}>{error}</p>;

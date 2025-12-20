@@ -1,9 +1,8 @@
 import Header from "../components/Header";
 import Loading from "../components/Loading";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CreditCard, Mail } from "lucide-react";
-import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "../styles/CompraDetalhe.module.css";
 
@@ -15,18 +14,21 @@ export default function CompraDetalhe() {
   const navigate = useNavigate();
 
   const [dados, setDados] = useState([]);
+  const [iotDisponivel, setIotDisponivel] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // 🔹 Carregar compra
   useEffect(() => {
     const fetchCompra = async () => {
       try {
         const token = await getAccessTokenSilently();
+
         const res = await fetch(`${API_URL}/api/compra/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!res.ok) throw new Error("Erro ao carregar compra");
+        if (!res.ok) throw new Error();
 
         const json = await res.json();
         if (json.success) setDados(json.data || []);
@@ -40,6 +42,40 @@ export default function CompraDetalhe() {
     fetchCompra();
   }, [id, getAccessTokenSilently]);
 
+  useEffect(() => {
+    if (!dados.length) return;
+
+    const verificarIot = async (stockId) => {
+      const token = await getAccessTokenSilently();
+
+      const res = await fetch(
+        `${API_URL}/api/Leituras/${stockId}/leituras/stock/existe`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (!res.ok) return false;
+
+      const json = await res.json();
+      return json.success && json.data === true;
+    };
+
+    const carregarIot = async () => {
+      const resultado = {};
+
+      await Promise.all(
+        dados.map(async (item) => {
+          resultado[item.stockId] = await verificarIot(item.stockId);
+        })
+      );
+
+      setIotDisponivel(resultado);
+    };
+
+    carregarIot();
+  }, [dados, getAccessTokenSilently]);
+
   if (loading) return <Loading />;
   if (error) return <p className={styles.error}>{error}</p>;
   if (!dados.length) return null;
@@ -51,12 +87,16 @@ export default function CompraDetalhe() {
     0
   );
 
+  const mostrarColunaIot = Object.values(iotDisponivel).some(Boolean);
+
   return (
     <>
       <Header />
+
       <div className={styles.page}>
         <h1 className={styles.titulo}>Encomenda #{compra.idCompra}</h1>
 
+        {/* ---------------- TOPO ---------------- */}
         <div className={styles.topo}>
           <div className={styles.card}>
             <h3>DADOS DO CLIENTE</h3>
@@ -96,6 +136,7 @@ export default function CompraDetalhe() {
           </div>
         </div>
 
+        {/* ---------------- ITENS ---------------- */}
         <div className={styles.cardItens}>
           <h3>Itens do Pedido</h3>
 
@@ -104,7 +145,7 @@ export default function CompraDetalhe() {
               <tr>
                 <th>Produto</th>
                 <th>Preço Unit.</th>
-                <th>IoT</th>
+                {mostrarColunaIot && <th>IoT</th>}
               </tr>
             </thead>
 
@@ -123,15 +164,18 @@ export default function CompraDetalhe() {
 
                   <td>€ {item.preco.toFixed(2)}</td>
 
-                  <td>
-                    <button
-                      className={styles.iotBtn}
-                      title="Consultar temperatura da garrafa"
-                      onClick={() => navigate(`/iot/${item.stockId}`)}
-                    >
-                      Ver IoT
-                    </button>
-                  </td>
+                  {mostrarColunaIot && (
+                    <td>
+                      {iotDisponivel[item.stockId] && (
+                        <button
+                          className={styles.iotBtn}
+                          onClick={() => navigate(`/iot/${item.stockId}`)}
+                        >
+                          Ver IoT
+                        </button>
+                      )}
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

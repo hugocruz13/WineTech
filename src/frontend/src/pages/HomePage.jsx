@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import WineCard from "../components/WineCard";
 import Loading from "../components/Loading";
 import styles from "../styles/HomePage.module.css";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,10 +12,18 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { getAccessTokenSilently } = useAuth0();
+
   useEffect(() => {
     const fetchStock = async () => {
       try {
-        const response = await fetch(`${API_URL}/api/adega/stock`);
+        const token = await getAccessTokenSilently();
+
+        const response = await fetch(`${API_URL}/api/adega/stock`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("Erro ao carregar vinhos");
@@ -30,7 +39,7 @@ const HomePage = () => {
     };
 
     fetchStock();
-  }, []);
+  }, [getAccessTokenSilently]);
 
   return (
     <>

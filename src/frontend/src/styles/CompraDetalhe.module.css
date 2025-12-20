@@ -263,6 +263,22 @@
 }
 
 /* ============================= */
+/* COLUNA IOT (ALINHAMENTO) */
+/* ============================= */
+.thead th:last-child {
+  text-align: center;
+}
+
+.tbody td:last-child {
+  text-align: center;
+}
+
+.thead th:last-child,
+.tbody td:last-child {
+  width: 120px;
+}
+
+/* ============================= */
 /* RESPONSIVE */
 /* ============================= */
 @media (max-width: 900px) {

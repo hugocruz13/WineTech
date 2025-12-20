@@ -78,7 +78,9 @@ function AppContent() {
       <Route path="/compra/:id" element={<ComprasDetalhes />} />
       <Route path="/carrinho" element={<CarrinhoPage />} />
       <Route path="/iot/:stockId" element={<IotClientePage />} />
-
+      {/* Apagar em produção */}
+      <Route path="/jwt" element={<JWT />} />
+      {/*Owner */}
       <Route
         path="/dashboard"
         element={
@@ -87,7 +89,6 @@ function AppContent() {
           </RoleGuard>
         }
       />
-      <Route path="/jwt" element={<JWT />} />
     </Routes>
   );
 }
@@ -102,7 +103,7 @@ function App() {
     <Router>
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={1500}
         closeOnClick
         pauseOnHover
         draggable
