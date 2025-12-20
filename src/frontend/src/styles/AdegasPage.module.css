@@ -1,0 +1,105 @@
+.page {
+  background: #fafafa;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* Header */
+.header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.header p {
+  color: #6b7280;
+  font-size: 15px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  margin: 28px 0 24px;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding-bottom: 12px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.active {
+  color: #dc2626;
+  border-bottom: 2px solid #dc2626;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 10px 14px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.search input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+}
+
+/* Button */
+.new {
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.new:hover {
+  background: #b91c1c;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 32px;
+}
+
+.card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+}

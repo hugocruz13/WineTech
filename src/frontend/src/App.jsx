@@ -16,7 +16,7 @@ import { showNotificationToast } from "./utils/notificationToast";
 import SignInPage from "./pages/SignInPage";
 import FinalizarCompraPage from "./pages/FinalizarCompraPage";
 import HomePage from "./pages/HomePage";
-import DashboardPage from "./pages/DashboardPage";
+import AdegaPage from "./pages/AdegasPage";
 import ComprasDetalhes from "./pages/ComprasDetalhes";
 import ComprasPage from "./pages/ComprasPage";
 import RoleGuard from "./components/RoleGuard";
@@ -85,7 +85,7 @@ function AppContent() {
         path="/dashboard"
         element={
           <RoleGuard role="owner">
-            <DashboardPage />
+            <AdegaPage />
           </RoleGuard>
         }
       />
