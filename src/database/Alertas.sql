@@ -1,5 +1,5 @@
 --Inserir Alerta
-CREATE OR ALTER PROCEDURE InserirAlerta
+CREATE PROCEDURE InserirAlerta
     @SensoresId INT,
     @TipoAlerta NVARCHAR(255),
     @Mensagem NVARCHAR(255)
@@ -19,7 +19,7 @@ END;
 GO
 
 --Obter Alerta por Sensor
-CREATE OR ALTER PROCEDURE ObterAlertasPorSensor
+CREATE PROCEDURE ObterAlertasPorSensor
     @SensoresId INT
 AS
 BEGIN

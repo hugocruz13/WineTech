@@ -1,5 +1,5 @@
 --Criar e Associar um Sensor a uma Adega
-CREATE OR ALTER PROCEDURE InserirSensor
+CREATE PROCEDURE InserirSensor
     @IdentificadorHardware NVARCHAR(255),
     @Tipo NVARCHAR(255),
     @Estado BIT,
@@ -20,9 +20,8 @@ BEGIN
 END;
 GO
 
-
 --Obter todos os Sensores
-CREATE OR ALTER PROCEDURE ObterSensores
+CREATE PROCEDURE ObterSensores
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -39,7 +38,7 @@ END;
 GO
 
 --Obter Sensores de uma Adega especifíca
-CREATE OR ALTER PROCEDURE ObterSensoresPorAdega
+CREATE PROCEDURE ObterSensoresPorAdega
     @AdegaId INT
 AS
 BEGIN
@@ -56,5 +55,3 @@ BEGIN
     WHERE AdegaId = @AdegaId;
 END;
 GO
-
-

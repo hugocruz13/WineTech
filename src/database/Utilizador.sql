@@ -1,7 +1,4 @@
-SELECT name
-FROM sys.procedures
-
-CREATE OR ALTER PROCEDURE RegistrarUtilizador
+CREATE PROCEDURE RegistrarUtilizador
     @Auth0UserId NVARCHAR(100),
     @Nome NVARCHAR(100) = NULL,
     @Email NVARCHAR(255) = NULL,
@@ -33,10 +30,8 @@ BEGIN
 END;
 GO
 
-
-
 -- Get Utilizador pelo ID
-CREATE OR ALTER PROCEDURE UtilizadorById
+CREATE PROCEDURE UtilizadorById
     @Auth0UserId NVARCHAR(100)
 AS
 BEGIN
@@ -47,4 +42,3 @@ BEGIN
     WHERE Id = @Auth0UserId;
 END;
 GO
-

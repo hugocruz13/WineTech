@@ -1,5 +1,5 @@
 -- Inserir Vinhos
-CREATE OR ALTER PROCEDURE InserirVinho
+CREATE PROCEDURE InserirVinho
 	@Nome NVARCHAR(255),
     @Produtor NVARCHAR(255),
     @Ano INT,
@@ -22,7 +22,7 @@ END;
 GO
 
 -- Selecionar todos os Vinhos
-CREATE OR ALTER PROCEDURE TodosVinhos
+CREATE PROCEDURE TodosVinhos
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -32,7 +32,7 @@ END;
 GO
 
 -- Selecionar um Vinho
-CREATE OR ALTER PROCEDURE VinhoById
+CREATE PROCEDURE VinhoById
     @Id INT
 AS
 BEGIN
@@ -45,7 +45,7 @@ END;
 GO
 
 -- Atualizar Vinho
-CREATE OR ALTER PROCEDURE ModificarVinho
+CREATE PROCEDURE ModificarVinho
     @Id INT,
     @Nome NVARCHAR(255) = NULL,
     @Produtor NVARCHAR(255) = NULL,
@@ -76,7 +76,7 @@ END;
 GO
 
 -- Apagar Vinho
-CREATE OR ALTER PROCEDURE ApagarVinho
+CREATE PROCEDURE ApagarVinho
     @Id INT
 AS
 BEGIN
@@ -86,28 +86,3 @@ BEGIN
     WHERE Id = @Id;
 END;
 GO
-
-DROP PROCEDURE InserirVinho;
-
-EXEC InserirVinho 
-    @Nome = 'Teste Vinho',
-    @Produtor = 'Produtor Teste',
-    @Ano = 2020,
-    @Tipo = 'Tinto',
-    @Descricao = 'Vinho de teste',
-    @ImagemUrl = 'https://teste.com/img.png',
-    @Preco = 9.99;
-
-Exec ModificarVinho
-    @Id = '4',
-    @Nome = 'Narcisus',
-    @Produtor = 'Narcisus',
-    @Ano = 2020,
-    @Tipo = 'Verde branco',
-    @Descricao = 'Vinho da Casa',
-    @ImagemUrl = 'https://teste.com/img.png',
-    @Preco = 19.99;
-
-EXEC ApagarVinho @Id = 16
-EXEC TodosVinhos;
-EXEC VinhoById @Id = 4;

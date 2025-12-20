@@ -1,5 +1,5 @@
 --Inserir uma leitura
-CREATE OR ALTER PROCEDURE InserirLeitura
+CREATE PROCEDURE InserirLeitura
     @SensorId INT,
     @Valor FLOAT(10)
 AS
@@ -16,8 +16,9 @@ BEGIN
     WHERE Id = @NovoId;
 END;
 GO
+
 --Obter leituras de um sensor
-CREATE OR ALTER PROCEDURE ObterLeiturasPorSensor
+CREATE PROCEDURE ObterLeiturasPorSensor
     @SensorId INT
 AS
 BEGIN
@@ -35,7 +36,7 @@ END;
 GO
 
 -- Obter leituras por stock
-CREATE OR ALTER PROCEDURE ObterLeiturasPorStock
+CREATE PROCEDURE ObterLeiturasPorStock
     @StockId INT
 AS
 BEGIN

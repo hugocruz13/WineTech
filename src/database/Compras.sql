@@ -1,5 +1,5 @@
 -- Seleciona Id's das garrafas fisicas
-CREATE OR ALTER PROCEDURE SelecionarStockPorVinho
+CREATE PROCEDURE SelecionarStockPorVinho
     @VinhoId INT,
     @Quantidade INT
 AS
@@ -16,7 +16,7 @@ END
 GO
 
 -- Criar uma compra
-CREATE OR ALTER PROCEDURE CriarCompra
+CREATE PROCEDURE CriarCompra
     @UtilizadorId nvarchar(100),
     @Estado nvarchar(100)
 AS
@@ -29,7 +29,6 @@ BEGIN
     VALUES (@UtilizadorId, @Estado);
 
     SET @NovaCompraId = SCOPE_IDENTITY();
-
 
     SELECT 
         @NovaCompraId AS Id,
@@ -44,7 +43,7 @@ END
 GO
 
 -- Criar uma linha 
-CREATE OR ALTER PROCEDURE LinhaCompra
+CREATE PROCEDURE LinhaCompra
     @CompraId INT,
     @StockId INT
 AS
@@ -59,9 +58,8 @@ BEGIN
 END
 GO
 
-
 -- Atualizar Stock 
-CREATE OR ALTER PROCEDURE FinalizarCompra
+CREATE PROCEDURE FinalizarCompra
     @StockId INT
 AS
 BEGIN
@@ -74,8 +72,7 @@ BEGIN
 END
 GO
 
-
-CREATE OR ALTER PROCEDURE AtualizarValorCompra
+CREATE PROCEDURE AtualizarValorCompra
     @CompraId INT,
     @Valor DECIMAL(19,2),
     @Estado NVARCHAR(100),
@@ -93,9 +90,8 @@ BEGIN
 END
 GO
 
-
 -- Compras Utilizador
-CREATE OR ALTER PROCEDURE ComprasPorUtilizador
+CREATE PROCEDURE ComprasPorUtilizador
     @UtilizadorId nvarchar(100)
 AS
 BEGIN
@@ -109,7 +105,7 @@ END;
 GO
 
 -- Compra detalhada
-CREATE OR ALTER PROCEDURE DetalhesCompra
+CREATE PROCEDURE DetalhesCompra
     @CompraId INT
 AS
 BEGIN
@@ -158,5 +154,3 @@ BEGIN
         c.UtilizadoresId
 END;
 GO
-
-

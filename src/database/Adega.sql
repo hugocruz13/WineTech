@@ -1,5 +1,5 @@
 -- Inserir Adega
-CREATE OR ALTER PROCEDURE InserirAdega
+CREATE PROCEDURE InserirAdega
     @Nome NVARCHAR(100),
     @Localizacao NVARCHAR(255),
     @Capacidade INT
@@ -20,7 +20,7 @@ GO
 
  
 -- Selecionar todas as Adegas
-CREATE OR ALTER PROCEDURE TodasAdegas
+CREATE PROCEDURE TodasAdegas
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -30,7 +30,7 @@ END;
 GO
 
 -- Selecionar uma Adega
-CREATE OR ALTER PROCEDURE AdegaById
+CREATE PROCEDURE AdegaById
     @Id INT
 AS
 BEGIN
@@ -43,7 +43,7 @@ END;
 GO
 
 -- Atualizar Adega e retornar a adega atualizada
-CREATE OR ALTER PROCEDURE ModificarAdega
+CREATE PROCEDURE ModificarAdega
     @Id INT,
     @Nome NVARCHAR(100) = NULL,
     @Localizacao NVARCHAR(255) = NULL,
@@ -70,7 +70,7 @@ GO
 
 
 -- Apagar Adega
-CREATE OR ALTER PROCEDURE ApagarAdega
+CREATE PROCEDURE ApagarAdega
     @Id INT
 AS
 BEGIN
@@ -79,9 +79,10 @@ BEGIN
     DELETE FROM Adega
     WHERE Id = @Id;
 END;
+GO
 
 -- Stock Resumido
-CREATE OR ALTER PROCEDURE ObterResumoPorAdega
+CREATE PROCEDURE ObterResumoPorAdega
     @AdegaId INT
 AS
 BEGIN
@@ -108,7 +109,7 @@ END;
 GO
 
 -- Stock todas as adegas
-CREATE OR ALTER PROCEDURE ObterResumoStockTotal
+CREATE PROCEDURE ObterResumoStockTotal
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -133,7 +134,7 @@ END;
 GO
 
 -- Adicionar stock
-CREATE OR ALTER PROCEDURE AdicionarStock
+CREATE PROCEDURE AdicionarStock
     @AdegaId INT,
     @VinhoId INT,
     @Quantidade INT
@@ -154,7 +155,7 @@ END;
 GO
 
 -- Atualizar stock
-CREATE OR ALTER PROCEDURE AtualizarStock
+CREATE PROCEDURE AtualizarStock
     @AdegaId INT,
     @VinhoId INT,
     @Quantidade INT
@@ -209,7 +210,7 @@ END;
 GO
 
 -- Obter Quantidade total
-CREATE OR ALTER PROCEDURE ObterOcupacaoAdega
+CREATE PROCEDURE ObterOcupacaoAdega
     @AdegaId INT
 AS
 BEGIN
@@ -221,3 +222,5 @@ BEGIN
       AND Estado = 'Disponivel';
 END;
 GO
+
+

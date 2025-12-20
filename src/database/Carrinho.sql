@@ -1,5 +1,5 @@
 --Obter Carrinho por utilizador
-CREATE OR ALTER PROCEDURE ObterCarrinhoPorUtilizador
+CREATE PROCEDURE ObterCarrinhoPorUtilizador
     @UtilizadoresId NVARCHAR(100)
 AS
 BEGIN
@@ -16,7 +16,7 @@ END;
 GO
 
 --Adicionar um vinho ao carrinho
-CREATE OR ALTER PROCEDURE InserirItemCarrinho
+CREATE PROCEDURE InserirItemCarrinho
     @UtilizadoresId NVARCHAR(100),
     @VinhosId INT,
     @Quantidade INT
@@ -46,7 +46,7 @@ GO
 
 
 --Atualizar quantidade 
-CREATE OR ALTER PROCEDURE AtualizarItem
+CREATE PROCEDURE AtualizarItem
     @VinhosId INT,
     @UtilizadoresId NVARCHAR(100),
     @Quantidade INT  
@@ -68,7 +68,7 @@ END;
 GO
 
 --Eliminar vinho de um Carrinho
-CREATE OR ALTER PROCEDURE EliminarItem
+CREATE PROCEDURE EliminarItem
     @VinhosId INT,
     @UtilizadoresId NVARCHAR(100)
 AS
@@ -80,8 +80,9 @@ BEGIN
        AND UtilizadoresId = @UtilizadoresId;
 END;
 GO
+
 --Eliminar carrinho do utilizador
-CREATE OR ALTER PROCEDURE EliminarCarrinho
+CREATE PROCEDURE EliminarCarrinho
     @UtilizadorId NVARCHAR(100)
 AS
 BEGIN
@@ -93,7 +94,7 @@ END;
 GO
 
 -- Carrinho por utilizador detalhado
-CREATE OR ALTER PROCEDURE ObterDetalhesCarrinho
+CREATE PROCEDURE ObterDetalhesCarrinho
     @UtilizadoresId NVARCHAR(100)
 AS
 BEGIN

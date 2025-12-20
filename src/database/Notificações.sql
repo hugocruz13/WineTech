@@ -1,5 +1,5 @@
 -- Inserir Notificação
-CREATE OR ALTER PROCEDURE InserirNotificacao
+CREATE PROCEDURE InserirNotificacao
     @Titulo NVARCHAR(100),
     @Mensagem NVARCHAR(255),
     @Tipo NVARCHAR(50),
@@ -19,9 +19,8 @@ BEGIN
 END;
 GO
 
-
 -- Listar todas as Notificações Por utilizador
-CREATE OR ALTER PROCEDURE NotificacoesPorUtilizador
+CREATE PROCEDURE NotificacoesPorUtilizador
     @UtilizadorId NVARCHAR(100)
 AS
 BEGIN
@@ -35,7 +34,7 @@ END;
 GO
 
 -- Atualizar estado Notificação
-CREATE OR ALTER PROCEDURE MarcarNotificacaoComoLida
+CREATE PROCEDURE MarcarNotificacaoComoLida
     @Id INT
 AS
 BEGIN
