@@ -70,7 +70,7 @@ const NovaAdegaModal = ({ onClose, onSuccess, token, apiUrl }) => {
           </label>
 
           <label>
-            Capacidade (L)
+            Capacidade
             <input
               type="number"
               required

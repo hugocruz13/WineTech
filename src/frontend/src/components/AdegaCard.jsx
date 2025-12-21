@@ -14,8 +14,6 @@ const AdegaCard = ({ adega }) => {
         ) : (
           <div className={styles.placeholder} />
         )}
-
-        <span className={styles.status}>Ativo</span>
       </div>
 
       {/* Body */}
@@ -30,7 +28,7 @@ const AdegaCard = ({ adega }) => {
         <div className={styles.info}>
           <Box size={16} />
           <span>
-            Capacidade: {adega.capacidade ? `${adega.capacidade} L` : "-"}
+            Capacidade: {adega.capacidade ? `${adega.capacidade}` : "-"}
           </span>
         </div>
 

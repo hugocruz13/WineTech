@@ -103,3 +103,11 @@
   transform: translateY(-4px);
   box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
 }
+
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #666;
+  font-size: 1rem;
+  padding: 2rem 0;
+}

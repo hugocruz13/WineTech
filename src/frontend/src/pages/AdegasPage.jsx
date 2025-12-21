@@ -16,7 +16,9 @@ const AdegasPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showVinhoModal, setShowVinhoModal] = useState(false);
   const [token, setToken] = useState(null);
+  const [activeTab, setActiveTab] = useState("adegas");
 
   const fetchAdegas = async () => {
     try {
@@ -61,24 +63,65 @@ const AdegasPage = () => {
 
           {/* Tabs */}
           <div className={styles.tabs}>
-            <button className={`${styles.tab} ${styles.active}`}>Adegas</button>
-            <button className={styles.tab}>Vinhos</button>
-          </div>
+            <button
+              className={`${styles.tab} ${
+                activeTab === "adegas" ? styles.active : ""
+              }`}
+              onClick={() => setActiveTab("adegas")}
+            >
+              Adegas
+            </button>
 
-          {/* Actions */}
-          <div className={styles.actions}>
-            <button className={styles.new} onClick={() => setShowModal(true)}>
-              <Plus size={16} />
-              Nova Adega
+            <button
+              className={`${styles.tab} ${
+                activeTab === "vinhos" ? styles.active : ""
+              }`}
+              onClick={() => setActiveTab("vinhos")}
+            >
+              Vinhos
             </button>
           </div>
 
-          {/* Grid */}
-          <div className={styles.grid}>
-            {adegas.map((adega) => (
-              <AdegaCard key={adega.id} adega={adega} />
-            ))}
-          </div>
+          {/* Actions */}
+          {activeTab === "adegas" && (
+            <div className={styles.actions}>
+              <button className={styles.new} onClick={() => setShowModal(true)}>
+                <Plus size={16} />
+                Nova Adega
+              </button>
+            </div>
+          )}
+
+          {activeTab === "vinhos" && (
+            <div className={styles.actions}>
+              <button
+                className={styles.new}
+                onClick={() => setShowVinhoModal(true)}
+              >
+                <Plus size={16} />
+                Novo Vinho
+              </button>
+            </div>
+          )}
+
+          {/* Conteúdo */}
+          {activeTab === "adegas" && (
+            <div className={styles.grid}>
+              {adegas.length === 0 ? (
+                <p className={styles.empty}>Nenhuma adega registada!</p>
+              ) : (
+                adegas.map((adega) => (
+                  <AdegaCard key={adega.id} adega={adega} />
+                ))
+              )}
+            </div>
+          )}
+
+          {activeTab === "vinhos" && (
+            <div className={styles.grid}>
+              <p className={styles.empty}>Nenhum vinho registado!</p>
+            </div>
+          )}
         </div>
       </div>
 
