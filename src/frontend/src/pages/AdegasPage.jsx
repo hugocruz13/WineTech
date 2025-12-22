@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header";
 import AdegaCard from "../components/AdegaCard";
+import VinhoCard from "../components/VinhoCard";
 import Loading from "../components/Loading";
 import NovaAdegaModal from "../components/NovaAdegaModal";
 import styles from "../styles/AdegasPage.module.css";
@@ -13,28 +14,54 @@ const AdegasPage = () => {
   const { getAccessTokenSilently } = useAuth0();
 
   const [adegas, setAdegas] = useState([]);
+  const [vinhos, setVinhos] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [showModal, setShowModal] = useState(false);
-  const [showVinhoModal, setShowVinhoModal] = useState(false);
+  const [setShowVinhoModal] = useState(false);
+
   const [token, setToken] = useState(null);
   const [activeTab, setActiveTab] = useState("adegas");
 
-  const fetchAdegas = async () => {
+  const fetchAdegas = async (accessToken) => {
+    const response = await fetch(`${API_URL}/api/adega`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao carregar adegas");
+    }
+
+    const result = await response.json();
+    setAdegas(result.data);
+  };
+
+  const fetchVinhos = async (accessToken) => {
+    const response = await fetch(`${API_URL}/api/vinho`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao carregar vinhos");
+    }
+
+    const result = await response.json();
+    setVinhos(result.data);
+  };
+
+  const init = async () => {
     try {
+      setLoading(true);
       const accessToken = await getAccessTokenSilently();
       setToken(accessToken);
 
-      const response = await fetch(`${API_URL}/api/adega`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      if (!response.ok) throw new Error("Erro ao carregar adegas");
-
-      const result = await response.json();
-      setAdegas(result.data);
+      await Promise.all([fetchAdegas(accessToken), fetchVinhos(accessToken)]);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -43,7 +70,7 @@ const AdegasPage = () => {
   };
 
   useEffect(() => {
-    fetchAdegas();
+    init();
   }, []);
 
   if (loading) return <Loading />;
@@ -119,7 +146,13 @@ const AdegasPage = () => {
 
           {activeTab === "vinhos" && (
             <div className={styles.grid}>
-              <p className={styles.empty}>Nenhum vinho registado!</p>
+              {vinhos.length === 0 ? (
+                <p className={styles.empty}>Nenhum vinho registado!</p>
+              ) : (
+                vinhos.map((vinho) => (
+                  <VinhoCard key={vinho.id} vinho={vinho} />
+                ))
+              )}
             </div>
           )}
         </div>
@@ -130,7 +163,7 @@ const AdegasPage = () => {
           token={token}
           apiUrl={API_URL}
           onClose={() => setShowModal(false)}
-          onSuccess={fetchAdegas}
+          onSuccess={() => init()}
         />
       )}
     </>

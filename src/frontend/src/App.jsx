@@ -16,6 +16,7 @@ import { showNotificationToast } from "./utils/notificationToast";
 import SignInPage from "./pages/SignInPage";
 import FinalizarCompraPage from "./pages/FinalizarCompraPage";
 import HomePage from "./pages/HomePage";
+import VinhoDetalhe from "./pages/VinhoDetalhe";
 import AdegaPage from "./pages/AdegasPage";
 import ComprasDetalhes from "./pages/ComprasDetalhes";
 import ComprasPage from "./pages/ComprasPage";
@@ -86,6 +87,14 @@ function AppContent() {
         element={
           <RoleGuard role="owner">
             <AdegaPage />
+          </RoleGuard>
+        }
+      />
+      <Route
+        path="/vinhos/:id"
+        element={
+          <RoleGuard role="owner">
+            <VinhoDetalhe />
           </RoleGuard>
         }
       />
