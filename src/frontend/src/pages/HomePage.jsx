@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
-import WineCard from "../components/WineCard";
+import WineCard from "../components/VinhoCardCliente";
 import Loading from "../components/Loading";
 import styles from "../styles/HomePage.module.css";
 import { useAuth0 } from "@auth0/auth0-react";

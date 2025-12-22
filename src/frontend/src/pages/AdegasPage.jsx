@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header";
 import AdegaCard from "../components/AdegaCard";
-import VinhoCard from "../components/VinhoCard";
+import VinhoCard from "../components/VinhoCardOwner";
 import Loading from "../components/Loading";
 import NovaAdegaModal from "../components/NovaAdegaModal";
 import NovoVinhoModal from "../components/NovoVinhoModal";
