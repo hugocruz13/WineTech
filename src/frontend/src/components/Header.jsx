@@ -64,17 +64,6 @@ const Header = () => {
         <h1 className={styles.logoText}>VinhaTech</h1>
       </div>
 
-      <div className={styles.searchSection}>
-        <div className={styles.searchBar}>
-          <Search className={styles.searchIcon} size={20} />
-          <input
-            type="text"
-            placeholder="Procurar vinhos, produtores..."
-            className={styles.searchInput}
-          />
-        </div>
-      </div>
-
       <div className={styles.actionsSection}>
         <RoleVisibility role="owner">
           <button
