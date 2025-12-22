@@ -39,7 +39,7 @@ const AdegaCard = ({ adega }) => {
           <div className={styles.footer}>
             <button
               className={styles.btnSecondary}
-              onClick={() => navigate(`/adegas/${adega.id}`)}
+              onClick={() => navigate(`/adega/${adega.id}`)}
             >
               Gerir
             </button>

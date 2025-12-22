@@ -15,14 +15,15 @@ import { showNotificationToast } from "./utils/notificationToast";
 
 import SignInPage from "./pages/SignInPage";
 import FinalizarCompraPage from "./pages/FinalizarCompraPage";
+import GerirAdegaPage from "./pages/GerirAdegaPage.jsx";
 import HomePage from "./pages/HomePage";
-import VinhoDetalhe from "./pages/VinhoDetalhe";
+import VinhoDetalhe from "./pages/VinhoDetalheOwner";
 import AdegaPage from "./pages/AdegasPage";
 import ComprasDetalhes from "./pages/ComprasDetalhes";
 import ComprasPage from "./pages/ComprasPage";
 import RoleGuard from "./components/RoleGuard";
 import Loading from "./components/Loading";
-import WineDetailPage from "./pages/WineDetailPage";
+import WineDetailPage from "./pages/VinhoDetalheCliente.jsx";
 import NotificationsPage from "./pages/NotificationsPage";
 import IotClientePage from "./pages/IotClientePage";
 import CarrinhoPage from "./pages/CarrinhoPage";
@@ -95,6 +96,14 @@ function AppContent() {
         element={
           <RoleGuard role="owner">
             <VinhoDetalhe />
+          </RoleGuard>
+        }
+      />
+      <Route
+        path="/adega/:id"
+        element={
+          <RoleGuard role="owner">
+            <GerirAdegaPage />
           </RoleGuard>
         }
       />

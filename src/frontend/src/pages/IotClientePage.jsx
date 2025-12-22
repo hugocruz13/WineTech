@@ -7,7 +7,7 @@ import Header from "../components/Header";
 import IotCard from "../components/IoT/IotCard";
 import IotLineChart from "../components/IoT/IotLineChart";
 import IotStats from "../components/IoT/IotStats";
-import { useAuth0 } from "@auth0/auth0-react"; // 👈 ADICIONAR
+import { useAuth0 } from "@auth0/auth0-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -34,7 +34,7 @@ const IotClientePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const { getAccessTokenSilently } = useAuth0(); // 👈 ADICIONAR
+  const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
     const fetchIot = async () => {
