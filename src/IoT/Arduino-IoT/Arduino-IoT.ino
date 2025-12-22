@@ -22,5 +22,5 @@ void loop() {
     Serial.println(String(temp, 1) + "," + String(hum, 1) + "," + String(ldrValue));
   }
 
-  delay(1000); 
+  delay(10000); 
 }

@@ -44,7 +44,7 @@ namespace SOAP.Repository
                 }
             }
 
-            return null; 
+            return null;
         }
 
 
@@ -95,28 +95,8 @@ namespace SOAP.Repository
                             Nome = reader["Nome"].ToString(),
                             Localizacao = reader["Localizacao"]?.ToString(),
                             Capacidade = Convert.ToInt32(reader["Capacidade"]),
-                            ImagemUrl = reader["ImagemUrl"]?.ToString(),
-                            Vinhos = new List<Vinho>()
+                            ImagemUrl = reader["ImagemUrl"]?.ToString()
                         };
-                    }
-
-
-                    if (reader.NextResult())
-                    {
-                        while (reader.Read())
-                        {
-                            adega.Vinhos.Add(new Vinho
-                            {
-                                Id = Convert.ToInt32(reader["VinhoId"]),
-                                Nome = reader["VinhoNome"].ToString(),
-                                Produtor = reader["Produtor"].ToString(),
-                                Ano = Convert.ToInt32(reader["Ano"]),
-                                Tipo = reader["Tipo"].ToString(),
-                                Descricao = reader["Descricao"].ToString(),
-                                ImagemUrl = reader["ImagemUrl"]?.ToString(),
-                                Preco = (float)Convert.ToDouble(reader["Preco"])
-                            });
-                        }
                     }
 
                     return adega;
@@ -151,27 +131,8 @@ namespace SOAP.Repository
                             Nome = reader["Nome"].ToString(),
                             Localizacao = reader["Localizacao"].ToString(),
                             Capacidade = Convert.ToInt32(reader["Capacidade"]),
-                            ImagemUrl = reader["ImagemUrl"].ToString(),
-                            Vinhos = new List<Vinho>()
+                            ImagemUrl = reader["ImagemUrl"].ToString()
                         };
-                    }
-
-                    if (adegaAtualizada != null && reader.NextResult())
-                    {
-                        while (reader.Read())
-                        {
-                            adegaAtualizada.Vinhos.Add(new Vinho
-                            {
-                                Id = Convert.ToInt32(reader["VinhoId"]),
-                                Nome = reader["VinhoNome"].ToString(),
-                                Produtor = reader["Produtor"].ToString(),
-                                Ano = Convert.ToInt32(reader["Ano"]),
-                                Tipo = reader["Tipo"].ToString(),
-                                Descricao = reader["Descricao"].ToString(),
-                                ImagemUrl = reader["ImagemUrl"]?.ToString(),
-                                Preco = (float)Convert.ToDouble(reader["Preco"])
-                            });
-                        }
                     }
 
                     return adegaAtualizada;
@@ -189,6 +150,113 @@ namespace SOAP.Repository
                 conn.Open();
                 return cmd.ExecuteNonQuery() > 0;
             }
+        }
+
+        public List<StockResumo> ObterResumoPorAdega(int adegaId)
+        {
+            var lista = new List<StockResumo>();
+
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterResumoPorAdega", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdegaId", adegaId);
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new StockResumo
+                        {
+                            VinhoId = Convert.ToInt32(reader["VinhoId"]),
+                            Nome = reader["Nome"].ToString(),
+                            Produtor = reader["Produtor"].ToString(),
+                            Ano = Convert.ToInt32(reader["Ano"]),
+                            Tipo = reader["Tipo"].ToString(),
+                            ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                            Preco = Convert.ToDecimal(reader["Preco"]),
+                            Quantidade = Convert.ToInt32(reader["QuantidadeTotal"])
+                        });
+                    }
+                }
+            }
+            return lista;
+        }
+
+        public bool InserirStock(StockInput stock)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("AdicionarStock", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdegaId", stock.AdegaId);
+                cmd.Parameters.AddWithValue("@VinhoId", stock.VinhoId);
+                cmd.Parameters.AddWithValue("@Quantidade", stock.Quantidade);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
+        public bool AtualizarStock(StockInput stock)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("AtualizarStock", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdegaId", stock.AdegaId);
+                cmd.Parameters.AddWithValue("@VinhoId", stock.VinhoId);
+                cmd.Parameters.AddWithValue("@Quantidade", stock.Quantidade);
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
+
+        public int ObterOcupacaoAtual(int adegaId)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterOcupacaoAdega", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@AdegaId", adegaId);
+
+                conn.Open();
+                var resultado = cmd.ExecuteScalar();
+                return resultado != null ? Convert.ToInt32(resultado) : 0;
+            }
+        }
+
+        public List<StockResumo> ObterResumoStockTotal()
+        {
+            var lista = new List<StockResumo>();
+
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ObterResumoStockTotal", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                conn.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        lista.Add(new StockResumo
+                        {
+                            VinhoId = Convert.ToInt32(reader["VinhoId"]),
+                            Nome = reader["Nome"].ToString(),
+                            Produtor = reader["Produtor"].ToString(),
+                            Ano = Convert.ToInt32(reader["Ano"]),
+                            Tipo = reader["Tipo"].ToString(),
+                            ImagemUrl = reader["ImagemUrl"]?.ToString(),
+                            Preco = Convert.ToDecimal(reader["Preco"]),
+                            Quantidade = Convert.ToInt32(reader["QuantidadeTotal"])
+                        });
+                    }
+                }
+            }
+            return lista;
         }
     }
 }

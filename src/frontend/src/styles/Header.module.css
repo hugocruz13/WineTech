@@ -1,0 +1,134 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+
+.headerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  background-color: #fdfdfd;
+  border-bottom: 1px solid #f1f5f9;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+}
+
+.logoSection {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.logoIcon {
+  color: #d32f2f;
+  display: flex;
+  align-items: center;
+}
+
+.logoText {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+
+.searchSection {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 2rem;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #f1f5f9;
+  border-radius: 9999px;
+  padding: 0.6rem 1rem;
+  width: 100%;
+  max-width: 500px;
+  transition: box-shadow 0.2s ease;
+}
+
+.searchBar:focus-within {
+  box-shadow: 0 0 0 2px #e2e8f0;
+}
+
+.searchIcon {
+  color: #94a3b8;
+  margin-right: 0.75rem;
+}
+
+.searchInput {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.searchInput::placeholder {
+  color: #94a3b8;
+}
+
+.actionsSection {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.iconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1e293b;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: color 0.2s;
+}
+
+.iconBtn:hover {
+  color: #000;
+}
+
+.notificationBadge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 10px;
+  height: 10px;
+  background-color: #d32f2f;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  border: none;
+  cursor: pointer;
+}
+
+.userAvatar:hover {
+  background-color: #cbd5e1;
+}
+
+.notificationBtn {
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .searchSection {
+    display: none;
+  }
+}

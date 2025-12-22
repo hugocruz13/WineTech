@@ -1,6 +1,8 @@
 ﻿using API.DTOs;
 using API.Services;
 using BLL.Interfaces;
+using DAL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
@@ -19,7 +21,17 @@ namespace API.Controllers
             _storageService = storageService;
         }
 
+
+        /// <summary>
+        /// Handles HTTP GET requests to retrieve a list of all wine cellars.
+        /// </summary>
+        /// <remarks>Each wine cellar in the response includes its identifier, name, location, capacity,
+        /// and image URL. The response format is suitable for client-side consumption in applications that display or
+        /// manage wine cellars.</remarks>
+        /// <returns>An HTTP 200 response containing a JSON object with a success flag and a list of wine cellars if the
+        /// operation succeeds; otherwise, an HTTP 500 response with an error message.</returns>
         [HttpGet]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Get()
         {
             try
@@ -42,7 +54,9 @@ namespace API.Controllers
             }
         }
 
+
         [HttpGet("{id}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Get(int id)
         {
             try
@@ -55,8 +69,7 @@ namespace API.Controllers
                     nome = adega.Nome,
                     localizacao = adega.Localizacao,
                     capacidade = adega.Capacidade,
-                    imageUrl = adega.ImagemUrl,
-                    vinhos = adega.Vinhos
+                    imageUrl = adega.ImagemUrl
                 };
 
                 return Ok(new { success = true, data = data });
@@ -76,6 +89,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Post(CreateAdegaDTO adegaDTO)
         {
             try
@@ -103,8 +117,7 @@ namespace API.Controllers
                         nome = adega.Nome,
                         localizacao = adega.Localizacao,
                         capacidade = adega.Capacidade,
-                        imageUrl = adega.ImagemUrl,
-                        vinhos = new List<Vinho>() 
+                        imageUrl = adega.ImagemUrl
                     }
                 });
             }
@@ -120,6 +133,7 @@ namespace API.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Put(int id, [FromBody] UpdateAdegaDTO adegaDTO)
         {
             if (adegaDTO.Id != 0 && adegaDTO.Id != id)
@@ -143,8 +157,7 @@ namespace API.Controllers
                         nome = adega.Nome,
                         localizacao = adega.Localizacao,
                         capacidade = adega.Capacidade,
-                        imageUrl = adega.ImagemUrl,
-                        vinhos = adega.Vinhos
+                        imageUrl = adega.ImagemUrl
                     }
                 });
             }
@@ -161,6 +174,7 @@ namespace API.Controllers
 
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Delete(int id)
         {
             try
@@ -181,6 +195,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/upload-image")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> UploadImage(int id, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -206,5 +221,84 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("{id}/stock")]
+        [Authorize(Roles = "owner")]
+        public async Task<ActionResult> GetStockResumo(int id)
+        {
+            try
+            {
+                var resumo = await _adegaBLL.ObterResumoPorAdega(id);
+                return Ok(new { success = true, data = resumo });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+
+        }
+
+        [HttpPost("{id}/stock")]
+        [Authorize(Roles = "owner")]
+        public async Task<ActionResult> AdicionarStock(int id, [FromBody] AdegaStockDTO stock)
+        {
+            if (stock.AdegaId != 0 && stock.AdegaId != id)
+                return BadRequest(new { success = false, message = "ID do URL difere do corpo." });
+
+            try
+            {
+                StockInput input = new StockInput { AdegaId = stock.AdegaId, VinhoId = stock.VinhoId, Quantidade = stock.Quantidade };
+                await _adegaBLL.AdicionarStock(input);
+                return Ok(new { success = true, message = "Stock adicionado com sucesso." });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
+
+        [HttpPut("{id}/stock/{vinhoId}")]
+        [Authorize(Roles = "owner")]
+        public async Task<ActionResult> AtualizarStock(int id, int vinhoId, [FromBody] AdegaStockDTO stock)
+        {
+            if (stock.AdegaId != 0 && stock.AdegaId != id)
+                return BadRequest(new { success = false, message = "ID do URL difere do corpo." });
+
+            if (stock.VinhoId != 0 && stock.VinhoId != vinhoId)
+                return BadRequest(new { success = false, message = "ID do vinho do URL difere do corpo." });
+
+            try
+            {
+                StockInput input = new StockInput { AdegaId = id, VinhoId = vinhoId, Quantidade = stock.Quantidade };
+                await _adegaBLL.AtualizarStock(input);
+                return Ok(new { success = true, message = "Stock atualizado com sucesso." });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("stock")]
+        [Authorize(Roles = "user,owner")]
+        public async Task<ActionResult> GetStockResumoGlobal()
+        {
+            try
+            {
+                List<StockResumo> resumo = await _adegaBLL.ObterResumoStockTotal();
+                return Ok(new { success = true, data = resumo });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
     }
 }

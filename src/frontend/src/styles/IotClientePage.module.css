@@ -1,0 +1,119 @@
+.page {
+  padding: 48px 64px;
+  background: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.headerTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- BIG CARD ---------- */
+
+.bigCard {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 28px 32px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
+}
+
+.bigHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.bigHeader h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.bigHeader span {
+  margin-top: 4px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+/* ---------- STATS ---------- */
+
+.stats {
+  display: flex;
+  gap: 28px;
+}
+
+.stats span {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #94a3b8;
+}
+
+.stats strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+/* ---------- GRID ---------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+/* ---------- CARD ---------- */
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px 24px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+/* ---------- CHART ---------- */
+
+.chartWrapper {
+  width: 100%;
+  height: 240px;
+}
+
+/* ---------- STATES ---------- */
+
+.state {
+  padding: 24px;
+  color: #475569;
+}
+
+.error {
+  padding: 24px;
+  color: #dc2626;
+  font-weight: 500;
+}

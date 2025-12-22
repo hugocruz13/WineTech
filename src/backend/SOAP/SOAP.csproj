@@ -74,21 +74,69 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Services\AdegaRepositoryService.asmx" />
+    <Content Include="Services\AlertasRepositoryService.asmx" />
+    <Content Include="Services\CarrinhoRepositoryService.asmx" />
+    <Content Include="Services\CompraRepositoryService.asmx" />
+    <Content Include="Services\LeiturasRepositoryService.asmx" />
+    <Content Include="Services\NotificacaoRepositoryService.asmx" />
+    <Content Include="Services\SensoresRepositoryService.asmx" />
     <Content Include="Services\UtilizadorRepositoryService.asmx" />
     <Content Include="Services\VinhoRepositoryService.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Adega.cs" />
+    <Compile Include="Models\Alertas.cs" />
+    <Compile Include="Models\Carrinho.cs" />
+    <Compile Include="Models\CarrinhoDetalhe.cs" />
+    <Compile Include="Models\Compra.cs" />
+    <Compile Include="Models\CompraDetalhe.cs" />
+    <Compile Include="Models\Leituras.cs" />
+    <Compile Include="Models\LeiturasStock.cs" />
+    <Compile Include="Models\LinhaCompra.cs" />
+    <Compile Include="Models\Notificacao.cs" />
+    <Compile Include="Models\Sensores.cs" />
+    <Compile Include="Models\StockResumo.cs" />
     <Compile Include="Models\Utilizador.cs" />
     <Compile Include="Models\Vinho.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\AdegaRepository.cs" />
+    <Compile Include="Repository\AlertasRepository.cs" />
+    <Compile Include="Repository\CarrinhoRepository.cs" />
+    <Compile Include="Repository\CompraRepository.cs" />
     <Compile Include="Repository\DbConnectionFactory.cs" />
+    <Compile Include="Models\StockInput.cs" />
+    <Compile Include="Repository\LeiturasRepository.cs" />
+    <Compile Include="Repository\NotificacaoRepository.cs" />
+    <Compile Include="Repository\SensoresRepository.cs" />
     <Compile Include="Repository\UtilizadorRepository.cs" />
     <Compile Include="Repository\VinhoRepository.cs" />
     <Compile Include="Services\AdegaRepositoryService.asmx.cs">
       <DependentUpon>AdegaRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\AlertasRepositoryService.asmx.cs">
+      <DependentUpon>AlertasRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\CarrinhoRepositoryService.asmx.cs">
+      <DependentUpon>CarrinhoRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\CompraRepositoryService.asmx.cs">
+      <DependentUpon>CompraRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\LeiturasRepositoryService.asmx.cs">
+      <DependentUpon>LeiturasRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\NotificacaoRepositoryService.asmx.cs">
+      <DependentUpon>NotificacaoRepositoryService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\SensoresRepositoryService.asmx.cs">
+      <DependentUpon>SensoresRepositoryService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\UtilizadorRepositoryService.asmx.cs">

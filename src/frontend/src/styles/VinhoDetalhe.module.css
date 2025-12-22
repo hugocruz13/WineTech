@@ -1,0 +1,172 @@
+.page {
+  background: #fafafa;
+}
+
+/* wrapper geral */
+.wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 64px;
+}
+
+/* botão voltar */
+.back {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+/* grid principal */
+.container {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+/* ESQUERDA */
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.imageBox {
+  background: #ffffff;
+  border-radius: 28px;
+  padding: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+.imageBox img {
+  max-height: 480px;
+  object-fit: contain;
+}
+
+/* upload */
+.upload {
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px dashed #e5e7eb;
+}
+
+.upload input {
+  display: none;
+}
+
+.uploadBtn {
+  background: #16a34a;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+
+/* DIREITA */
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+h1 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.meta {
+  display: flex;
+  gap: 18px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.descricao {
+  max-width: 760px;
+  line-height: 1.7;
+  color: #374151;
+}
+
+/* footer */
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.preco {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.edit {
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+/* FORM */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 560px;
+}
+
+input {
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+}
+
+textarea {
+  max-width: 760px;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid #e5e7eb;
+  height: 150px;
+  resize: none;
+}
+
+.price {
+  max-width: 200px;
+}
+
+/* ações */
+.actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.save {
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+}
+
+.cancel {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  padding: 12px 22px;
+}

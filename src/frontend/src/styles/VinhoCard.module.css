@@ -1,0 +1,71 @@
+.card {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+/* imagem SEM FUNDO */
+.imageWrapper {
+  position: relative;
+  height: 260px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* garrafa */
+.image {
+  height: 100%;
+  max-height: 240px;
+  object-fit: contain;
+}
+
+/* badge ano */
+.year {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #fdf2f8;
+  color: #9d174d;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+/* info */
+.body {
+  margin-top: 12px;
+  text-align: center;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.produtor {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 4px 0;
+}
+
+.tipo {
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #374151;
+  margin-top: 6px;
+}
+
+.price {
+  margin-top: 10px;
+  font-size: 18px;
+  font-weight: 700;
+}

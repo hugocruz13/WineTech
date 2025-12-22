@@ -1,0 +1,73 @@
+﻿using BLL.Interfaces;
+using DAL.Interfaces;
+using Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace BLL.Services
+{
+    public class NotificacaoBLL : INotificacaoBLL
+    {
+        private readonly INotificacaoDAL _notificacaoDAL;
+        private readonly IUtilizadorDAL _utilizadorDAL;
+        private readonly INotificationRealtimeService _realtime;
+
+        public NotificacaoBLL(INotificacaoDAL notificacaoDAL, IUtilizadorDAL utilizadorDAL, INotificationRealtimeService realtime)
+        {
+            _notificacaoDAL = notificacaoDAL;
+            _utilizadorDAL = utilizadorDAL;
+            _realtime = realtime;
+        }
+
+        public async Task<Notificacao> InserirNotificacao(Notificacao notificacao)
+        {
+            if (notificacao == null)
+            {
+                throw new System.ArgumentNullException(nameof(notificacao));
+            }
+
+            if (string.IsNullOrWhiteSpace(notificacao.UtilizadorId))
+            {
+                throw new ArgumentException("O utilizador da notificação é obrigatório.");
+            }
+
+            if (string.IsNullOrWhiteSpace(notificacao.Mensagem))
+            {
+                throw new System.ArgumentException("A mensagem da notificação não pode ser vazia.");
+            }
+
+            if (await _utilizadorDAL.GetUserByIdAsync(notificacao.UtilizadorId) == null)
+            {
+                throw new System.ArgumentException("Utilizador inválido para a notificação.");
+            }
+
+            var criada = await _notificacaoDAL.InserirNotificacao(notificacao);
+
+            await _realtime.SendToUserAsync(criada.UtilizadorId, criada);
+
+            return criada;
+
+        }
+
+        public async Task<List<Notificacao>> ObterNotificacoesPorUtilizador(string utilizadorId)
+        {
+            if (string.IsNullOrWhiteSpace(utilizadorId))
+            {
+                throw new ArgumentException("O utilizador da notificação é obrigatório.");
+            }
+
+            if (await _utilizadorDAL.GetUserByIdAsync(utilizadorId) == null)
+            {
+                throw new System.ArgumentException("Utilizador inválido para a notificação.");
+            }
+
+            return await _notificacaoDAL.ObterNotificacoesPorUtilizador(utilizadorId);
+        }
+
+        public async Task<Notificacao> MarcarNotificacaoComoLida(int idNotificacao)
+        {
+            return await _notificacaoDAL.MarcarNotificacaoComoLida(idNotificacao);
+        }
+    }
+}

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using IoT.Logica;
+using IoT.Sensores;
+using IoT.Workers;
+using System;
 using System.Globalization;
 using System.IO.Ports;
 using System.Net.Http;
@@ -8,49 +11,29 @@ using System.Threading.Tasks;
 
 namespace IoT
 {
-    internal class Program
+    namespace IoT
     {
-        static async Task Main(string[] args)
+        internal class Program
         {
-            SerialPort porta = new SerialPort("COM3", 9600);
-            porta.Open();
-
-            HttpClient client = new HttpClient();
-
-            while (true)
+            static async Task Main(string[] args)
             {
-                try
+                Console.WriteLine("=== IoT Gateway Iniciado ===");
+
+
+                var apiClient = new ApiClient();
+
+                var sensorWorker = new JobGet(apiClient);
+                var leituraWorker = new JobPost();
+
+                var tarefas = new[]
                 {
-                    string linha = porta.ReadLine();
-                    Console.WriteLine(linha);
+                sensorWorker.StartAsync(),
+                leituraWorker.StartAsync()
+                };
 
-                    string[] valores = linha.Split(',');
-
-                    float temp = float.Parse(valores[0], CultureInfo.InvariantCulture);
-                    float humi = float.Parse(valores[1], CultureInfo.InvariantCulture);
-                    int ldr = int.Parse(valores[2]);
-
-                    var dados = new
-                    {
-                        temperature = temp,
-                        humidity = humi,
-                        lightIntensity = ldr
-                    };
-
-                    string json = JsonSerializer.Serialize(dados);
-
-                    string apiUrl = "https://localhost:7148/api/sensor/data";
-
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-
-                    Console.WriteLine(response.StatusCode);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Erro: " + ex.Message);
-                }
+                await Task.WhenAll(tarefas);
             }
         }
     }
 }
+

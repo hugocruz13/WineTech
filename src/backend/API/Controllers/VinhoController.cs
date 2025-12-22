@@ -2,8 +2,9 @@
 using API.Services;
 using BLL.Interfaces;
 using BLL.Services;
-using Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 
 namespace API.Controllers
 {
@@ -21,6 +22,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Post(CreateVinhoDTO vinhoDTO)
         {
             try
@@ -64,7 +66,9 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
+
         [HttpPut("{id}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Put(int id, [FromBody] UpdateVinhoDTO vinhoDTO)
         {
             if (vinhoDTO.Id != 0 && vinhoDTO.Id != id)
@@ -73,7 +77,7 @@ namespace API.Controllers
             try
             {
                 Vinho vinho = new Vinho { Id = id, Nome = vinhoDTO.Nome, Produtor = vinhoDTO.Produtor, Ano = vinhoDTO.Ano, Tipo = vinhoDTO.Tipo, Descricao = vinhoDTO.Descricao, Preco = vinhoDTO.Preco };
-                vinho = await _vinhoBLL.InserirVinho(vinho);
+                vinho = await _vinhoBLL.ModificarVinho(vinho);
 
                 if (vinho == null)
                     return NotFound(new { success = false, message = "Vinho não encontrado." });
@@ -105,6 +109,7 @@ namespace API.Controllers
             }
         }
         [HttpPost("{id}/upload-image")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> UploadImage(int id, IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -129,7 +134,9 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
+
         [HttpGet("{id}")]
+        [Authorize(Roles = "owner,user")]
         public async Task<ActionResult> Get(int id)
         {
             try
@@ -144,7 +151,8 @@ namespace API.Controllers
                     ano = vinho.Ano,
                     tipo = vinho.Tipo,
                     descricao = vinho.Descricao,
-                    preco = vinho.Preco
+                    preco = vinho.Preco,
+                    img = vinho.ImagemUrl
                 };
 
                 return Ok(new { success = true, data = data });
@@ -162,7 +170,9 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
+
         [HttpGet]
+        [Authorize(Roles = "owner,user")]
         public async Task<ActionResult> Get()
         {
             try
@@ -176,7 +186,8 @@ namespace API.Controllers
                     ano = a.Ano,
                     tipo = a.Tipo,
                     descricao = a.Descricao,
-                    preco = a.Preco
+                    preco = a.Preco,
+                    img = a.ImagemUrl
                 }).ToList();
 
                 return Ok(new { success = true, data = data });
@@ -186,7 +197,9 @@ namespace API.Controllers
                 return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
             }
         }
+
         [HttpDelete("{id}")]
+        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Delete(int id)
         {
             try

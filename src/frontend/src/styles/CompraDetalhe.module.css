@@ -1,0 +1,296 @@
+/* ============================= */
+/* BASE / PAGE */
+/* ============================= */
+.page {
+  padding: 32px 250px;
+  background: #fdfdfd;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #0f172a;
+}
+
+.error {
+  padding: 40px;
+  text-align: center;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+/* ============================= */
+/* TÍTULO */
+/* ============================= */
+.titulo {
+  font-size: 30px;
+  font-weight: 800;
+  margin-bottom: 36px;
+  letter-spacing: -0.02em;
+}
+
+/* ============================= */
+/* TOPO */
+/* ============================= */
+.topo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+/* ============================= */
+/* CARDS */
+/* ============================= */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 22px 26px;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04),
+    0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+.card h3 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 22px;
+}
+
+/* ============================= */
+/* CLIENTE */
+/* ============================= */
+.cliente {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e5e7eb;
+}
+
+.nome {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #0f172a;
+}
+
+.cliente p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+/* ============================= */
+/* RESUMO */
+/* ============================= */
+.resumo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 8px;
+}
+
+.pagamento {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.totalBox {
+  text-align: right;
+}
+
+.totalBox span {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+}
+
+/* ============================= */
+/* CARD ITENS */
+/* ============================= */
+.cardItens {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 26px;
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05),
+    0 14px 40px rgba(15, 23, 42, 0.08);
+}
+
+.cardItens h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 22px;
+}
+
+/* ============================= */
+/* TABELA */
+/* ============================= */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.thead th {
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: #94a3b8;
+  padding: 14px 12px;
+}
+
+.tbody td {
+  padding: 18px 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+/* ============================= */
+/* PRODUTO */
+/* ============================= */
+.produto {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.produto img {
+  width: 40px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.produto strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.produto span {
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ============================= */
+/* TOTAIS */
+/* ============================= */
+.totais {
+  margin-top: 32px;
+  max-width: 420px;
+  margin-left: auto;
+}
+
+.totais > div {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.gratis {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.total {
+  margin-top: 14px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.total span:last-child {
+  font-size: 20px;
+  font-weight: 800;
+  color: #dc2626;
+}
+
+/* ============================= */
+/* BOTÃO IOT */
+/* ============================= */
+.iotBtn {
+  background: #f4f6fb;
+  border: none;
+  color: #c4002a;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.iotBtn:hover {
+  background: #fde8e8;
+  transform: translateX(2px);
+}
+
+.iotBtn:active {
+  transform: scale(0.96);
+}
+
+/* ============================= */
+/* COLUNA IOT (ALINHAMENTO) */
+/* ============================= */
+.thead th:last-child {
+  text-align: center;
+}
+
+.tbody td:last-child {
+  text-align: center;
+}
+
+.thead th:last-child,
+.tbody td:last-child {
+  width: 120px;
+}
+
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
+@media (max-width: 900px) {
+  .page {
+    padding: 24px;
+  }
+
+  .topo {
+    grid-template-columns: 1fr;
+  }
+
+  .totalBox span {
+    font-size: 26px;
+  }
+}

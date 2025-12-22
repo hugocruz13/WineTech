@@ -7,6 +7,7 @@ namespace BLL.Interfaces
 {
     public interface IUtilizadorBLL
     {
-        Task<int> RegisterUserAsync(string accessToken);
+        Task<Utilizador> RegisterUserAsync(Utilizador user);
+        Task<Utilizador> GetUserByIdAsync(string id);
     }
 }

@@ -1,0 +1,44 @@
+/* Container principal */
+.homeContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Grid de vinhos */
+.wineGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.8rem;
+  align-items: stretch;
+}
+
+/* Mensagem de erro */
+.error {
+  color: #d32f2f;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+/* RESPONSIVO */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .wineGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablets pequenos */
+@media (max-width: 768px) {
+  .wineGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .wineGrid {
+    grid-template-columns: 1fr;
+  }
+}
