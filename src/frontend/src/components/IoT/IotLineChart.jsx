@@ -10,6 +10,12 @@ import {
 } from "recharts";
 import styles from "../../styles/IotClientePage.module.css";
 
+const formatHour = (value) =>
+  new Date(value).toLocaleTimeString("pt-PT", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
 const IotLineChart = ({ data, dataKey, unit, color }) => {
   if (!data || data.length === 0) return null;
 
@@ -22,9 +28,12 @@ const IotLineChart = ({ data, dataKey, unit, color }) => {
             strokeDasharray="2 8"
             vertical={false}
           />
+
           <XAxis
             dataKey="dataHora"
-            interval="preserveStartEnd"
+            type="number"
+            domain={["dataMin", "dataMax"]}
+            tickFormatter={formatHour}
             tick={{ fontSize: 11, fill: "#94a3b8" }}
             axisLine={false}
             tickLine={false}
@@ -39,23 +48,6 @@ const IotLineChart = ({ data, dataKey, unit, color }) => {
 
           <Tooltip
             cursor={{ stroke: color, strokeOpacity: 0.25 }}
-            formatter={(value) => `${value.toFixed(1)} ${unit}`}
-            labelStyle={{
-              fontSize: 11,
-              color: "#64748b",
-              marginBottom: 4,
-            }}
-            contentStyle={{
-              backgroundColor: "#ffffff",
-              borderRadius: 10,
-              border: "1px solid #e5e7eb",
-              boxShadow: "0 10px 25px rgba(0,0,0,0.08)",
-              fontSize: 12,
-              padding: "8px 10px",
-            }}
-            filterNull={false}
-            itemSorter={() => -1}
-            isAnimationActive={false}
             content={({ payload, label }) => {
               if (!payload || !payload.length) return null;
 
@@ -73,10 +65,15 @@ const IotLineChart = ({ data, dataKey, unit, color }) => {
                   }}
                 >
                   <div
-                    style={{ fontSize: 11, color: "#64748b", marginBottom: 4 }}
+                    style={{
+                      fontSize: 11,
+                      color: "#64748b",
+                      marginBottom: 4,
+                    }}
                   >
-                    {label}
+                    {formatHour(label)}
                   </div>
+
                   <div style={{ color: item.color, fontWeight: 500 }}>
                     {item.name}: {item.value.toFixed(1)} {unit}
                   </div>

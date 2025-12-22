@@ -255,6 +255,9 @@ namespace ServiceLeituras
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterLeiturasStock", ReplyAction="*")]
         System.Threading.Tasks.Task<ServiceLeituras.ObterLeiturasStockResponse> ObterLeiturasStockAsync(ServiceLeituras.ObterLeiturasStockRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterLeiturasAdega", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceLeituras.ObterLeiturasAdegaResponse> ObterLeiturasAdegaAsync(ServiceLeituras.ObterLeiturasAdegaRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -497,6 +500,86 @@ namespace ServiceLeituras
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterLeiturasAdegaRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterLeiturasAdega", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceLeituras.ObterLeiturasAdegaRequestBody Body;
+        
+        public ObterLeiturasAdegaRequest()
+        {
+        }
+        
+        public ObterLeiturasAdegaRequest(ServiceLeituras.ObterLeiturasAdegaRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterLeiturasAdegaRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
+        public int adegaId;
+        
+        public ObterLeiturasAdegaRequestBody()
+        {
+        }
+        
+        public ObterLeiturasAdegaRequestBody(int adegaId)
+        {
+            this.adegaId = adegaId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class ObterLeiturasAdegaResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ObterLeiturasAdegaResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceLeituras.ObterLeiturasAdegaResponseBody Body;
+        
+        public ObterLeiturasAdegaResponse()
+        {
+        }
+        
+        public ObterLeiturasAdegaResponse(ServiceLeituras.ObterLeiturasAdegaResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class ObterLeiturasAdegaResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceLeituras.LeiturasStock ObterLeiturasAdegaResult;
+        
+        public ObterLeiturasAdegaResponseBody()
+        {
+        }
+        
+        public ObterLeiturasAdegaResponseBody(ServiceLeituras.LeiturasStock ObterLeiturasAdegaResult)
+        {
+            this.ObterLeiturasAdegaResult = ObterLeiturasAdegaResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     internal interface LeiturasRepositoryServiceSoapChannel : ServiceLeituras.LeiturasRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -580,6 +663,20 @@ namespace ServiceLeituras
             inValue.Body = new ServiceLeituras.ObterLeiturasStockRequestBody();
             inValue.Body.stockId = stockId;
             return ((ServiceLeituras.LeiturasRepositoryServiceSoap)(this)).ObterLeiturasStockAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceLeituras.ObterLeiturasAdegaResponse> ServiceLeituras.LeiturasRepositoryServiceSoap.ObterLeiturasAdegaAsync(ServiceLeituras.ObterLeiturasAdegaRequest request)
+        {
+            return base.Channel.ObterLeiturasAdegaAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceLeituras.ObterLeiturasAdegaResponse> ObterLeiturasAdegaAsync(int adegaId)
+        {
+            ServiceLeituras.ObterLeiturasAdegaRequest inValue = new ServiceLeituras.ObterLeiturasAdegaRequest();
+            inValue.Body = new ServiceLeituras.ObterLeiturasAdegaRequestBody();
+            inValue.Body.adegaId = adegaId;
+            return ((ServiceLeituras.LeiturasRepositoryServiceSoap)(this)).ObterLeiturasAdegaAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

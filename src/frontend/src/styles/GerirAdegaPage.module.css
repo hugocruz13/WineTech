@@ -1,0 +1,123 @@
+:root {
+  --table-grid: 2.8fr 1.2fr 0.8fr 1fr 0.8fr 0.5fr;
+}
+
+.page {
+  padding: 24px;
+  background: #fafafa;
+}
+
+.title h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+/* ===== GRÁFICOS ===== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== SEM DADOS ===== */
+.noData {
+  background: #fff7ed;
+  border: 1px dashed #fdba74;
+  color: #9a3412;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 24px;
+  font-size: 0.9rem;
+}
+
+/* ===== STOCK ===== */
+.stock {
+  margin-top: 30px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.stockHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.stockHeader h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.addBtn {
+  background: #7c0a02;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+/* ===== TABELA ===== */
+.table {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.tableHeader {
+  display: grid;
+  grid-template-columns: var(--table-grid);
+  background: #f9fafb;
+  padding: 12px 16px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  align-items: center;
+}
+
+.tableHeader span:first-child {
+  text-align: left;
+}
+
+.tableHeader span:not(:first-child) {
+  text-align: center;
+}
+
+/* ===== ACTIONS ===== */
+.actions {
+  display: flex;
+  align-items: center;
+}
+
+/* Botão igual ao "Nova Adega" */
+.new {
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.new:hover {
+  background: #b91c1c;
+}

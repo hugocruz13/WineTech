@@ -1,7 +1,6 @@
 .page {
   padding: 48px 64px;
-  background: #f8fafc;
-  min-height: 100vh;
+  background: #fafafa;
   display: flex;
   flex-direction: column;
   gap: 32px;

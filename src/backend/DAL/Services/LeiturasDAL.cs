@@ -59,6 +59,26 @@ namespace DAL.Services
                 };
             });
         }
+
+        public async Task<Models.LeiturasStock> ObterLeiturasAdega(int adegaId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.ObterLeiturasAdegaAsync(adegaId);
+                var item = response.Body.ObterLeiturasAdegaResult;
+
+                if (item == null)
+                    return null;
+
+                return new Models.LeiturasStock
+                {
+                    Temperatura = item.Temperatura.Select(t => new Models.Temp { temperatura = t.temperatura, dataHora = t.dataHora }).ToList(),
+                    Humidade = item.Humidade.Select(h => new Models.Hum { humidade = h.humidade, dataHora = h.dataHora }).ToList(),
+                    Luminosidade = item.Luminosidade.Select(l => new Models.Lum { luminosidade = l.luminosidade, dataHora = l.dataHora }).ToList()
+                };
+            });
+        }
+
     }
 }
 

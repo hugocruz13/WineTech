@@ -70,3 +70,24 @@ BEGIN
     ORDER BY le.DataHora;
 END;
 GO
+
+-- Obter leituras por adega
+CREATE PROCEDURE ObterLeiturasPorAdega
+    @AdegaId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT
+        a.Nome        AS NomeAdega,
+        se.Id         AS SensorId,
+        se.Tipo       AS TipoSensor,
+        le.Valor,
+        le.DataHora
+    FROM Adega a
+    INNER JOIN Sensores se ON se.AdegaId = a.Id
+    INNER JOIN Leituras le ON le.SensorId = se.Id
+    WHERE a.Id = @AdegaId
+    ORDER BY le.DataHora;
+END;
+GO

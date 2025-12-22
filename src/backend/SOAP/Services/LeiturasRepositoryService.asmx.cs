@@ -65,5 +65,20 @@ namespace SOAP.Services
                 throw new Exception("Erro ao obter LeiturasStock: " + ex.Message);
             }
         }
+        
+        [WebMethod]
+        public LeiturasStock ObterLeiturasAdega(int adegaId)
+        {
+            try
+            {
+                return _repository.ObterLeiturasAdega(adegaId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, $"Erro ao obter Leituras da Adega {adegaId}");
+                throw new Exception("Erro ao obter Leituras da Adega: " + ex.Message);
+            }
+        }
+
     }
 }

@@ -7,7 +7,7 @@ const VinhoCard = ({ vinho }) => {
   return (
     <div
       className={styles.card}
-      onClick={() => navigate(`/vinhos/${vinho.id}`)}
+      onClick={() => navigate(`/owner/vinho/${vinho.id}`)}
     >
       <div className={styles.imageWrapper}>
         {vinho.ano && <span className={styles.year}>{vinho.ano}</span>}

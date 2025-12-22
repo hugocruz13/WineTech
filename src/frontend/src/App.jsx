@@ -92,7 +92,7 @@ function AppContent() {
         }
       />
       <Route
-        path="/vinhos/:id"
+        path="owner/vinho/:id"
         element={
           <RoleGuard role="owner">
             <VinhoDetalhe />

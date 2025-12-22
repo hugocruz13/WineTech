@@ -13,17 +13,17 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const formatData = (apiData) => ({
   temperatura: (apiData.temperatura || []).map((t) => ({
-    dataHora: t.dataHora,
+    dataHora: new Date(t.dataHora).getTime(),
     temperatura: Number(t.temperatura.toFixed(2)),
   })),
 
   humidade: (apiData.humidade || []).map((h) => ({
-    dataHora: h.dataHora,
+    dataHora: new Date(h.dataHora).getTime(),
     humidade: Number(h.humidade.toFixed(2)),
   })),
 
   luminosidade: (apiData.luminosidade || []).map((l) => ({
-    dataHora: l.dataHora,
+    dataHora: new Date(l.dataHora).getTime(),
     luminosidade: Number(l.luminosidade.toFixed(2)),
   })),
 });
@@ -61,7 +61,7 @@ const IotClientePage = () => {
       }
     };
 
-    fetchIot();
+    if (stockId) fetchIot();
   }, [stockId, getAccessTokenSilently]);
 
   if (loading) return <Loading />;
@@ -71,6 +71,7 @@ const IotClientePage = () => {
   return (
     <>
       <Header />
+
       <div className={styles.page}>
         {/* -------- TEMPERATURA -------- */}
         <div className={styles.bigCard}>

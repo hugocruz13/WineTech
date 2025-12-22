@@ -11,5 +11,6 @@ namespace BLL.Interfaces
         Task<Models.Leituras> InserirLeitura(Models.Leituras leitura);
         Task<List<Models.Leituras>> ObterLeiturasPorSensor(int sensorId);
         Task<LeiturasStock> ObterUltimaLeituraPorSensor(int sensorId);
+        Task<LeiturasStock> ObterLeituraPorAdega(int adegaId);
     }
 }

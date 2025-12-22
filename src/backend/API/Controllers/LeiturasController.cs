@@ -100,19 +100,19 @@ namespace API.Controllers
                     temperatura = leiturasStock.Temperatura.Select(t => new
                     {
                         temperatura = t.temperatura,
-                        dataHora = t.dataHora.ToString("HH:mm")
+                        dataHora = t.dataHora
                     }),
 
                     humidade = leiturasStock.Humidade.Select(h => new
                     {
                         humidade = h.humidade,
-                        dataHora = h.dataHora.ToString("HH:mm")
+                        dataHora = h.dataHora
                     }),
 
                     luminosidade = leiturasStock.Luminosidade.Select(l => new
                     {
                         luminosidade = l.luminosidade,
-                        dataHora = l.dataHora.ToString("HH:mm")
+                        dataHora = l.dataHora
                     })
                 };
 
@@ -128,6 +128,56 @@ namespace API.Controllers
                 });
             }
         }
+
+        [HttpGet("{adegaId}/leituras/adega")]
+        [Authorize(Roles = "owner")]
+        public async Task<IActionResult> GetUltimaLeituraPorAdega(int adegaId)
+        {
+            try
+            {
+                if (adegaId <= 0)
+                    return BadRequest(new { success = false, message = "Adega inválida." });
+
+                LeiturasStock leiturasAdega =
+                    await _leiturasBLL.ObterLeituraPorAdega(adegaId);
+
+                if (leiturasAdega == null)
+                    return Ok(new { success = true, data = (object)null });
+
+                var data = new
+                {
+                    temperatura = leiturasAdega.Temperatura.Select(t => new
+                    {
+                        temperatura = t.temperatura,
+                        dataHora = t.dataHora
+                    }),
+
+                    humidade = leiturasAdega.Humidade.Select(h => new
+                    {
+                        humidade = h.humidade,
+                        dataHora = h.dataHora
+                    }),
+
+                    luminosidade = leiturasAdega.Luminosidade.Select(l => new
+                    {
+                        luminosidade = l.luminosidade,
+                        dataHora = l.dataHora
+                    })
+                };
+
+                return Ok(new { success = true, data });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Erro ao obter leituras da adega",
+                    error = ex.Message
+                });
+            }
+        }
+
 
         [HttpGet("{stockId}/leituras/stock/existe")]
         [Authorize(Roles = "owner,user")]

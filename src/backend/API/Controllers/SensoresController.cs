@@ -74,7 +74,6 @@ namespace API.Controllers
             }
         }
         [HttpGet]
-        [Authorize(Roles = "owner")]
         public async Task<ActionResult> Get()
         {
             try

@@ -59,6 +59,15 @@ namespace BLL.Services
 
             return await _leiturasDAL.ObterLeiturasStock(stockId);
         }
+
+        public async Task<LeiturasStock> ObterLeituraPorAdega(int adegaId)
+        {
+            if (adegaId <= 0)
+                throw new ArgumentException("Adega inválida.", nameof(adegaId));
+
+            return await _leiturasDAL.ObterLeiturasAdega(adegaId);
+        }
+
         //mudar aqui a logica uma vez que tenho que definir os ids dos sensores no switch
         private async Task VerificarAlerta(int sensorId)
         {
