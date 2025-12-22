@@ -20,17 +20,17 @@ namespace IoT.Simulation
             {
                 case TipoSensor.Temperatura:
                     // entre 15.0 e 30.0 
-                    valor = 15 + (_random.NextDouble() * 15);
+                    valor = 14 + (_random.NextDouble() * 2);
                     break;
 
                 case TipoSensor.Humidade:
                     // entre 50% e 80% 
-                    valor = 50 + (_random.NextDouble() * 30);
+                    valor = 65 + (_random.NextDouble() * 10);
                     break;
 
                 case TipoSensor.Luminosidade:
                     // vai de 0 a 1000 ou 1023
-                    valor = _random.Next(0, 1000);
+                    valor = _random.Next(200, 251);
                     break;
 
                 default:

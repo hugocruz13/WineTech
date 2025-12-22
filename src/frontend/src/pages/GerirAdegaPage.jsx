@@ -41,7 +41,13 @@ const GerirAdegaPage = () => {
   const { id: adegaId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
 
-  const [iot, setIot] = useState(null);
+  /* inicializar SEM null */
+  const [iot, setIot] = useState({
+    temperatura: [],
+    humidade: [],
+    luminosidade: [],
+  });
+
   const [stock, setStock] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -63,7 +69,14 @@ const GerirAdegaPage = () => {
         const iotJson = await iotRes.json();
         const stockJson = await stockRes.json();
 
-        setIot(formatData(iotJson.data));
+        const formatted = formatData(iotJson.data);
+
+        setIot({
+          temperatura: formatted.temperatura,
+          humidade: formatted.humidade,
+          luminosidade: formatted.luminosidade,
+        });
+
         setStock(stockJson.data);
       } catch (err) {
         console.error(err);
@@ -75,10 +88,8 @@ const GerirAdegaPage = () => {
     if (adegaId) fetchAll();
   }, [adegaId, getAccessTokenSilently]);
 
-  /* ===== REAL TIME (HUB CERTO) ===== */
+  /* ===== REAL TIME (UMA VEZ SÓ) ===== */
   useEffect(() => {
-    if (!iot) return;
-
     let connection;
 
     const startRealtime = async () => {
@@ -92,11 +103,7 @@ const GerirAdegaPage = () => {
         .build();
 
       connection.on("ReceiveLeitura", (leitura) => {
-        console.log("Leitura recebida:", leitura);
-
         setIot((prev) => {
-          if (!prev) return prev;
-
           const tipo = SENSOR_MAP[leitura.sensorId];
           if (!tipo) return prev;
 
@@ -117,26 +124,20 @@ const GerirAdegaPage = () => {
       });
 
       await connection.start();
-      console.log("📡 SignalR (leituras) conectado");
+      console.log(" SignalR (leituras) conectado");
     };
 
     startRealtime();
 
     return () => {
-      if (connection) {
-        connection.stop();
-        console.log(" SignalR (leituras) desligado");
-      }
+      if (connection) connection.stop();
     };
-  }, [iot, getAccessTokenSilently]);
+  }, [getAccessTokenSilently]);
 
   if (loading) return <Loading />;
 
   const hasIotData =
-    iot &&
-    iot.temperatura.length &&
-    iot.humidade.length &&
-    iot.luminosidade.length;
+    iot.temperatura.length || iot.humidade.length || iot.luminosidade.length;
 
   return (
     <>
