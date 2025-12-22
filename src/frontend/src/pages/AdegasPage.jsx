@@ -5,6 +5,7 @@ import AdegaCard from "../components/AdegaCard";
 import VinhoCard from "../components/VinhoCard";
 import Loading from "../components/Loading";
 import NovaAdegaModal from "../components/NovaAdegaModal";
+import NovoVinhoModal from "../components/NovoVinhoModal";
 import styles from "../styles/AdegasPage.module.css";
 import { Plus } from "lucide-react";
 
@@ -20,7 +21,7 @@ const AdegasPage = () => {
   const [error, setError] = useState(null);
 
   const [showModal, setShowModal] = useState(false);
-  const [setShowVinhoModal] = useState(false);
+  const [showVinhoModal, setShowVinhoModal] = useState(false);
 
   const [token, setToken] = useState(null);
   const [activeTab, setActiveTab] = useState("adegas");
@@ -158,11 +159,22 @@ const AdegasPage = () => {
         </div>
       </div>
 
+      {/* Modal Adega */}
       {showModal && (
         <NovaAdegaModal
           token={token}
           apiUrl={API_URL}
           onClose={() => setShowModal(false)}
+          onSuccess={() => init()}
+        />
+      )}
+
+      {/* Modal Vinho */}
+      {showVinhoModal && (
+        <NovoVinhoModal
+          token={token}
+          apiUrl={API_URL}
+          onClose={() => setShowVinhoModal(false)}
           onSuccess={() => init()}
         />
       )}

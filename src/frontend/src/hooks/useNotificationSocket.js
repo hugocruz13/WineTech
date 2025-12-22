@@ -6,18 +6,17 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function useNotificationSocket(onNotification) {
   const { getAccessTokenSilently } = useAuth0();
-  const startedRef = useRef(false);
+  const connectionRef = useRef(null);
 
   useEffect(() => {
-    if (startedRef.current) return;
-    startedRef.current = true;
-
-    let connection;
+    let isMounted = true;
 
     const start = async () => {
       const token = await getAccessTokenSilently();
 
-      connection = new signalR.HubConnectionBuilder()
+      if (!isMounted) return;
+
+      const connection = new signalR.HubConnectionBuilder()
         .withUrl(`${API_URL}/hubs/notifications`, {
           accessTokenFactory: () => token,
         })
@@ -27,15 +26,19 @@ export default function useNotificationSocket(onNotification) {
       connection.on("ReceiveNotification", onNotification);
 
       await connection.start();
-      console.log("SignalR global ligado");
+      console.log("SignalR conectado");
+
+      connectionRef.current = connection;
     };
 
     start();
 
     return () => {
-      if (connection) {
-        connection.stop();
-        startedRef.current = false;
+      isMounted = false;
+
+      if (connectionRef.current) {
+        connectionRef.current.stop();
+        connectionRef.current = null;
       }
     };
   }, [getAccessTokenSilently, onNotification]);
