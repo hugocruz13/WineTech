@@ -16,12 +16,16 @@ namespace BLL.Services
         private readonly IAdegaBLL _adegaBLL;
         private readonly IAlertasDAL _alertasDAL;
         private readonly ISensoresDAL _sensoresDAL;
-        public LeiturasBLL(ILeiturasDAL leiturasDAL, IAdegaBLL adegaBLL, IAlertasDAL alertasDAL, ISensoresDAL sensoresDAL)
+        private readonly IUtilizadorDAL _utilizadoresDAL;
+        private readonly ILeituraRealtimeService _realtime;
+        public LeiturasBLL(ILeiturasDAL leiturasDAL, IAdegaBLL adegaBLL, IAlertasDAL alertasDAL, ISensoresDAL sensoresDAL, ILeituraRealtimeService realtime, IUtilizadorDAL utilizadorDAL)
         {
             _leiturasDAL = leiturasDAL;
             _adegaBLL = adegaBLL;
             _alertasDAL = alertasDAL;
             _sensoresDAL = sensoresDAL;
+            _realtime = realtime;
+            _utilizadoresDAL = utilizadorDAL;
         }
         public async Task<Leituras> InserirLeitura(Leituras leitura)
         {
@@ -40,6 +44,17 @@ namespace BLL.Services
             {
                 await VerificarAlerta(novaLeitura.SensorId);
             }
+
+            List < Utilizador > owners = await _utilizadoresDAL.GetOwnersAsync();
+
+            foreach (var owner in owners)
+            {
+                await _realtime.SendToUserAsync(owner.Id, novaLeitura);
+                Console.WriteLine($"📤 A enviar leitura para owner.Id = {owner.Id}");
+
+            }
+
+
             return novaLeitura;
         }
         public async Task<List<Leituras>> ObterLeiturasPorSensor(int sensorId)

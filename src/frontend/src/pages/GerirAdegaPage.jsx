@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Droplets, Sun, Thermometer, Plus } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
+import * as signalR from "@microsoft/signalr";
 
 import Header from "../components/Header";
 import Loading from "../components/Loading";
@@ -13,7 +14,14 @@ import styles from "../styles/GerirAdegaPage.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-/* ===== FORMATAR DADOS IOT (NÃO MEXER) ===== */
+/* ===== MAPA SENSOR → TIPO ===== */
+const SENSOR_MAP = {
+  1: "temperatura",
+  2: "humidade",
+  3: "luminosidade",
+};
+
+/* ===== FORMATAR DADOS IOT ===== */
 const formatData = (apiData) => ({
   temperatura: (apiData?.temperatura || []).map((t) => ({
     dataHora: new Date(t.dataHora).getTime(),
@@ -37,6 +45,7 @@ const GerirAdegaPage = () => {
   const [stock, setStock] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  /* ===== FETCH INICIAL ===== */
   useEffect(() => {
     const fetchAll = async () => {
       try {
@@ -66,14 +75,68 @@ const GerirAdegaPage = () => {
     if (adegaId) fetchAll();
   }, [adegaId, getAccessTokenSilently]);
 
+  /* ===== REAL TIME (HUB CERTO) ===== */
+  useEffect(() => {
+    if (!iot) return;
+
+    let connection;
+
+    const startRealtime = async () => {
+      const token = await getAccessTokenSilently();
+
+      connection = new signalR.HubConnectionBuilder()
+        .withUrl(`${API_URL}/hubs/leituras`, {
+          accessTokenFactory: () => token,
+        })
+        .withAutomaticReconnect()
+        .build();
+
+      connection.on("ReceiveLeitura", (leitura) => {
+        console.log("Leitura recebida:", leitura);
+
+        setIot((prev) => {
+          if (!prev) return prev;
+
+          const tipo = SENSOR_MAP[leitura.sensorId];
+          if (!tipo) return prev;
+
+          const timestamp = new Date(leitura.dataHora).getTime();
+
+          const novoPonto =
+            tipo === "temperatura"
+              ? { dataHora: timestamp, temperatura: leitura.valor }
+              : tipo === "humidade"
+              ? { dataHora: timestamp, humidade: leitura.valor }
+              : { dataHora: timestamp, luminosidade: leitura.valor };
+
+          return {
+            ...prev,
+            [tipo]: [...prev[tipo], novoPonto].slice(-50),
+          };
+        });
+      });
+
+      await connection.start();
+      console.log("📡 SignalR (leituras) conectado");
+    };
+
+    startRealtime();
+
+    return () => {
+      if (connection) {
+        connection.stop();
+        console.log(" SignalR (leituras) desligado");
+      }
+    };
+  }, [iot, getAccessTokenSilently]);
+
   if (loading) return <Loading />;
 
-  /* ===== VERIFICAR SE EXISTEM DADOS IOT ===== */
   const hasIotData =
     iot &&
-    iot.temperatura.length > 0 &&
-    iot.humidade.length > 0 &&
-    iot.luminosidade.length > 0;
+    iot.temperatura.length &&
+    iot.humidade.length &&
+    iot.luminosidade.length;
 
   return (
     <>
@@ -84,7 +147,6 @@ const GerirAdegaPage = () => {
           <h2>Adega Dashboard</h2>
         </div>
 
-        {/* ===== GRÁFICOS ===== */}
         {hasIotData ? (
           <div className={styles.cards}>
             <IotCard title="Temperatura" icon={<Thermometer color="#2563eb" />}>
@@ -120,17 +182,14 @@ const GerirAdegaPage = () => {
           </div>
         )}
 
-        {/* ===== STOCK ===== */}
+        {/* STOCK */}
         <div className={styles.stock}>
           <div className={styles.stockHeader}>
             <h3>Stock de Vinhos</h3>
-
-            <div className={styles.actions}>
-              <button className={styles.new}>
-                <Plus size={16} />
-                Add Product
-              </button>
-            </div>
+            <button className={styles.new}>
+              <Plus size={16} />
+              Add Product
+            </button>
           </div>
 
           <div className={styles.table}>

@@ -78,7 +78,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 var path = context.HttpContext.Request.Path;
 
                 if (!string.IsNullOrEmpty(accessToken) &&
-                    path.StartsWithSegments("/hubs/notifications"))
+                    (path.StartsWithSegments("/hubs/notifications") ||
+                     path.StartsWithSegments("/hubs/leituras")))
                 {
                     context.Token = accessToken;
                 }
@@ -100,6 +101,7 @@ builder.Services.AddSignalR();
 
 // SignalR
 builder.Services.AddScoped<INotificationRealtimeService, NotificationRealtimeService>();
+builder.Services.AddScoped<ILeituraRealtimeService, LeituraRealtimeService>();
 
 // Registo do filtro no DI
 builder.Services.AddScoped<EnsureUserExistsFilter>();
@@ -117,6 +119,8 @@ var app = builder.Build();
 
 // SignalR
 app.MapHub<NotificationHub>("/hubs/notifications");
+app.MapHub<LeituraHub>("/hubs/leituras");
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
