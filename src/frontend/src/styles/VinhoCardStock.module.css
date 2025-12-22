@@ -77,3 +77,20 @@
   background: #f3f4f6;
   color: #2563eb;
 }
+
+.qtyInput {
+  width: 48px; /* mais pequeno */
+  height: 28px;
+  padding: 2px 4px;
+  font-size: 0.85rem;
+  text-align: center;
+
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+}
+
+.qtyInput:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+}

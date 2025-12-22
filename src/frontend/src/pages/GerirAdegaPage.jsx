@@ -41,7 +41,6 @@ const GerirAdegaPage = () => {
   const { id: adegaId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
 
-  /* inicializar SEM null */
   const [iot, setIot] = useState({
     temperatura: [],
     humidade: [],
@@ -71,12 +70,7 @@ const GerirAdegaPage = () => {
 
         const formatted = formatData(iotJson.data);
 
-        setIot({
-          temperatura: formatted.temperatura,
-          humidade: formatted.humidade,
-          luminosidade: formatted.luminosidade,
-        });
-
+        setIot(formatted);
         setStock(stockJson.data);
       } catch (err) {
         console.error(err);
@@ -88,7 +82,40 @@ const GerirAdegaPage = () => {
     if (adegaId) fetchAll();
   }, [adegaId, getAccessTokenSilently]);
 
-  /* ===== REAL TIME (UMA VEZ SÓ) ===== */
+  /* ===== UPDATE STOCK ===== */
+  const updateStock = async (vinhoId, novaQuantidade) => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const res = await fetch(
+        `${API_URL}/api/Adega/${adegaId}/stock/${vinhoId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            vinhoId,
+            adegaId: Number(adegaId),
+            quantidade: novaQuantidade,
+          }),
+        }
+      );
+
+      if (!res.ok) throw new Error("Erro ao atualizar stock");
+
+      setStock((prev) =>
+        prev.map((v) =>
+          v.vinhoId === vinhoId ? { ...v, quantidade: novaQuantidade } : v
+        )
+      );
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  /* ===== REAL TIME ===== */
   useEffect(() => {
     let connection;
 
@@ -124,7 +151,7 @@ const GerirAdegaPage = () => {
       });
 
       await connection.start();
-      console.log(" SignalR (leituras) conectado");
+      console.log("SignalR conectado");
     };
 
     startRealtime();
@@ -150,7 +177,10 @@ const GerirAdegaPage = () => {
 
         {hasIotData ? (
           <div className={styles.cards}>
-            <IotCard title="Temperatura" icon={<Thermometer color="#2563eb" />}>
+            <IotCard
+              title="Temperatura"
+              icon={<Thermometer color="#2563eb" size={20} />}
+            >
               <IotLineChart
                 data={iot.temperatura}
                 dataKey="temperatura"
@@ -159,7 +189,10 @@ const GerirAdegaPage = () => {
               />
             </IotCard>
 
-            <IotCard title="Humidade" icon={<Droplets color="#16a34a" />}>
+            <IotCard
+              title="Humidade"
+              icon={<Droplets color="#16a34a" size={20} />}
+            >
               <IotLineChart
                 data={iot.humidade}
                 dataKey="humidade"
@@ -168,7 +201,10 @@ const GerirAdegaPage = () => {
               />
             </IotCard>
 
-            <IotCard title="Luminosidade" icon={<Sun color="#f59e0b" />}>
+            <IotCard
+              title="Luminosidade"
+              icon={<Sun color="#f59e0b" size={20} />}
+            >
               <IotLineChart
                 data={iot.luminosidade}
                 dataKey="luminosidade"
@@ -211,7 +247,7 @@ const GerirAdegaPage = () => {
                 categoria={v.tipo}
                 ano={v.ano || "—"}
                 quantidade={v.quantidade}
-                onEdit={() => console.log("edit", v.vinhoId)}
+                onSave={(novaQtd) => updateStock(v.vinhoId, novaQtd)}
               />
             ))}
           </div>

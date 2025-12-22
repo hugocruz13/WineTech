@@ -1,11 +1,9 @@
 ﻿using BLL.Interfaces;
 using DAL.Interfaces;
-using DAL.Services;
 using Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -18,7 +16,9 @@ namespace BLL.Services
         private readonly ISensoresDAL _sensoresDAL;
         private readonly IUtilizadorDAL _utilizadoresDAL;
         private readonly ILeituraRealtimeService _realtime;
-        public LeiturasBLL(ILeiturasDAL leiturasDAL, IAdegaBLL adegaBLL, IAlertasDAL alertasDAL, ISensoresDAL sensoresDAL, ILeituraRealtimeService realtime, IUtilizadorDAL utilizadorDAL)
+        private readonly INotificacaoBLL _notificacaoBLL;
+
+        public LeiturasBLL(ILeiturasDAL leiturasDAL, IAdegaBLL adegaBLL, IAlertasDAL alertasDAL, ISensoresDAL sensoresDAL, ILeituraRealtimeService realtime, IUtilizadorDAL utilizadorDAL, INotificacaoBLL notificacaoBLL)
         {
             _leiturasDAL = leiturasDAL;
             _adegaBLL = adegaBLL;
@@ -26,6 +26,7 @@ namespace BLL.Services
             _sensoresDAL = sensoresDAL;
             _realtime = realtime;
             _utilizadoresDAL = utilizadorDAL;
+            _notificacaoBLL = notificacaoBLL;
         }
         public async Task<Leituras> InserirLeitura(Leituras leitura)
         {
@@ -37,21 +38,19 @@ namespace BLL.Services
 
             if (leitura.Valor < 0)
                 throw new ArgumentException("O valor da leitura não pode ser negativo.", nameof(leitura.Valor));
-            
+
             var novaLeitura = await _leiturasDAL.InserirLeitura(leitura);
-            
+
             if (novaLeitura != null)
             {
                 await VerificarAlerta(novaLeitura.SensorId);
             }
 
-            List < Utilizador > owners = await _utilizadoresDAL.GetOwnersAsync();
+            List<Utilizador> owners = await _utilizadoresDAL.GetOwnersAsync();
 
             foreach (var owner in owners)
             {
                 await _realtime.SendToUserAsync(owner.Id, novaLeitura);
-                Console.WriteLine($"📤 A enviar leitura para owner.Id = {owner.Id}");
-
             }
 
 
@@ -70,7 +69,7 @@ namespace BLL.Services
         public async Task<LeiturasStock> ObterUltimaLeituraPorSensor(int stockId)
         {
             if (stockId <= 0)
-                throw new ArgumentException("Sensor inválido.", nameof(stockId));            
+                throw new ArgumentException("Sensor inválido.", nameof(stockId));
 
             return await _leiturasDAL.ObterLeiturasStock(stockId);
         }
@@ -86,19 +85,42 @@ namespace BLL.Services
         //mudar aqui a logica uma vez que tenho que definir os ids dos sensores no switch
         private async Task VerificarAlerta(int sensorId)
         {
+
+            var sensor = await _sensoresDAL.TodosSensores();
+            if (sensor == null || !sensor.Any(s => s.Id == sensorId))
+                return;
+
+            string tipoSensor = sensor.First(s => s.Id == sensorId).Tipo;
+
             var todasLeituras = await _leiturasDAL.ObterLeiturasPorSensor(sensorId);
             var ultimas3 = todasLeituras.Take(3).ToList();
 
-            if (ultimas3.Count < 3) return;
+            if (ultimas3.Count < 3)
+                return;
+
+            List<Utilizador> owners = await _utilizadoresDAL.GetOwnersAsync();
 
             float min = 0, max = 0;
 
-            switch (sensorId)
+            switch (tipoSensor)
             {
-                case 1006: (min, max) = (15f, 30f); break; 
-                case 1005: (min, max) = (60f, 80f); break; 
-                case 1004: (min, max) = (0f, 500f); break; 
-                default: return; 
+                case "Temperatura":
+                    min = 15f;
+                    max = 30f;
+                    break;
+
+                case "Humidade":
+                    min = 60f;
+                    max = 80f;
+                    break;
+
+                case "Luminosidade":
+                    min = 0f;
+                    max = 200f;
+                    break;
+
+                default:
+                    return;
             }
 
             bool sistemaInstavel = ultimas3.All(l => l.Valor < min || l.Valor > max);
@@ -113,6 +135,11 @@ namespace BLL.Services
                 };
 
                 await _alertasDAL.InserirAlerta(novoAlerta);
+
+                foreach (var owner in owners)
+                {
+                    await _notificacaoBLL.InserirNotificacao(new Notificacao { Titulo = "Alerta de Sensor", Mensagem = $"O sensor {tipoSensor} registou valores fora do intervalo seguro.", Tipo = TipoNotificacao.Alerta, UtilizadorId = owner.Id });
+                }
             }
         }
     }
