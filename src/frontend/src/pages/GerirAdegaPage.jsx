@@ -14,14 +14,7 @@ import styles from "../styles/GerirAdegaPage.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-/* ===== MAPA SENSOR → TIPO ===== */
-const SENSOR_MAP = {
-  1: "temperatura",
-  2: "humidade",
-  3: "luminosidade",
-};
-
-/* ===== FORMATAR DADOS IOT ===== */
+/* ===== FORMATAR DADOS IOT (FETCH INICIAL) ===== */
 const formatData = (apiData) => ({
   temperatura: (apiData?.temperatura || []).map((t) => ({
     dataHora: new Date(t.dataHora).getTime(),
@@ -36,6 +29,8 @@ const formatData = (apiData) => ({
     luminosidade: Number(l.luminosidade.toFixed(2)),
   })),
 });
+
+const TIPOS_VALIDOS = ["temperatura", "humidade", "luminosidade"];
 
 const GerirAdegaPage = () => {
   const { id: adegaId } = useParams();
@@ -68,12 +63,10 @@ const GerirAdegaPage = () => {
         const iotJson = await iotRes.json();
         const stockJson = await stockRes.json();
 
-        const formatted = formatData(iotJson.data);
-
-        setIot(formatted);
+        setIot(formatData(iotJson.data));
         setStock(stockJson.data);
       } catch (err) {
-        console.error(err);
+        console.error("Erro fetch inicial:", err);
       } finally {
         setLoading(false);
       }
@@ -111,47 +104,56 @@ const GerirAdegaPage = () => {
         )
       );
     } catch (err) {
-      console.error(err);
+      console.error("Erro update stock:", err);
     }
   };
 
-  /* ===== REAL TIME ===== */
+  /* ===== REAL TIME (SIGNALR) ===== */
   useEffect(() => {
     let connection;
 
     const startRealtime = async () => {
-      const token = await getAccessTokenSilently();
+      try {
+        const token = await getAccessTokenSilently();
 
-      connection = new signalR.HubConnectionBuilder()
-        .withUrl(`${API_URL}/hubs/leituras`, {
-          accessTokenFactory: () => token,
-        })
-        .withAutomaticReconnect()
-        .build();
+        connection = new signalR.HubConnectionBuilder()
+          .withUrl(`${API_URL}/hubs/leituras`, {
+            accessTokenFactory: () => token,
+          })
+          .withAutomaticReconnect()
+          .build();
 
-      connection.on("ReceiveLeitura", (leitura) => {
-        setIot((prev) => {
-          const tipo = SENSOR_MAP[leitura.sensorId];
-          if (!tipo) return prev;
+        connection.on("ReceiveLeitura", (leitura) => {
+          if (Number(leitura.adegaId) !== Number(adegaId)) {
+            return;
+          }
 
-          const timestamp = new Date(leitura.dataHora).getTime();
+          setIot((prev) => {
+            const tipo = leitura.tipo.toLowerCase();
+            if (!TIPOS_VALIDOS.includes(tipo)) return prev;
 
-          const novoPonto =
-            tipo === "temperatura"
-              ? { dataHora: timestamp, temperatura: leitura.valor }
-              : tipo === "humidade"
-              ? { dataHora: timestamp, humidade: leitura.valor }
-              : { dataHora: timestamp, luminosidade: leitura.valor };
+            const timestamp = new Date(leitura.dataHora).getTime();
 
-          return {
-            ...prev,
-            [tipo]: [...prev[tipo], novoPonto].slice(-50),
-          };
+            const novoPonto =
+              tipo === "temperatura"
+                ? { dataHora: timestamp, temperatura: leitura.valor }
+                : tipo === "humidade"
+                  ? { dataHora: timestamp, humidade: leitura.valor }
+                  : { dataHora: timestamp, luminosidade: leitura.valor };
+
+            return {
+              ...prev,
+              [tipo]: [...prev[tipo], novoPonto].slice(-50),
+            };
+          });
         });
-      });
 
-      await connection.start();
-      console.log("SignalR conectado");
+
+        await connection.start();
+        console.log(" SignalR conectado");
+      } catch (err) {
+        console.error("Erro SignalR:", err);
+      }
     };
 
     startRealtime();
@@ -164,7 +166,9 @@ const GerirAdegaPage = () => {
   if (loading) return <Loading />;
 
   const hasIotData =
-    iot.temperatura.length || iot.humidade.length || iot.luminosidade.length;
+    iot.temperatura.length ||
+    iot.humidade.length ||
+    iot.luminosidade.length;
 
   return (
     <>
@@ -219,7 +223,7 @@ const GerirAdegaPage = () => {
           </div>
         )}
 
-        {/* STOCK */}
+        {/* ===== STOCK ===== */}
         <div className={styles.stock}>
           <div className={styles.stockHeader}>
             <h3>Stock de Vinhos</h3>

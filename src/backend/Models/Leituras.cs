@@ -12,6 +12,10 @@ namespace Models
 
         public float Valor { get; set; }
 
+        public string Tipo { get; set; }
+
+        public int AdegaId { get; set; }
+
         public DateTime DataHora { get; set; }
     }
 }

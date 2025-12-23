@@ -25,7 +25,7 @@ namespace API.Controllers
         {
             try
             {
-                var leitura = new Models.Leituras{ SensorId = dto.SensorId, Valor = dto.Valor};
+                var leitura = new Leituras{ SensorId = dto.SensorId, Valor = dto.Valor, Tipo= dto.Tipo, AdegaId = dto.AdegaId };
 
                 Models.Leituras leituraCriada = await _leiturasBLL.InserirLeitura(leitura);
 

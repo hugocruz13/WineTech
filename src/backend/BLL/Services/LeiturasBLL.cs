@@ -40,10 +40,12 @@ namespace BLL.Services
                 throw new ArgumentException("O valor da leitura não pode ser negativo.", nameof(leitura.Valor));
 
             var novaLeitura = await _leiturasDAL.InserirLeitura(leitura);
+            novaLeitura.Tipo =  leitura.Tipo;
+            novaLeitura.AdegaId = leitura.AdegaId;
 
             if (novaLeitura != null)
             {
-                await VerificarAlerta(novaLeitura.SensorId);
+                await VerificarAlerta(leitura);
             }
 
             List<Utilizador> owners = await _utilizadoresDAL.GetOwnersAsync();
@@ -82,17 +84,16 @@ namespace BLL.Services
             return await _leiturasDAL.ObterLeiturasAdega(adegaId);
         }
 
-        //mudar aqui a logica uma vez que tenho que definir os ids dos sensores no switch
-        private async Task VerificarAlerta(int sensorId)
+        private async Task VerificarAlerta(Leituras leitura)
         {
 
             var sensor = await _sensoresDAL.TodosSensores();
-            if (sensor == null || !sensor.Any(s => s.Id == sensorId))
+            if (sensor == null || !sensor.Any(s => s.Id == leitura.SensorId))
                 return;
 
-            string tipoSensor = sensor.First(s => s.Id == sensorId).Tipo;
+            string tipoSensor = sensor.First(s => s.Id == leitura.SensorId).Tipo;
 
-            var todasLeituras = await _leiturasDAL.ObterLeiturasPorSensor(sensorId);
+            var todasLeituras = await _leiturasDAL.ObterLeiturasPorSensor(leitura.SensorId);
             var ultimas3 = todasLeituras.Take(3).ToList();
 
             if (ultimas3.Count < 3)
@@ -102,11 +103,11 @@ namespace BLL.Services
 
             float min = 0, max = 0;
 
-            switch (tipoSensor)
+            switch (leitura.Tipo)
             {
                 case "Temperatura":
                     min = 15f;
-                    max = 30f;
+                    max = 18f;
                     break;
 
                 case "Humidade":
@@ -116,7 +117,7 @@ namespace BLL.Services
 
                 case "Luminosidade":
                     min = 0f;
-                    max = 200f;
+                    max = 201f;
                     break;
 
                 default:
@@ -129,7 +130,7 @@ namespace BLL.Services
             {
                 var novoAlerta = new Models.Alertas
                 {
-                    SensoresId = sensorId,
+                    SensoresId = leitura.SensorId,
                     TipoAlerta = "Instabilidade Crítica",
                     Mensagem = $"As últimas 3 leituras estão fora da zona segura ({min}-{max}).",
                 };

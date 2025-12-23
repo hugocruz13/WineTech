@@ -20,8 +20,7 @@ namespace IoT.Api.ApiModels
     }
     public enum TipoHardware
     {
-        REAL_DHT,
-        REAL_LDR,
+        REAL_ADEGA_1,
         GERADO,
         DESCONHECIDO 
     }

@@ -10,7 +10,7 @@ namespace IoT.Simulation
     public class SimulatedValueGenerator
     {
         private static readonly Random _random = new Random();
-        public static void ConfigurarSensorGerado(int sensorId, string tipo)
+        public static void ConfigurarSensorGerado(int sensorId, string tipo, int adegaId)
         {
             TipoSensor tipoEnum = (TipoSensor)Enum.Parse(typeof(TipoSensor), tipo, true);
 
@@ -19,27 +19,27 @@ namespace IoT.Simulation
             switch (tipoEnum)
             {
                 case TipoSensor.Temperatura:
-                    // entre 15.0 e 30.0 
-                    valor = 14 + (_random.NextDouble() * 2);
+                    // entre 15.0 e 18.0
+                    valor = 15 + (_random.NextDouble() * 3);
                     break;
 
                 case TipoSensor.Humidade:
-                    // entre 50% e 80% 
-                    valor = 65 + (_random.NextDouble() * 10);
+                    // entre 60% e 80%
+                    valor = 60 + (_random.NextDouble() * 20);
                     break;
 
                 case TipoSensor.Luminosidade:
-                    // vai de 0 a 1000 ou 1023
-                    valor = _random.Next(200, 251);
+                    // entre 0 e 200
+                    valor = _random.Next(0, 201);
                     break;
-
+                     
                 default:
                     valor = 0;
                     break;
             }
 
             Console.WriteLine($" -> [GERADO] Tipo: {tipoEnum} | Valor Calculado: {valor}");
-            var leitura = new LeituraDTO{ SensorId = sensorId, Valor = (float)Math.Round(valor, 2)};
+            var leitura = new LeituraDTO{ SensorId = sensorId, Valor = (float)Math.Round(valor, 2), Tipo = tipoEnum.ToString(), AdegaId = adegaId };
 
             try
             {

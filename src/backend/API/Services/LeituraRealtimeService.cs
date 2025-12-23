@@ -22,6 +22,8 @@ namespace API.Services
                 {
                     sensorId = leitura.SensorId,
                     valor = leitura.Valor,
+                    tipo = leitura.Tipo,
+                    adegaId = leitura.AdegaId,
                     dataHora = leitura.DataHora
                 });
         }

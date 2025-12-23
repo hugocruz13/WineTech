@@ -14,8 +14,6 @@ namespace API.Hubs
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, userId);
             }
-            Console.WriteLine($"🟢 HUB ligado com sub = {userId}");
-
 
             await base.OnConnectedAsync();
         }

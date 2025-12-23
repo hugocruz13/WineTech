@@ -15,13 +15,12 @@ namespace IoT.Logica
             TipoHardware hardwareEnum = (TipoHardware)Enum.Parse(typeof(TipoHardware), sensor.IdentificadorHardware, true);
             switch (hardwareEnum)
             {
-                case TipoHardware.REAL_DHT:
-                case TipoHardware.REAL_LDR:
-                    ArduinoReader.ConfigurarSensorReal(sensor.Id, sensor.Tipo);
+                case TipoHardware.REAL_ADEGA_1:
+                    ArduinoReader.ConfigurarSensorReal(sensor.Id, sensor.Tipo, sensor.AdegaId);
                     break;
 
                 case TipoHardware.GERADO:
-                    SimulatedValueGenerator.ConfigurarSensorGerado(sensor.Id, sensor.Tipo);
+                    SimulatedValueGenerator.ConfigurarSensorGerado(sensor.Id, sensor.Tipo, sensor.AdegaId);
                     break;
 
                 default:

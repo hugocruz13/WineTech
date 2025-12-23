@@ -18,8 +18,8 @@ namespace IoT.Hardware
         private static SerialPort porta;
         private static bool ativo = false;
 
-        private static int idTemperatura = 0, idHumidade = 0, idLuz = 0;
-        public static void ConfigurarSensorReal(int sensorId, string tipo)
+        private static int idTemperatura = 0, idHumidade = 0, idLuz = 0, adegaId = 0;
+        public static void ConfigurarSensorReal(int sensorId, string tipo, int adegaId)
         {
             TipoSensor tipoEnum = (TipoSensor)Enum.Parse(typeof(TipoSensor), tipo, true);
             switch (tipoEnum)
@@ -37,6 +37,7 @@ namespace IoT.Hardware
                     Console.WriteLine($" -> Tipo desconhecido: '{tipoEnum}'");
                     break;
             }
+            ArduinoReader.adegaId = adegaId;
             if (!ativo)
             {
                 LigarArduino();
@@ -46,7 +47,7 @@ namespace IoT.Hardware
         {
             try
             {
-                porta = new SerialPort("COM5", 9600);
+                porta = new SerialPort("COM3", 9600);
                 porta.Open();
                 ativo = true;
 
@@ -75,13 +76,13 @@ namespace IoT.Hardware
 
 
                     if (idTemperatura > 0)
-                        await EnviarLeitura(idTemperatura, temp, TipoSensor.Temperatura);
+                        await EnviarLeitura(idTemperatura, temp, TipoSensor.Temperatura, adegaId);
 
                     if (idHumidade > 0)
-                        await EnviarLeitura(idHumidade, hum);
+                        await EnviarLeitura(idHumidade, hum, TipoSensor.Humidade, adegaId);
                     
                     if (idLuz > 0)
-                        await EnviarLeitura(idLuz, ldr);
+                        await EnviarLeitura(idLuz, ldr, TipoSensor.Luminosidade, adegaId);
                 }
                 catch (Exception ex)
                 {
@@ -89,17 +90,19 @@ namespace IoT.Hardware
                 }
             }
         }
-        private static async Task EnviarLeitura(int id, float valor)
+        private static async Task EnviarLeitura(int id, float valor, TipoSensor tipo, int adegaId)
         {
             var leitura = new LeituraDTO
             {
                 SensorId = id,
-                Valor = (float)Math.Round(valor, 2)
+                Valor = (float)Math.Round(valor, 2),
+                Tipo = tipo.ToString(),
+                AdegaId = adegaId
             };
 
             try
             {
-                Console.WriteLine($" -> [ARDUINO ENVIAR] Sensor {id}: {valor}");
+                Console.WriteLine($" -> [ARDUINO ENVIAR] Sensor {id} ({leitura.Tipo}): {valor}");
                 await ApiClient.InserirLeitura(leitura);
             }
             catch (Exception ex)

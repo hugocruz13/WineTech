@@ -32,7 +32,7 @@ namespace IoT.Workers
                     Console.WriteLine("[POST] Erro: " + ex.Message);
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(30));
             }
         }
     }

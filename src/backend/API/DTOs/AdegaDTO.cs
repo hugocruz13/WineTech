@@ -49,5 +49,7 @@ namespace API.DTOs
         public int SensorId { get; set; }
 
         public float Valor { get; set; }
+        public string Tipo { get; set; }
+        public int AdegaId { get; set; }
     }
 }
