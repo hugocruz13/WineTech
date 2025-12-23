@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Pencil, Trash2 } from "lucide-react";
+
 import Header from "../components/Header";
 import Loading from "../components/Loading";
+import ConfirmDialog from "../components/ConfirmDialog";
+
 import styles from "../styles/VinhoDetalhe.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -18,6 +22,7 @@ const VinhoDetalhe = () => {
   const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   useEffect(() => {
     const fetchVinho = async () => {
@@ -40,18 +45,18 @@ const VinhoDetalhe = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const buildPayload = () => ({
-    id: vinho.id,
-    nome: form.nome || null,
-    produtor: form.produtor || null,
-    tipo: form.tipo || null,
-    descricao: form.descricao || null,
-    ano: form.ano ? Number(form.ano) : 0,
-    preco: form.preco ? Number(form.preco) : 0,
-  });
-
   const handleSave = async () => {
     const token = await getAccessTokenSilently();
+
+    const payload = {
+      id: vinho.id,
+      nome: form.nome,
+      produtor: form.produtor,
+      tipo: form.tipo,
+      descricao: form.descricao,
+      ano: Number(form.ano),
+      preco: Number(form.preco),
+    };
 
     const res = await fetch(`${API_URL}/api/vinho/${vinho.id}`, {
       method: "PUT",
@@ -59,13 +64,24 @@ const VinhoDetalhe = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(buildPayload()),
+      body: JSON.stringify(payload),
     });
 
     const json = await res.json();
     setVinho(json.data);
     setForm(json.data);
     setEditMode(false);
+  };
+
+  const handleDelete = async () => {
+    const token = await getAccessTokenSilently();
+
+    await fetch(`${API_URL}/api/vinho/${vinho.id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    navigate("/dashboard");
   };
 
   const handleImageSelect = (e) => {
@@ -83,16 +99,18 @@ const VinhoDetalhe = () => {
     const formData = new FormData();
     formData.append("file", imageFile);
 
-    const res = await fetch(`${API_URL}/api/vinho/${vinho.id}/upload-image`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
+    const res = await fetch(
+      `${API_URL}/api/vinho/${vinho.id}/upload-image`,
+      {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      }
+    );
 
     const json = await res.json();
 
     setVinho((prev) => ({ ...prev, imageUrl: json.data }));
-    setForm((prev) => ({ ...prev, imageUrl: json.data }));
     setImageFile(null);
     setImagePreview(null);
   };
@@ -106,132 +124,126 @@ const VinhoDetalhe = () => {
     <>
       <Header />
 
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Apagar vinho"
+        message="Tens a certeza que queres apagar este vinho? Esta ação é irreversível."
+        onCancel={() => setConfirmOpen(false)}
+        onConfirm={handleDelete}
+      />
+
       <div className={styles.page}>
-        <div className={styles.wrapper}>
-          <button className={styles.back} onClick={() => navigate(-1)}>
-            ← Voltar ao Catálogo
-          </button>
+        <button className={styles.back} onClick={() => navigate(-1)}>
+          ← Voltar ao Catálogo
+        </button>
 
-          <div className={styles.container}>
-            {/* IMAGEM */}
-            <aside className={styles.left}>
-              <div className={styles.imageBox}>
-                <img src={imageSrc} alt={vinho.nome} />
-              </div>
+        <div className={styles.card}>
+          <aside className={styles.imageSection}>
+            <img src={imageSrc} alt={vinho.nome} />
 
-              <label className={styles.upload}>
-                Alterar imagem
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageSelect}
-                />
-              </label>
+            <label className={styles.upload}>
+              Alterar imagem
+              <input type="file" accept="image/*" onChange={handleImageSelect} />
+            </label>
 
-              {imageFile && (
-                <button
-                  className={styles.uploadBtn}
-                  onClick={handleUploadImage}
-                >
-                  Guardar imagem
-                </button>
-              )}
-            </aside>
+            {imageFile && (
+              <button className={styles.uploadBtn} onClick={handleUploadImage}>
+                Guardar imagem
+              </button>
+            )}
+          </aside>
 
-            {/* CONTEÚDO */}
-            <section className={styles.right}>
-              {!editMode ? (
-                <>
-                  <h1>{vinho.nome}</h1>
+          <section className={styles.content}>
+            {!editMode ? (
+              <>
+                <h1>{vinho.nome}</h1>
 
-                  <div className={styles.meta}>
-                    <span>{vinho.produtor}</span>
-                    <span>{vinho.tipo}</span>
-                    <span>{vinho.ano}</span>
-                  </div>
+                <div className={styles.meta}>
+                  <span>{vinho.produtor}</span>
+                  <span>{vinho.tipo}</span>
+                  <span>{vinho.ano}</span>
+                </div>
 
-                  <p className={styles.descricao}>{vinho.descricao}</p>
+                <p className={styles.desc}>{vinho.descricao}</p>
 
-                  <div className={styles.footer}>
-                    <span className={styles.preco}>
-                      € {vinho.preco.toFixed(2)}
-                    </span>
+                <div className={styles.footer}>
+                  <span className={styles.price}>
+                    € {vinho.preco.toFixed(2)}
+                  </span>
 
+                  <div className={styles.actions}>
                     <button
                       className={styles.edit}
                       onClick={() => setEditMode(true)}
                     >
+                      <Pencil size={16} />
                       Editar
                     </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <h2>Editar Detalhes</h2>
 
-                  <div className={styles.formGrid}>
-                    <input
-                      name="nome"
-                      value={form.nome || ""}
-                      onChange={handleChange}
-                      placeholder="Nome"
-                    />
-                    <input
-                      name="produtor"
-                      value={form.produtor || ""}
-                      onChange={handleChange}
-                      placeholder="Produtor"
-                    />
-                    <input
-                      name="tipo"
-                      value={form.tipo || ""}
-                      onChange={handleChange}
-                      placeholder="Tipo"
-                    />
-                    <input
-                      name="ano"
-                      type="number"
-                      value={form.ano || ""}
-                      onChange={handleChange}
-                      placeholder="Ano"
-                    />
-                  </div>
-
-                  <textarea
-                    name="descricao"
-                    value={form.descricao || ""}
-                    onChange={handleChange}
-                    placeholder="Descrição"
-                  />
-
-                  <input
-                    name="preco"
-                    type="number"
-                    value={form.preco || ""}
-                    onChange={handleChange}
-                    placeholder="Preço"
-                    className={styles.price}
-                  />
-
-                  <div className={styles.actions}>
                     <button
-                      className={styles.cancel}
-                      onClick={() => {
-                        setForm(vinho);
-                        setEditMode(false);
-                      }}
+                      className={styles.delete}
+                      onClick={() => setConfirmOpen(true)}
                     >
-                      Cancelar
-                    </button>
-
-                    <button className={styles.save} onClick={handleSave}>
-                      Guardar Alterações
+                      <Trash2 size={16} />
+                      Apagar Adega
                     </button>
                   </div>
-                </>
-              )}
-            </section>
-          </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <h2>Editar Detalhes</h2>
+
+                <div className={styles.formGrid}>
+                  <input name="nome" value={form.nome} onChange={handleChange} />
+                  <input
+                    name="produtor"
+                    value={form.produtor}
+                    onChange={handleChange}
+                  />
+                  <input name="tipo" value={form.tipo} onChange={handleChange} />
+                  <input
+                    name="ano"
+                    type="number"
+                    value={form.ano}
+                    onChange={handleChange}
+                  />
+                </div>
+
+                <textarea
+                  name="descricao"
+                  value={form.descricao || ""}
+                  onChange={handleChange}
+                  onInput={(e) => {
+                    e.target.style.height = "auto";
+                    e.target.style.height = `${e.target.scrollHeight}px`;
+                  }}
+                  placeholder="Descrição"
+                  className={styles.textarea}
+                />
+
+
+                <input
+                  name="preco"
+                  type="number"
+                  value={form.preco}
+                  onChange={handleChange}
+                />
+
+                <div className={styles.actions}>
+                  <button
+                    className={styles.cancel}
+                    onClick={() => setEditMode(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button className={styles.save} onClick={handleSave}>
+                    Guardar
+                  </button>
+                </div>
+              </>
+            )}
+          </section>
         </div>
       </div>
     </>

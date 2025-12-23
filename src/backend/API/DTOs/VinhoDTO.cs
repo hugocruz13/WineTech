@@ -18,7 +18,8 @@
         public string Tipo { get; set; }
         public string Descricao { get; set; }
         public IFormFile? ImagemUrl { get; set; }
-        public float Preco { get; set; }
+        public decimal Preco { get; set; }
+
     }
     public class UpdateVinhoDTO
     {

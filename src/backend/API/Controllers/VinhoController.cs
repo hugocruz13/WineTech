@@ -27,7 +27,7 @@ namespace API.Controllers
         {
             try
             {
-                Vinho vinho = new Vinho { Nome = vinhoDTO.Nome, Produtor = vinhoDTO.Produtor, Ano = vinhoDTO.Ano, Tipo = vinhoDTO.Tipo, Descricao = vinhoDTO.Descricao, Preco = vinhoDTO.Preco };
+                Vinho vinho = new Vinho { Nome = vinhoDTO.Nome, Produtor = vinhoDTO.Produtor, Ano = vinhoDTO.Ano, Tipo = vinhoDTO.Tipo, Descricao = vinhoDTO.Descricao, Preco = (float)vinhoDTO.Preco };
                 vinho = await _vinhoBLL.InserirVinho(vinho);
 
                 if (vinho.Id <= 0)

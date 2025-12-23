@@ -18,10 +18,12 @@ const NovoVinhoModal = ({ onClose, onSuccess, token, apiUrl }) => {
     const formData = new FormData();
     formData.append("Nome", nome);
     formData.append("Produtor", produtor);
-    formData.append("Ano", Number(ano));
+    formData.append("Ano", ano);
     formData.append("Tipo", tipo);
     formData.append("Descricao", descricao);
-    formData.append("Preco", Number(preco));
+
+    // 🔥 CONVERSÃO OBRIGATÓRIA PARA BACKEND pt-PT
+    formData.append("Preco", preco.replace(".", ","));
 
     if (imagem) {
       formData.append("ImagemUrl", imagem);
@@ -47,7 +49,6 @@ const NovoVinhoModal = ({ onClose, onSuccess, token, apiUrl }) => {
       onClose();
     } catch (err) {
       console.error("Erro ao criar vinho:", err.message);
-      alert("Erro ao criar vinho");
     } finally {
       setLoading(false);
     }
@@ -112,11 +113,17 @@ const NovoVinhoModal = ({ onClose, onSuccess, token, apiUrl }) => {
           <label>
             Preço
             <input
-              type="number"
-              step="0.01"
+              type="text"
+              inputMode="decimal"
+              placeholder="0.00"
               required
               value={preco}
-              onChange={(e) => setPreco(e.target.value)}
+              onChange={(e) => {
+                const value = e.target.value.replace(",", ".");
+                if (/^\d*\.?\d{0,2}$/.test(value)) {
+                  setPreco(value);
+                }
+              }}
             />
           </label>
 
