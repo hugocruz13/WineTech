@@ -1,11 +1,17 @@
 import styles from "../styles/DispositivoCard.module.css";
+import Loading from "../components/Loading";
 
 const DispositivoCard = ({
     tipo,
     estado,
     icon,
     onToggle,
+    loading
 }) => {
+    if (loading) {
+        return <Loading />;
+    }
+
     return (
         <div className={styles.card}>
             {/* HEADER */}

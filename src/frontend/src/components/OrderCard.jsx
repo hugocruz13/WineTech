@@ -1,7 +1,12 @@
 import { Package, Calendar, ArrowRight } from "lucide-react";
 import styles from "../styles/OrderCard.module.css";
+import Loading from "../components/Loading";
 
-export default function OrderCard({ orderNumber, date, price, onDetails }) {
+export default function OrderCard({ orderNumber, date, price, onDetails, loading }) {
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className={styles.orderCard}>
       <div className={styles.orderLeft}>

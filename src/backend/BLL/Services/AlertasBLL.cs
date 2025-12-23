@@ -40,7 +40,21 @@ namespace BLL.Services
 
             var alertas = await _alertasDAL.ObterAlertasPorSensor(sensorId);
 
-            return alertas ?? new List<Alertas>();
+            return alertas;
+        }
+
+        public async Task<List<Models.AlertaComSensor>> GetAllAlertas()
+        {
+            var alertas = await _alertasDAL.GetAllAlertas();
+            return alertas;
+        }
+
+        public async Task<bool> ResolverAlerta(int alertaId)
+        {
+            if (alertaId <= 0)
+                throw new ArgumentException("Alerta inválido.", nameof(alertaId));
+
+            return await _alertasDAL.ResolverAlerta(alertaId);
         }
     }
 }

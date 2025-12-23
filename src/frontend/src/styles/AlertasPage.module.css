@@ -1,0 +1,32 @@
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* HEADER DA PÁGINA */
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.titulo {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.subtitulo {
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* LISTA */
+.alertasList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

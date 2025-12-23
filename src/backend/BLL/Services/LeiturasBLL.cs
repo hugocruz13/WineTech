@@ -107,7 +107,7 @@ namespace BLL.Services
             {
                 case "Temperatura":
                     min = 15f;
-                    max = 18f;
+                    max = 20f;
                     break;
 
                 case "Humidade":

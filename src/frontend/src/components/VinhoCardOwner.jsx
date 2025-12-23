@@ -1,8 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/VinhoCard.module.css";
+import Loading from "../components/Loading";
 
-const VinhoCard = ({ vinho }) => {
+const VinhoCard = ({ vinho, loading }) => {
   const navigate = useNavigate();
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div

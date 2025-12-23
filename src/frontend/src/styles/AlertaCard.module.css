@@ -1,0 +1,135 @@
+.alertaCard {
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ESTADOS */
+.naoResolvido {
+  border-left: 6px solid #e53935;
+  background-color: #fff7f7;
+}
+
+.resolvido {
+  border-left: 6px solid #43a047;
+  background-color: #f4fbf7;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* BADGES */
+.badgeCritico {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #fdecea;
+  color: #d32f2f;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.badgeConcluido {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* STATUS */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.statusNaoResolvido {
+  background-color: #fdecea;
+  color: #c62828;
+}
+
+.statusResolvido {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* TEXTO */
+.titulo {
+  margin: 12px 0 6px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.mensagem {
+  font-size: 14px;
+  color: #555;
+}
+
+/* FOOTER */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.chips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  background-color: #f3f4f6;
+  padding: 6px 10px;
+  border-radius: 999px;
+}
+
+/* BOTÃO */
+.botaoResolver {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #c4163a;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.botaoResolver:hover {
+  background-color: #a51230;
+}
+
+.botaoResolver:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* LOADING */
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -91,3 +91,4 @@ BEGIN
     ORDER BY le.DataHora;
 END;
 GO
+

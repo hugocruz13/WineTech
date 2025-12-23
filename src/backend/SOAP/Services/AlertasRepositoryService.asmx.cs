@@ -47,5 +47,31 @@ namespace SOAP.Services
                 throw new Exception("Erro ao obter Alertas por sensor: " + ex.Message);
             }
         }
+        [WebMethod]
+        public List<Models.AlertaComSensor> GetAllAlertas()
+        {
+            try
+            {
+                return _repository.GetAllAlertas();
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao obter todos os alertas");
+                throw new Exception("Erro ao obter todos os alertas: " + ex.Message);
+            }
+        }
+        [WebMethod]
+        public bool ResolverAlerta(int alertaId)
+        {
+            try
+            {
+                return _repository.ResolverAlerta(alertaId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao resolver alerta");
+                throw new Exception("Erro ao resolver alerta: " + ex.Message);
+            }
+        }
     }
 }

@@ -28,6 +28,7 @@ import NotificationsPage from "./pages/NotificationsPage";
 import IotClientePage from "./pages/IotClientePage";
 import CarrinhoPage from "./pages/CarrinhoPage";
 import JWT from "./pages/Jwt";
+import AlertasPage from "./pages/AlertasPage";
 
 function AppContent() {
   const navigate = useNavigate();
@@ -107,6 +108,14 @@ function AppContent() {
           </RoleGuard>
         }
       />
+      <Route
+        path="/alertas"
+        element={
+          <RoleGuard role="owner">
+            <AlertasPage />
+          </RoleGuard>
+        }
+      />
     </Routes>
   );
 }
@@ -114,7 +123,10 @@ function AppContent() {
 function App() {
   const { isAuthenticated, isLoading } = useAuth0();
 
-  if (isLoading) return <Loading />;
+  if (isLoading) {
+    return <Loading />;
+  }
+
   if (!isAuthenticated) return <SignInPage />;
 
   return (

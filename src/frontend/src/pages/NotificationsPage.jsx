@@ -3,12 +3,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Bell } from "lucide-react";
 
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 import { notificationConfig } from "../utils/notificationConfig";
 import styles from "../styles/NotificationPage.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const NotificationsPage = ({ notifications, setNotifications }) => {
+const NotificationsPage = ({ notifications, setNotifications, loading }) => {
   const { getAccessTokenSilently } = useAuth0();
 
   useEffect(() => {
@@ -52,6 +53,10 @@ const NotificationsPage = ({ notifications, setNotifications }) => {
       console.error("Erro ao marcar notificação como lida", err);
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

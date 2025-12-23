@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "../styles/EditarAdegaModal.module.css";
+import Loading from "../components/Loading";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const EditarAdegaModal = ({ adega, onClose }) => {
   const { getAccessTokenSilently } = useAuth0();
+  const [uploading, setUploading] = useState(false);
 
   const [form, setForm] = useState({
     nome: adega.nome || "",
@@ -14,7 +16,6 @@ const EditarAdegaModal = ({ adega, onClose }) => {
   });
 
   const [imageFile, setImageFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -44,6 +45,8 @@ const EditarAdegaModal = ({ adega, onClose }) => {
     try {
       const token = await getAccessTokenSilently();
 
+      setUploading(true);
+
       // 1️⃣ Atualizar dados da adega
       await fetch(`${API_URL}/api/adega/${adega.id}`, {
         method: "PUT",
@@ -56,8 +59,6 @@ const EditarAdegaModal = ({ adega, onClose }) => {
 
       // 2️⃣ Upload da imagem (se existir)
       if (imageFile) {
-        setUploading(true);
-
         const formData = new FormData();
         formData.append("file", imageFile); // KEY correta
 
@@ -79,6 +80,10 @@ const EditarAdegaModal = ({ adega, onClose }) => {
       setUploading(false);
     }
   };
+
+  if (uploading) {
+    return <Loading />;
+  }
 
   return (
     <div className={styles.overlay}>

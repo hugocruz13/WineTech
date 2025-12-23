@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { User, LogOut, ShoppingBag } from "lucide-react";
+import { User, LogOut, ShoppingBag, AlertTriangle } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/ProfileDropdown.module.css";
+import RoleVisibility from "./RoleVisibility";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -93,6 +94,18 @@ const ProfileDropdown = ({ open, onToggle }) => {
                 <ShoppingBag size={16} />
                 <span>Minhas Compras</span>
               </button>
+            </li>
+
+            <li>
+              <RoleVisibility role="owner">
+                <button
+                  className={styles.menuItem}
+                  onClick={() => navigate('/alertas')}
+                >
+                  <AlertTriangle size={16} />
+                  <span>Alertas</span>
+                </button>
+              </RoleVisibility>
             </li>
           </ul>
 

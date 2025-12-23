@@ -86,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Adega.cs" />
+    <Compile Include="Models\AlertaComSensor.cs" />
     <Compile Include="Models\Alertas.cs" />
     <Compile Include="Models\Carrinho.cs" />
     <Compile Include="Models\CarrinhoDetalhe.cs" />

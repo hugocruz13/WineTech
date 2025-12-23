@@ -5,11 +5,12 @@ import { Search, ShoppingCart, Wine, Warehouse, Bell } from "lucide-react";
 
 import ProfileDropdown from "./ProfileDropdown";
 import RoleVisibility from "./RoleVisibility";
+import Loading from "../components/Loading";
 import styles from "../styles/Header.module.css";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const Header = () => {
+const Header = ({ loading }) => {
   const [openMenu, setOpenMenu] = useState(null);
   const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
@@ -54,6 +55,10 @@ const Header = () => {
     window.addEventListener("notification:read", onRead);
     return () => window.removeEventListener("notification:read", onRead);
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <header className={styles.headerContainer}>

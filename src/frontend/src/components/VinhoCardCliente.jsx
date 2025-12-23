@@ -2,12 +2,17 @@ import { ShoppingCart } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/WineCard.module.css";
+import Loading from "../components/Loading";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const WineCard = ({ id, title, subtitle, price, type, imageUrl, year }) => {
+const WineCard = ({ id, title, subtitle, price, type, imageUrl, year, loading }) => {
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
+
+  if (loading) {
+    return <Loading />;
+  }
 
   const handleNavigate = () => {
     navigate(`/vinho/${id}`);

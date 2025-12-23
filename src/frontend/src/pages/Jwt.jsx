@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "../styles/Jwt.module.css";
+import Loading from "../components/Loading";
 
 const JWT = () => {
-  const { user, logout, getAccessTokenSilently } = useAuth0();
+  const { user, logout, getAccessTokenSilently, isLoading } = useAuth0();
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -19,6 +20,10 @@ const JWT = () => {
 
     obterTokenERegistrar();
   }, [getAccessTokenSilently, user]);
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className={styles.pageContainer}>

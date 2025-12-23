@@ -36,3 +36,36 @@ BEGIN
     WHERE SensoresId = @SensoresId
 END;
 GO
+
+CREATE PROCEDURE GetAllAlertas
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT 
+        A.Id,
+        A.TipoAlerta,
+        A.Mensagem,
+        A.DataHora,
+        A.Resolvido,
+        A.SensoresId,
+        S.IdentificadorHardware,
+        S.Tipo AS TipoSensor,
+        S.AdegaId
+    FROM Alertas A
+    INNER JOIN Sensores S ON A.SensoresId = S.Id
+    ORDER BY A.DataHora DESC;
+END;
+GO
+
+CREATE PROCEDURE ResolverAlerta
+    @AlertaId INT
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    UPDATE Alertas
+    SET Resolvido = 1
+    WHERE Id = @AlertaId;
+END;
+GO

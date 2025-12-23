@@ -57,5 +57,37 @@ namespace DAL.Services
                 }).ToList();
             });
         }
+
+        public async Task<List<Models.AlertaComSensor>> GetAllAlertas()
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.GetAllAlertasAsync();
+                var items = response.Body.GetAllAlertasResult;
+                if (items == null)
+                    return new List<Models.AlertaComSensor>();
+                return items.Select(item => new Models.AlertaComSensor
+                {
+                    Id = item.Id,
+                    TipoAlerta = item.TipoAlerta,
+                    Mensagem = item.Mensagem,
+                    DataHora = item.DataHora,
+                    Resolvido = item.Resolvido,
+                    SensoresId = item.SensoresId,
+                    IdentificadorHardware = item.IdentificadorHardware,
+                    TipoSensor = item.TipoSensor,
+                    AdegaId = item.AdegaId
+                }).ToList();
+            });
+        }
+
+        public async Task<bool> ResolverAlerta(int alertaId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.ResolverAlertaAsync(alertaId);
+                return response;
+            });
+        }
     }
 }

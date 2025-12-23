@@ -1,8 +1,13 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "../styles/SignInPage.module.css";
+import Loading from "../components/Loading";
 
 const SignInPage = () => {
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithRedirect, isLoading } = useAuth0();
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className={styles.container}>
