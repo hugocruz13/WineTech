@@ -75,7 +75,7 @@ namespace IoT.Hardware
 
 
                     if (idTemperatura > 0)
-                        await EnviarLeitura(idTemperatura, temp);
+                        await EnviarLeitura(idTemperatura, temp, TipoSensor.Temperatura);
 
                     if (idHumidade > 0)
                         await EnviarLeitura(idHumidade, hum);
