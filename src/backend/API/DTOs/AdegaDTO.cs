@@ -40,8 +40,6 @@ namespace API.DTOs
 
         public bool Estado { get; set; }
 
-        public IFormFile? ImagemUrl { get; set; }
-
         public int AdegaId { get; set; }
     }
     public class InserirLeituraDTO

@@ -24,23 +24,15 @@ namespace API.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "owner")]
-        public async Task<ActionResult> Post([FromForm] InserirSensorDTO dto)
+        public async Task<ActionResult> Post([FromBody] InserirSensorDTO dto)
         {
             try
             {
-                string? imageUrl = null;
-
-                if (dto.ImagemUrl != null && dto.ImagemUrl.Length > 0)
-                {
-                    imageUrl = await _storageService.UploadFileAsync(dto.ImagemUrl, "sensor-images");
-                }
-
                 var sensor = new Models.Sensores
                 {
                     IdentificadorHardware = dto.IdentificadorHardware,
                     Tipo = dto.Tipo,
                     Estado = dto.Estado,
-                    ImagemUrl = imageUrl,
                     AdegaId = dto.AdegaId
                 };
 
@@ -59,7 +51,6 @@ namespace API.Controllers
                         identificadorHardware = sensorCriado.IdentificadorHardware,
                         tipo = sensorCriado.Tipo,
                         estado = sensorCriado.Estado,
-                        imagemUrl = sensorCriado.ImagemUrl,
                         adegaId = sensorCriado.AdegaId
                     }
                 });

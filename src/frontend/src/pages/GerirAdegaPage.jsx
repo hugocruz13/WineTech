@@ -11,6 +11,8 @@ import IotCard from "../components/IoT/IotCard";
 import VinhoCard from "../components/VinhoCard";
 import DispositivoCard from "../components/DispositivoCard";
 import SelecionarVinhoModal from "../components/SelecionarVinhoModal";
+import AdicionarSensorModal from "../components/AdicionarSensorModal";
+
 
 import styles from "../styles/GerirAdegaPage.module.css";
 
@@ -46,6 +48,7 @@ const GerirAdegaPage = () => {
   });
 
   const [showSelectVinho, setShowSelectVinho] = useState(false);
+  const [showAddSensor, setShowAddSensor] = useState(false);
 
   const [stock, setStock] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -63,6 +66,30 @@ const GerirAdegaPage = () => {
     const json = await res.json();
     setStock(json.data || []);
   };
+
+  const addSensor = async (sensor) => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const res = await fetch(`${API_URL}/api/Sensores`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(sensor),
+      });
+
+      if (!res.ok) throw new Error("Erro ao criar sensor");
+
+      const json = await res.json();
+
+      setDispositivos((prev) => [...prev, json.data]);
+    } catch (err) {
+      console.error("Erro ao adicionar sensor:", err);
+    }
+  };
+
 
   /* ===== FETCH INICIAL ===== */
   useEffect(() => {
@@ -337,6 +364,17 @@ const GerirAdegaPage = () => {
         <div className={styles.stock}>
           <div className={styles.stockHeader}>
             <h3>Controlo de Sensores</h3>
+
+            {dispositivos.length < 3 && (
+              <button
+                className={styles.new}
+                onClick={() => setShowAddSensor(true)}
+              >
+                <Plus size={16} />
+                Add Sensor
+              </button>
+            )}
+
           </div>
 
           <div className={styles.dispositivosContainer}>
@@ -426,6 +464,15 @@ const GerirAdegaPage = () => {
           }}
         />
       )}
+
+      {showAddSensor && (
+        <AdicionarSensorModal
+          adegaId={adegaId}
+          onClose={() => setShowAddSensor(false)}
+          onAdd={addSensor}
+        />
+      )}
+
     </>
   );
 };

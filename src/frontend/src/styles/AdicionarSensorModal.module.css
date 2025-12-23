@@ -12,10 +12,9 @@
 .modal {
   background: #ffffff;
   width: 100%;
-  max-width: 520px;
+  max-width: 440px;
   border-radius: 20px;
-  padding: 22px;
-  max-height: 80vh;
+  padding: 22px 24px;
   display: flex;
   flex-direction: column;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
@@ -38,8 +37,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
-  flex-shrink: 0;
+  margin-bottom: 22px;
 }
 
 .header h2 {
@@ -66,85 +64,88 @@
   color: #dc2626;
 }
 
-/* ===== LIST ===== */
-.list {
+/* ===== FORM ===== */
+.form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  overflow-y: auto;
-  padding-right: 6px;
+  gap: 18px;
 }
 
-/* ===== ITEM ===== */
-.item {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-  transition: all 0.15s ease;
-  background: #ffffff;
-}
-
-.item:hover {
-  border-color: #fecaca;
-  box-shadow: 0 6px 14px rgba(220, 38, 38, 0.12);
-}
-
-/* ===== IMAGE ===== */
-.imageWrapper {
-  width: 64px;
-  height: 64px;
-  min-width: 64px;
-  min-height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f9fafb;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.imageWrapper img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center;
-}
-
-/* ===== INFO ===== */
-.info {
-  flex: 1;
+.field {
   display: flex;
   flex-direction: column;
-  font-size: 14px;
-  gap: 2px;
+  gap: 6px;
 }
 
-.info strong {
-  font-weight: 600;
-  color: #111827;
-}
-
-.info span {
+.field label {
   font-size: 13px;
-  color: #6b7280;
+  font-weight: 500;
+  color: #374151;
 }
 
-/* ===== ACTION BUTTON ===== */
-.item button {
+/* ===== SELECT ===== */
+.selectWrapper {
+  position: relative;
+}
+
+.selectWrapper svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.selectWrapper select {
+  width: 100%;
+  padding: 11px 14px 11px 38px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  background: #fff;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.selectWrapper select:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+/* ===== ACTIONS ===== */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.cancel {
+  background: #f3f4f6;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.cancel:hover {
+  background: #e5e7eb;
+}
+
+/* 🔴 BOTÃO PRINCIPAL */
+.submit {
   background: linear-gradient(135deg, #dc2626, #b91c1c);
   color: white;
   border: none;
+  padding: 8px 20px;
   border-radius: 999px;
-  padding: 7px 16px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  box-shadow: 0 6px 14px rgba(220, 38, 38, 0.35);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.35);
 }
 
-.item button:hover {
+.submit:hover {
   filter: brightness(1.05);
 }
