@@ -209,6 +209,17 @@ BEGIN
 END;
 GO
 
+CREATE or alter PROCEDURE ApagarStockPorVinho
+    @VinhoId INT
+AS
+BEGIN
+    SET NOCOUNT OFF;
+
+    DELETE FROM Stock
+    WHERE VinhosId = @VinhoId AND Estado = 'Disponivel';
+END;
+GO
+
 -- Obter Quantidade total
 CREATE PROCEDURE ObterOcupacaoAdega
     @AdegaId INT

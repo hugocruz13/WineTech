@@ -1,7 +1,6 @@
 ﻿using API.DTOs;
 using API.Services;
 using BLL.Interfaces;
-using DAL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -294,6 +293,25 @@ namespace API.Controllers
             {
                 List<StockResumo> resumo = await _adegaBLL.ObterResumoStockTotal();
                 return Ok(new { success = true, data = resumo });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
+        }
+
+        [HttpDelete("/stock/{vinhoId}")]
+        [Authorize(Roles = "owner")]
+        public async Task<ActionResult> RemoverStock(int vinhoId)
+        {
+            try
+            {
+                await _adegaBLL.ApagarStock(vinhoId);
+                return Ok(new { success = true, message = "Stock removido com sucesso." });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
             }
             catch (Exception ex)
             {

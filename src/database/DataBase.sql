@@ -87,14 +87,14 @@ create table LinhasCompra (
   StockId       int not null, 
   PrecoUnitario float(10) not null, 
   primary key (Id));
-alter table Leituras add constraint FKLeituras498639 foreign key (SensorId) references Sensores (Id);
-alter table Carrinho add constraint FKCarrinho434971 foreign key (VinhosId) references Vinhos (Id);
-alter table Carrinho add constraint FKCarrinho190422 foreign key (UtilizadoresId) references Utilizadores (Id);
-alter table Compras add constraint FKCompras967168 foreign key (UtilizadoresId) references Utilizadores (Id);
-alter table Alertas add constraint FKAlertas224704 foreign key (SensoresId) references Sensores (Id);
-alter table Stock add constraint FKStock882072 foreign key (Adegaid) references Adega (Id);
-alter table Stock add constraint FKStock178117 foreign key (VinhosId) references Vinhos (Id);
-alter table Sensores add constraint FKSensores424905 foreign key (Adegaid) references Adega (Id);
-alter table Notificacoes add constraint FKNotificaco901569 foreign key (UtilizadoresId) references Utilizadores (Id);
-alter table LinhasCompra add constraint FKLinhasComp46120 foreign key (ComprasId) references Compras (Id);
-alter table LinhasCompra add constraint FKLinhasComp471231 foreign key (StockId) references Stock (Id);
+alter table Leituras add constraint FKLeituras498639 foreign key (SensorId) references Sensores (Id) on delete Cascade;
+alter table Carrinho add constraint FKCarrinho434971 foreign key (VinhosId) references Vinhos (Id) on delete Cascade;
+alter table Carrinho add constraint FKCarrinho190422 foreign key (UtilizadoresId) references Utilizadores (Id) on delete Cascade;
+alter table Compras add constraint FKCompras967168 foreign key (UtilizadoresId) references Utilizadores (Id) on delete Cascade;
+alter table Alertas add constraint FKAlertas224704 foreign key (SensoresId) references Sensores (Id) on delete Cascade;
+alter table Stock add constraint FKStock882072 foreign key (Adegaid) references Adega (Id) on delete Cascade;
+alter table Stock add constraint FKStock178117 foreign key (VinhosId) references Vinhos (Id) on delete Cascade;
+alter table Sensores add constraint FKSensores424905 foreign key (Adegaid) references Adega (Id) on delete Cascade;
+alter table Notificacoes add constraint FKNotificaco901569 foreign key (UtilizadoresId) references Utilizadores (Id) on delete Cascade;
+alter table LinhasCompra add constraint FKLinhasComp46120 foreign key (ComprasId) references Compras (Id) on delete Cascade;
+alter table LinhasCompra add constraint FKLinhasComp471231 foreign key (StockId) references Stock (Id) on delete Cascade;

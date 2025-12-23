@@ -139,5 +139,15 @@ namespace BLL.Services
         {
             return await _adegaDAL.ObterResumoStockTotal();
         }
+
+        public async Task<bool> ApagarStock(int vinhoId)
+        {
+            if (vinhoId <= 0)
+                throw new ArgumentException("ID inválido.");
+            if (await _vinhoDAL.VinhoById(vinhoId) == null)
+                throw new KeyNotFoundException($"Vinho {vinhoId} não encontrado.");
+
+            return await _adegaDAL.ApagarStock(vinhoId);
+        }
     }
 }

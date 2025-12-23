@@ -1,8 +1,6 @@
 USE ISI
 
-/* ============================================================
-   TABELA: ADEGA (duas adegas somente)
-   ============================================================ */
+
 
 INSERT INTO [ISI].[dbo].[Adega] (Nome, Localizacao, Capacidade)
 VALUES 
@@ -92,3 +90,12 @@ VALUES
     (10, 2),
     (11, 2),
     (12, 2);
+
+INSERT INTO [ISI].[dbo].[Sensores] (IdentificadorHardware, Tipo, Estado, Adegaid)
+VALUES 
+('REAL_ADEGA_1', 'Temperatura', 1,1),
+('REAL_ADEGA_1', 'Humidade', 1,1),
+('REAL_ADEGA_1', 'Luminosidade', 1,1),
+('GERADO', 'Temperatura', 1,2),
+('GERADO', 'Humidade', 1,2),
+('GERADO', 'Luminosidade', 1,2)

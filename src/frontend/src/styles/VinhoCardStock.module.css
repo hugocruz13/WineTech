@@ -28,6 +28,10 @@
   object-fit: contain;
 }
 
+.danger {
+  color: #dc2626;
+}
+
 .product strong {
   font-size: 0.9rem;
 }
@@ -37,6 +41,9 @@
   color: #374151;
   justify-self: center;
   text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .quantity {

@@ -258,5 +258,18 @@ namespace SOAP.Repository
             }
             return lista;
         }
+
+        public bool RemoverStock(int idVinho)
+        {
+            using (var conn = _connectionFactory.GetConnection())
+            using (var cmd = new SqlCommand("ApagarStockPorVinho", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@VinhoId", idVinho);
+
+                conn.Open();
+                return cmd.ExecuteNonQuery() > 0;
+            }
+        }
     }
 }

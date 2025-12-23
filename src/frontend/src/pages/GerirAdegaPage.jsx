@@ -9,6 +9,7 @@ import Loading from "../components/Loading";
 import IotLineChart from "../components/IoT/IotLineChart";
 import IotCard from "../components/IoT/IotCard";
 import VinhoCard from "../components/VinhoCard";
+import DispositivoCard from "../components/DispositivoCard";
 
 import styles from "../styles/GerirAdegaPage.module.css";
 
@@ -35,6 +36,7 @@ const TIPOS_VALIDOS = ["temperatura", "humidade", "luminosidade"];
 const GerirAdegaPage = () => {
   const { id: adegaId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
+  const [dispositivos, setDispositivos] = useState([]);
 
   const [iot, setIot] = useState({
     temperatura: [],
@@ -51,20 +53,25 @@ const GerirAdegaPage = () => {
       try {
         const token = await getAccessTokenSilently();
 
-        const [iotRes, stockRes] = await Promise.all([
+        const [iotRes, stockRes, dispositivosRes] = await Promise.all([
           fetch(`${API_URL}/api/leituras/${adegaId}/leituras/adega`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
           fetch(`${API_URL}/api/adega/${adegaId}/stock`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
+          fetch(`${API_URL}/api/sensores/${adegaId}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
 
         const iotJson = await iotRes.json();
         const stockJson = await stockRes.json();
+        const dispositivosJson = await dispositivosRes.json();
 
         setIot(formatData(iotJson.data));
         setStock(stockJson.data);
+        setDispositivos(dispositivosJson.data);
       } catch (err) {
         console.error("Erro fetch inicial:", err);
       } finally {
@@ -107,6 +114,31 @@ const GerirAdegaPage = () => {
       console.error("Erro update stock:", err);
     }
   };
+
+  /* ===== APAGAR STOCK ===== */
+  const deleteStock = async (vinhoId) => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const res = await fetch(
+        `${API_URL}/stock/${vinhoId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) throw new Error("Erro ao apagar stock");
+
+      // Remove o vinho da lista no frontend
+      setStock((prev) => prev.filter((v) => v.vinhoId !== vinhoId));
+    } catch (err) {
+      console.error("Erro ao apagar stock:", err);
+    }
+  };
+
 
   /* ===== REAL TIME (SIGNALR) ===== */
   useEffect(() => {
@@ -161,7 +193,38 @@ const GerirAdegaPage = () => {
     return () => {
       if (connection) connection.stop();
     };
-  }, [getAccessTokenSilently]);
+  }, [adegaId, getAccessTokenSilently]);
+
+  const getDispositivoConfig = (tipo) => {
+    const t = tipo.toLowerCase();
+
+    if (t === "temperatura") {
+      return {
+        icon: <Thermometer color="#2563eb" size={20} />,
+        ativo: iot.temperatura.length > 0,
+      };
+    }
+
+    if (t === "humidade") {
+      return {
+        icon: <Droplets color="#16a34a" size={20} />,
+        ativo: iot.humidade.length > 0,
+      };
+    }
+
+    if (t === "luminosidade") {
+      return {
+        icon: <Sun color="#f59e0b" size={20} />,
+        ativo: iot.luminosidade.length > 0,
+      };
+    }
+
+    return {
+      icon: null,
+      ativo: false,
+    };
+  };
+
 
   if (loading) return <Loading />;
 
@@ -223,6 +286,50 @@ const GerirAdegaPage = () => {
           </div>
         )}
 
+
+        {/* ===== DISPOSITIVOS ===== */}
+        <div className={styles.stock}>
+          <div className={styles.stockHeader}>
+            <h3>Controlo de Sensores</h3>
+          </div>
+
+          <div className={styles.dispositivosContainer}>
+            {dispositivos.map((d) => {
+              const { icon, ativo } = getDispositivoConfig(d.tipo);
+
+              return (
+                <DispositivoCard
+                  key={d.id}
+                  tipo={d.tipo}
+                  estado={ativo}
+                  icon={icon}
+                  onToggle={async () => {
+                    try {
+                      const token = await getAccessTokenSilently();
+
+                      await fetch(`${API_URL}/api/dispositivos/${d.id}/toggle`, {
+                        method: "PUT",
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                        },
+                      });
+
+                      setDispositivos((prev) =>
+                        prev.map((x) =>
+                          x.id === d.id ? { ...x, estado: !x.estado } : x
+                        )
+                      );
+                    } catch (err) {
+                      console.error("Erro ao alternar dispositivo", err);
+                    }
+                  }}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+
         {/* ===== STOCK ===== */}
         <div className={styles.stock}>
           <div className={styles.stockHeader}>
@@ -251,6 +358,7 @@ const GerirAdegaPage = () => {
                 categoria={v.tipo}
                 ano={v.ano || "—"}
                 quantidade={v.quantidade}
+                onDelete={() => deleteStock(v.vinhoId)}
                 onSave={(novaQtd) => updateStock(v.vinhoId, novaQtd)}
               />
             ))}

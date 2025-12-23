@@ -16,5 +16,6 @@ namespace DAL.Interfaces
         Task<bool> AtualizarStock(Models.StockInput stock);
         Task<int> ObterCapacidadeAtual(int adegaId);
         Task<List<Models.StockResumo>> ObterResumoStockTotal();
+        Task<bool> ApagarStock(int vinhoId);
     }
 }

@@ -180,5 +180,21 @@ namespace SOAP.Services
             }
 
         }
+
+        [WebMethod]
+        public bool RemoverStock(int vinhoId)
+        {
+            if (vinhoId < 0)
+                throw new ArgumentException("Quantidade superior a 0");
+            try
+            {
+                return _repository.RemoverStock(vinhoId);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Erro ao remover stock");
+                throw new Exception("Erro ao remover stock: " + ex.Message);
+            }
+        }
     }
 }

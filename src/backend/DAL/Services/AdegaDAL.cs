@@ -169,5 +169,14 @@ namespace DAL.Services
                 .ToList();
             });
         }
+
+        public async Task<bool> ApagarStock(int vinhoId)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var response = await client.RemoverStockAsync(vinhoId);
+                return response;
+            });
+        }
     }
 }

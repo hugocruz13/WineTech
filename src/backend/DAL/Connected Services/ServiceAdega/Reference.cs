@@ -307,6 +307,9 @@ namespace ServiceAdega
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ObterResumoStockTotal", ReplyAction="*")]
         System.Threading.Tasks.Task<ServiceAdega.ObterResumoStockTotalResponse> ObterResumoStockTotalAsync(ServiceAdega.ObterResumoStockTotalRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/RemoverStock", ReplyAction="*")]
+        System.Threading.Tasks.Task<bool> RemoverStockAsync(int vinhoId);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -1094,6 +1097,11 @@ namespace ServiceAdega
             ServiceAdega.ObterResumoStockTotalRequest inValue = new ServiceAdega.ObterResumoStockTotalRequest();
             inValue.Body = new ServiceAdega.ObterResumoStockTotalRequestBody();
             return ((ServiceAdega.AdegaRepositoryServiceSoap)(this)).ObterResumoStockTotalAsync(inValue);
+        }
+        
+        public System.Threading.Tasks.Task<bool> RemoverStockAsync(int vinhoId)
+        {
+            return base.Channel.RemoverStockAsync(vinhoId);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()
