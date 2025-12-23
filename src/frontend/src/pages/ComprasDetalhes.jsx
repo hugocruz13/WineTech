@@ -18,7 +18,6 @@ export default function CompraDetalhe() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // 🔹 Carregar compra
   useEffect(() => {
     const fetchCompra = async () => {
       try {
