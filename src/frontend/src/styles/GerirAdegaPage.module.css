@@ -2,33 +2,73 @@
   --table-grid: 2.8fr 1.2fr 0.8fr 1fr 0.8fr 0.5fr;
 }
 
+/* ===== PAGE ===== */
+.page {
+  padding: 28px;
+  background: #fafafa;
+}
+
+/* ===== TITLE / HEADER ===== */
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px; /* MAIS ESPAÇO ENTRE HEADER E GRÁFICOS */
+}
+
+.title h2 {
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* ===== DELETE ADEGA BUTTON ===== */
+.deletePill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  background: #ffffff;
+  color: #ef4444;
+  border: 1.5px solid #fecaca;
+
+  padding: 10px 18px;
+  border-radius: 999px;
+
+  font-size: 0.85rem;
+  font-weight: 500;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.deletePill svg {
+  stroke-width: 1.8;
+}
+
+.deletePill:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+/* ===== DISPOSITIVOS ===== */
 .dispositivosContainer {
   display: flex;
-  justify-content: space-between; /* distribuição igual */
+  justify-content: space-between;
   gap: 20px;
-  flex-wrap: wrap; /* responsivo */
+  flex-wrap: wrap;
 }
 
 .dispositivosContainer > * {
   flex: 1;
 }
 
-.page {
-  padding: 24px;
-  background: #fafafa;
-}
-
-.title h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
 /* ===== GRÁFICOS ===== */
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px; /* mais ar entre gráficos */
+  margin-bottom: 36px;
 }
 
 @media (max-width: 1024px) {
@@ -44,23 +84,23 @@
   color: #9a3412;
   padding: 16px;
   border-radius: 10px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
   font-size: 0.9rem;
 }
 
 /* ===== STOCK ===== */
 .stock {
-  margin-top: 30px;
-  background: #fff;
-  border-radius: 12px;
-  padding: 16px;
+  margin-top: 36px;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 18px;
 }
 
 .stockHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .stockHeader h3 {
@@ -68,23 +108,32 @@
   font-weight: 600;
 }
 
-.addBtn {
-  background: #7c0a02;
-  color: white;
+/* ===== BOTÕES ADD ===== */
+.addBtn,
+.new {
+  background: #dc2626;
+  color: #ffffff;
   border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
+  padding: 9px 16px;
+  border-radius: 999px;
   font-size: 0.8rem;
+  font-weight: 500;
+
   display: flex;
   align-items: center;
   gap: 6px;
+
   cursor: pointer;
+}
+
+.new:hover {
+  background: #b91c1c;
 }
 
 /* ===== TABELA ===== */
 .table {
   border: 1px solid #e5e7eb;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -93,10 +142,12 @@
   grid-template-columns: var(--table-grid);
   background: #f9fafb;
   padding: 12px 16px;
+
   font-size: 0.7rem;
   font-weight: 600;
   color: #6b7280;
   text-transform: uppercase;
+
   align-items: center;
 }
 
@@ -112,23 +163,4 @@
 .actions {
   display: flex;
   align-items: center;
-}
-
-/* Botão igual ao "Nova Adega" */
-.new {
-  background: #dc2626;
-  color: #ffffff;
-  border: none;
-  border-radius: 999px;
-  padding: 10px 18px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 500;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.new:hover {
-  background: #b91c1c;
 }

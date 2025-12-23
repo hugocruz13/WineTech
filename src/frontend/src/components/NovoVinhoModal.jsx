@@ -21,10 +21,10 @@ const NovoVinhoModal = ({ onClose, onSuccess, token, apiUrl }) => {
     formData.append("Ano", Number(ano));
     formData.append("Tipo", tipo);
     formData.append("Descricao", descricao);
-    formData.append("Preco", Number(preco)); // float
+    formData.append("Preco", Number(preco));
 
     if (imagem) {
-      formData.append("ImagemUrl", imagem); // ✅ NOME EXATO DO DTO
+      formData.append("ImagemUrl", imagem);
     }
 
     try {

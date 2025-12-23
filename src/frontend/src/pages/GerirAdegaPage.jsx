@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Droplets, Sun, Thermometer, Plus } from "lucide-react";
+import { Droplets, Sun, Thermometer, Plus, Trash2 } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import * as signalR from "@microsoft/signalr";
 
@@ -12,6 +12,7 @@ import VinhoCard from "../components/VinhoCard";
 import DispositivoCard from "../components/DispositivoCard";
 import SelecionarVinhoModal from "../components/SelecionarVinhoModal";
 import AdicionarSensorModal from "../components/AdicionarSensorModal";
+import ConfirmDialog from "../components/ConfirmDialog";
 
 
 import styles from "../styles/GerirAdegaPage.module.css";
@@ -50,6 +51,10 @@ const GerirAdegaPage = () => {
   const [showSelectVinho, setShowSelectVinho] = useState(false);
   const [showAddSensor, setShowAddSensor] = useState(false);
 
+  const navigate = useNavigate();
+  const [showDeleteAdega, setShowDeleteAdega] = useState(false);
+
+
   const [stock, setStock] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -87,6 +92,30 @@ const GerirAdegaPage = () => {
       setDispositivos((prev) => [...prev, json.data]);
     } catch (err) {
       console.error("Erro ao adicionar sensor:", err);
+    }
+  };
+
+  const deleteAdega = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const res = await fetch(
+        `${API_URL}/api/Adega/${adegaId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!res.ok) throw new Error("Erro ao apagar adega");
+
+      // Fecha modal e redireciona
+      setShowDeleteAdega(false);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Erro ao apagar adega:", err);
     }
   };
 
@@ -313,7 +342,17 @@ const GerirAdegaPage = () => {
       <div className={styles.page}>
         <div className={styles.title}>
           <h2>Adega Dashboard</h2>
+
+          <button
+            className={styles.deletePill}
+            onClick={() => setShowDeleteAdega(true)}
+          >
+            <Trash2 size={16} />
+            Apagar Adega
+          </button>
         </div>
+
+
 
         {hasIotData ? (
           <div className={styles.cards}>
@@ -430,12 +469,12 @@ const GerirAdegaPage = () => {
 
           <div className={styles.table}>
             <div className={styles.tableHeader}>
-              <span>Product</span>
-              <span>Category</span>
-              <span>Vintage</span>
-              <span>Status</span>
-              <span>Quantity</span>
-              <span>Actions</span>
+              <span>Produto</span>
+              <span>Categoria</span>
+              <span>Anos</span>
+              <span>Estado</span>
+              <span>Quantidade</span>
+              <span>Ações</span>
             </div>
 
             {stock.map((v) => (
@@ -472,6 +511,14 @@ const GerirAdegaPage = () => {
           onAdd={addSensor}
         />
       )}
+
+      <ConfirmDialog
+        open={showDeleteAdega}
+        title="Apagar Adega"
+        message="Tem a certeza que deseja apagar esta adega? Esta ação é irreversível."
+        onCancel={() => setShowDeleteAdega(false)}
+        onConfirm={deleteAdega}
+      />
 
     </>
   );
