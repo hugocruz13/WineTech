@@ -10,6 +10,7 @@ import IotLineChart from "../components/IoT/IotLineChart";
 import IotCard from "../components/IoT/IotCard";
 import VinhoCard from "../components/VinhoCard";
 import DispositivoCard from "../components/DispositivoCard";
+import SelecionarVinhoModal from "../components/SelecionarVinhoModal";
 
 import styles from "../styles/GerirAdegaPage.module.css";
 
@@ -44,8 +45,24 @@ const GerirAdegaPage = () => {
     luminosidade: [],
   });
 
+  const [showSelectVinho, setShowSelectVinho] = useState(false);
+
   const [stock, setStock] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const fetchStock = async () => {
+    const token = await getAccessTokenSilently();
+
+    const res = await fetch(
+      `${API_URL}/api/adega/${adegaId}/stock`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
+    const json = await res.json();
+    setStock(json.data || []);
+  };
 
   /* ===== FETCH INICIAL ===== */
   useEffect(() => {
@@ -225,6 +242,35 @@ const GerirAdegaPage = () => {
     };
   };
 
+  const addToStock = async (vinho) => {
+    try {
+      const token = await getAccessTokenSilently();
+
+      const res = await fetch(
+        `${API_URL}/api/Adega/${adegaId}/stock`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            vinhoId: vinho.id,
+            adegaId: Number(adegaId),
+            quantidade: 1,
+          }),
+        }
+      );
+
+      if (!res.ok) throw new Error("Erro ao adicionar vinho");
+
+      await fetchStock();
+    } catch (err) {
+      console.error("Erro ao adicionar ao stock:", err);
+    }
+  };
+
+
 
   if (loading) return <Loading />;
 
@@ -334,10 +380,14 @@ const GerirAdegaPage = () => {
         <div className={styles.stock}>
           <div className={styles.stockHeader}>
             <h3>Stock de Vinhos</h3>
-            <button className={styles.new}>
+            <button
+              className={styles.new}
+              onClick={() => setShowSelectVinho(true)}
+            >
               <Plus size={16} />
               Add Product
             </button>
+
           </div>
 
           <div className={styles.table}>
@@ -365,6 +415,17 @@ const GerirAdegaPage = () => {
           </div>
         </div>
       </div>
+
+      {showSelectVinho && (
+        <SelecionarVinhoModal
+          adegaId={adegaId}
+          onClose={() => setShowSelectVinho(false)}
+          onSelect={async (vinho) => {
+            await addToStock(vinho);
+            setShowSelectVinho(false);
+          }}
+        />
+      )}
     </>
   );
 };
