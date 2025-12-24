@@ -16,10 +16,9 @@ create table Vinhos (
   primary key (Id));
 create table Sensores (
   Id                    int identity not null, 
-  IdentificadorHardware nvarchar(255) null, 
+  IdentificadorHardware nvarchar(255) not null, 
   Tipo                  nvarchar(255) not null, 
   Estado                bit not null, 
-  ImagemUrl             nvarchar(255) null, 
   Adegaid               int not null, 
   primary key (Id));
 create table Leituras (

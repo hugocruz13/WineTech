@@ -16,6 +16,8 @@ const AdicionarSensorModal = ({ adegaId, onClose, onAdd }) => {
             estado: true,
             adegaId: Number(adegaId),
         });
+
+        onClose();
     };
 
     return (

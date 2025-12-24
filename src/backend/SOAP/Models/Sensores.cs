@@ -14,9 +14,6 @@ namespace SOAP.Models
         public string Tipo { get; set; }
 
         public bool Estado { get; set; }
-
-        public string ImagemUrl { get; set; }
-
         public int AdegaId { get; set; }
     }
 }

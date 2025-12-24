@@ -19,14 +19,14 @@ namespace DAL.Services
         {
             return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
             {
-                var soapModel = new ServiceSensores.Sensores {IdentificadorHardware = sensor.IdentificadorHardware, Tipo = sensor.Tipo, Estado = sensor.Estado, ImagemUrl = sensor.ImagemUrl, AdegaId = sensor.AdegaId };
+                var soapModel = new ServiceSensores.Sensores {IdentificadorHardware = sensor.IdentificadorHardware, Tipo = sensor.Tipo, Estado = sensor.Estado, AdegaId = sensor.AdegaId };
                 var response = await client.InserirSensorAsync(soapModel);
                 var item = response.Body.InserirSensorResult;
 
                 if (item == null)
                     return null;
 
-                return new Models.Sensores { Id = item.Id, IdentificadorHardware = item.IdentificadorHardware, Tipo = item.Tipo, Estado = item.Estado, ImagemUrl = item.ImagemUrl, AdegaId = item.AdegaId };
+                return new Models.Sensores { Id = item.Id, IdentificadorHardware = item.IdentificadorHardware, Tipo = item.Tipo, Estado = item.Estado, AdegaId = item.AdegaId };
             });
         }
         public async Task<List<Models.Sensores>> TodosSensores()
@@ -35,7 +35,7 @@ namespace DAL.Services
             {
                 var response = await client.TodosSensoresAsync();
                 return response.Body.TodosSensoresResult
-                .Select(item => new Models.Sensores { Id = item.Id, IdentificadorHardware = item.IdentificadorHardware, Tipo = item.Tipo, Estado = item.Estado, ImagemUrl = item.ImagemUrl, AdegaId = item.AdegaId })
+                .Select(item => new Models.Sensores { Id = item.Id, IdentificadorHardware = item.IdentificadorHardware, Tipo = item.Tipo, Estado = item.Estado, AdegaId = item.AdegaId })
                 .ToList();
             });
         }
@@ -46,7 +46,7 @@ namespace DAL.Services
                 var response = await client.ObterSensoresPorAdegaAsync(adegaId);
 
                 return response.Body.ObterSensoresPorAdegaResult
-                .Select(item => new Models.Sensores { Id = item.Id, IdentificadorHardware = item.IdentificadorHardware, Tipo = item.Tipo, Estado = item.Estado, ImagemUrl = item.ImagemUrl, AdegaId = item.AdegaId })
+                .Select(item => new Models.Sensores { Id = item.Id, IdentificadorHardware = item.IdentificadorHardware, Tipo = item.Tipo, Estado = item.Estado, AdegaId = item.AdegaId })
                 .ToList();
             });
         }

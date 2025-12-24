@@ -76,7 +76,6 @@ namespace API.Controllers
                     identificadorHardware = a.IdentificadorHardware,
                     tipo = a.Tipo,
                     estado = a.Estado,
-                    imagemUrl = a.ImagemUrl,
                     adegaId = a.AdegaId,
                 }).ToList();
 
@@ -105,7 +104,6 @@ namespace API.Controllers
                     identificadorHardware = s.IdentificadorHardware,
                     tipo = s.Tipo,
                     estado = s.Estado,
-                    imagemUrl = s.ImagemUrl,
                     adegaId = s.AdegaId
                 }).ToList();
 

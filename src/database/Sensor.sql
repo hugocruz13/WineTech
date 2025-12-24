@@ -3,18 +3,17 @@ CREATE PROCEDURE InserirSensor
     @IdentificadorHardware NVARCHAR(255),
     @Tipo NVARCHAR(255),
     @Estado BIT,
-    @AdegaId INT,
-    @ImagemUrl NVARCHAR(255)
+    @AdegaId INT
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    INSERT INTO Sensores (IdentificadorHardware, Tipo, Estado, AdegaId, ImagemUrl)
-    VALUES (@IdentificadorHardware, @Tipo, @Estado, @AdegaId, @ImagemUrl);
+    INSERT INTO Sensores (IdentificadorHardware, Tipo, Estado, AdegaId)
+    VALUES (@IdentificadorHardware, @Tipo, @Estado, @AdegaId);
 
     DECLARE @NovoId INT = SCOPE_IDENTITY();
 
-    SELECT Id, IdentificadorHardware, Tipo, Estado, AdegaId, ImagemUrl
+    SELECT Id, IdentificadorHardware, Tipo, Estado, AdegaId
     FROM Sensores
     WHERE Id = @NovoId;
 END;
@@ -31,7 +30,6 @@ BEGIN
         IdentificadorHardware,
         Tipo,
         Estado,
-        ImagemUrl,
         AdegaId
     FROM Sensores;
 END;
@@ -49,7 +47,6 @@ BEGIN
         IdentificadorHardware,
         Tipo,
         Estado,
-        ImagemUrl,
         AdegaId
     FROM Sensores
     WHERE AdegaId = @AdegaId;
