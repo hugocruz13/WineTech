@@ -29,6 +29,7 @@ import IotClientePage from "./pages/IotClientePage";
 import CarrinhoPage from "./pages/CarrinhoPage";
 import JWT from "./pages/Jwt";
 import AlertasPage from "./pages/AlertasPage";
+import ProfilePage from "./pages/ProfilePage";
 
 function AppContent() {
   const navigate = useNavigate();
@@ -81,6 +82,7 @@ function AppContent() {
       <Route path="/compra/:id" element={<ComprasDetalhes />} />
       <Route path="/carrinho" element={<CarrinhoPage />} />
       <Route path="/iot/:stockId" element={<IotClientePage />} />
+      <Route path="/perfil" element={<ProfilePage />} />
       {/* Apagar em produção */}
       <Route path="/jwt" element={<JWT />} />
       {/*Owner */}

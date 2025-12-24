@@ -53,5 +53,18 @@ namespace DAL.Services
                 return result;
             });
         }
+
+        // Atualiza Nome, Email e ImgUrl;
+        public async Task<Models.Utilizador> UpdateUserAsync(Models.Utilizador utilizador)
+        {
+            return await SoapClientHelper.ExecuteAsync(CreateClient, async client =>
+            {
+                var soapModel = new ServiceUtilizador.Utilizador { Id = utilizador.Id, Nome = utilizador.Nome, Email = utilizador.Email, ImgUrl = utilizador.ImgUrl, IsAdmin = false };
+                var response = await client.UpdateUserAsync(soapModel);
+                var item = response.Body.UpdateUserResult;
+                if (item == null) return null;
+                return new Models.Utilizador { Id = item.Id, Nome = item.Nome, Email = item.Email, ImgUrl = item.ImgUrl };
+            });
+        }
     }
 }

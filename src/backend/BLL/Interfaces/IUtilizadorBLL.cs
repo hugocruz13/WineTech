@@ -9,5 +9,7 @@ namespace BLL.Interfaces
     {
         Task<Utilizador> RegisterUserAsync(Utilizador user);
         Task<Utilizador> GetUserByIdAsync(string id);
+        // Atualiza Nome, Email e ImgUrl; ignora IsAdmin
+        Task<Utilizador> UpdateUserAsync(Utilizador utilizador);
     }
 }

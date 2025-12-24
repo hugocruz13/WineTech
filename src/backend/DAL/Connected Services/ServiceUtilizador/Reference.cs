@@ -107,6 +107,9 @@ namespace ServiceUtilizador
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetOwners", ReplyAction="*")]
         System.Threading.Tasks.Task<ServiceUtilizador.GetOwnersResponse> GetOwnersAsync(ServiceUtilizador.GetOwnersRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/UpdateUser", ReplyAction="*")]
+        System.Threading.Tasks.Task<ServiceUtilizador.UpdateUserResponse> UpdateUserAsync(ServiceUtilizador.UpdateUserRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -341,6 +344,86 @@ namespace ServiceUtilizador
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class UpdateUserRequest
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="UpdateUser", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceUtilizador.UpdateUserRequestBody Body;
+        
+        public UpdateUserRequest()
+        {
+        }
+        
+        public UpdateUserRequest(ServiceUtilizador.UpdateUserRequestBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class UpdateUserRequestBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceUtilizador.Utilizador utilizador;
+        
+        public UpdateUserRequestBody()
+        {
+        }
+        
+        public UpdateUserRequestBody(ServiceUtilizador.Utilizador utilizador)
+        {
+            this.utilizador = utilizador;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    internal partial class UpdateUserResponse
+    {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="UpdateUserResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ServiceUtilizador.UpdateUserResponseBody Body;
+        
+        public UpdateUserResponse()
+        {
+        }
+        
+        public UpdateUserResponse(ServiceUtilizador.UpdateUserResponseBody Body)
+        {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    internal partial class UpdateUserResponseBody
+    {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public ServiceUtilizador.Utilizador UpdateUserResult;
+        
+        public UpdateUserResponseBody()
+        {
+        }
+        
+        public UpdateUserResponseBody(ServiceUtilizador.Utilizador UpdateUserResult)
+        {
+            this.UpdateUserResult = UpdateUserResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "8.0.0")]
     internal interface UtilizadorRepositoryServiceSoapChannel : ServiceUtilizador.UtilizadorRepositoryServiceSoap, System.ServiceModel.IClientChannel
     {
@@ -423,6 +506,20 @@ namespace ServiceUtilizador
             ServiceUtilizador.GetOwnersRequest inValue = new ServiceUtilizador.GetOwnersRequest();
             inValue.Body = new ServiceUtilizador.GetOwnersRequestBody();
             return ((ServiceUtilizador.UtilizadorRepositoryServiceSoap)(this)).GetOwnersAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ServiceUtilizador.UpdateUserResponse> ServiceUtilizador.UtilizadorRepositoryServiceSoap.UpdateUserAsync(ServiceUtilizador.UpdateUserRequest request)
+        {
+            return base.Channel.UpdateUserAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ServiceUtilizador.UpdateUserResponse> UpdateUserAsync(ServiceUtilizador.Utilizador utilizador)
+        {
+            ServiceUtilizador.UpdateUserRequest inValue = new ServiceUtilizador.UpdateUserRequest();
+            inValue.Body = new ServiceUtilizador.UpdateUserRequestBody();
+            inValue.Body.utilizador = utilizador;
+            return ((ServiceUtilizador.UtilizadorRepositoryServiceSoap)(this)).UpdateUserAsync(inValue);
         }
         
         public virtual System.Threading.Tasks.Task OpenAsync()

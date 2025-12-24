@@ -103,5 +103,42 @@ namespace SOAP.Repository
             }
             return users;
         }
+
+        // Atualiza Nome, Email e ImgUrl
+        public Utilizador UpdateUser(Utilizador utilizador)
+        {
+            if (utilizador == null)
+                throw new ArgumentNullException(nameof(utilizador), "O utilizador não pode ser nulo");
+
+            using (SqlConnection conn = _connectionFactory.GetConnection())
+            using (SqlCommand cmd = new SqlCommand("ModificarUtilizador", conn))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Id", utilizador.Id);
+                cmd.Parameters.AddWithValue("@Nome", utilizador.Nome);
+                cmd.Parameters.AddWithValue("@Email", utilizador.Email);
+                cmd.Parameters.AddWithValue("@ImgUrl", utilizador.ImgUrl);
+
+
+
+
+                conn.Open();
+                using (var reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Utilizador
+                        {
+                            Id = reader["Id"].ToString(),
+                            Nome = reader["Nome"].ToString(),
+                            Email = reader["Email"].ToString(),
+                            ImgUrl = reader["ImgUrl"].ToString()
+                        };
+                    }
+                }
+                return null;
+            }
+        }
     }
 }

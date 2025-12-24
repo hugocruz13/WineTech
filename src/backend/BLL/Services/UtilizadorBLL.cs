@@ -32,5 +32,12 @@ namespace BLL.Services
             }
             return await _dal.GetUserByIdAsync(id);
         }
+
+        public async Task<Utilizador> UpdateUserAsync(Utilizador utilizador)
+        {
+            if (utilizador == null) throw new ArgumentNullException(nameof(utilizador));
+            if (string.IsNullOrEmpty(utilizador.Id)) throw new ArgumentException("User ID cannot be null or empty", nameof(utilizador.Id));
+            return await _dal.UpdateUserAsync(utilizador);
+        }
     }
 }

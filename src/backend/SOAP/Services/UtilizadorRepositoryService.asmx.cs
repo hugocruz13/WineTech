@@ -68,5 +68,25 @@ namespace SOAP.Services
                 throw new Exception("Database error: " + ex.Message);
             }
         }
+
+        // Atualiza Nome, Email e ImgUrl; campos nulos não são modificados
+        [WebMethod]
+        public Utilizador UpdateUser(Utilizador utilizador)
+        {
+            if (utilizador == null)
+                throw new ArgumentNullException(nameof(utilizador));
+
+            if (string.IsNullOrEmpty(utilizador.Id))
+                throw new ArgumentException("O ID do utilizador não pode ser nulo ou vazio", nameof(utilizador.Id));
+
+            try
+            {
+                return _repository.UpdateUser(utilizador);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Database error: " + ex.Message);
+            }
+        }
     }
 }

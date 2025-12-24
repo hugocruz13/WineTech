@@ -57,4 +57,28 @@ END;
 GO
 
 
+-- Atualizar Utilizador e retornar o utilizador atualizado
+CREATE PROCEDURE ModificarUtilizador
+    @Id NVARCHAR(100),
+    @Nome NVARCHAR(100) = NULL,
+    @Email NVARCHAR(255) = NULL,
+    @ImgUrl NVARCHAR(255) = NULL
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Atualiza apenas os campos que não são nulos
+    UPDATE Utilizadores
+    SET
+        Nome = COALESCE(@Nome, Nome),
+        Email = COALESCE(@Email, Email),
+        ImgUrl = COALESCE(@ImgUrl, ImgUrl)
+    WHERE Id = @Id;
+
+    -- Retorna o utilizador atualizado
+    SELECT *
+    FROM Utilizadores
+    WHERE Id = @Id;
+END;
+GO
 

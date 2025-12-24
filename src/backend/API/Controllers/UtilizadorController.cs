@@ -1,7 +1,11 @@
-﻿using BLL.Interfaces;
+﻿using API.DTOs;
+using API.Services;
+using BLL.Interfaces;
 using BLL.Services;
+using DAL.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace API.Controllers
@@ -12,11 +16,13 @@ namespace API.Controllers
     {
         private readonly IUtilizadorBLL _utilizadorbll;
         private readonly INotificacaoBLL _notificacaobll;
+        private readonly IStorageService _storageService;
 
-        public UtilizadorController(IUtilizadorBLL utilizadorbll, INotificacaoBLL notificacaoService)
+        public UtilizadorController(IUtilizadorBLL utilizadorbll, INotificacaoBLL notificacaoService, IStorageService storageService)
         {
             _utilizadorbll = utilizadorbll;
             _notificacaobll = notificacaoService;
+            _storageService = storageService;
         }
 
         [HttpGet("perfil")]
@@ -30,7 +36,17 @@ namespace API.Controllers
                     return BadRequest("Token inválido.");
 
                 var user = await _utilizadorbll.GetUserByIdAsync(userId);
-                return Ok(user);
+
+
+                var data = new
+                {
+                    id = user.Id,
+                    nome = user.Nome,
+                    email = user.Email,
+                    imgUrl = user.ImgUrl
+                };
+
+                return Ok(data);
             }
             catch (Exception ex)
             {
@@ -60,6 +76,41 @@ namespace API.Controllers
             if (result == null)
                 return NotFound(new { success = false, message = "Notificação não encontrada." });
             return Ok(new { success = true, data = result });
+        }
+
+        [HttpPut("perfil")]
+        [Authorize(Roles = "owner,user")]
+        public async Task<IActionResult> UpdatePerfil([FromForm] UtilizadorDTO utilizadorDTO)
+        {
+            try
+            {
+                var userId = User.FindFirst("sub")?.Value;
+                if (string.IsNullOrEmpty(userId))
+                    return Unauthorized(new { success = false, message = "Utilizador não autenticado." });
+
+                string imageUrl = null;
+
+                if (utilizadorDTO.Imagem != null && utilizadorDTO.Imagem.Length > 0)
+                {
+                    imageUrl = await _storageService.UploadFileAsync(utilizadorDTO.Imagem, "user-images");
+                }
+
+
+                var input = new Utilizador { Id = userId, Nome = utilizadorDTO.Nome, Email = utilizadorDTO.Email, ImgUrl = imageUrl };
+                var updated = await _utilizadorbll.UpdateUserAsync(input);
+                if (updated == null)
+                    return NotFound(new { success = false, message = "Utilizador não encontrado." });
+
+                return Ok(new { success = true, data = new { id = updated.Id, nome = updated.Nome, email = updated.Email, imgUrl = updated.ImgUrl } });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { success = false, message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
         }
     }
 }
