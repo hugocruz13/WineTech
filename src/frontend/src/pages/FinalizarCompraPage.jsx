@@ -64,11 +64,6 @@ const FinalizarCompraPage = () => {
           ano: Number(ano),
         }),
       });
-
-      if (!response.ok) {
-        throw new Error("Erro ao finalizar a compra");
-      }
-
       await response.json();
     } catch (err) {
       setError(err.message);

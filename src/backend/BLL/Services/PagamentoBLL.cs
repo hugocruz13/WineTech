@@ -1,5 +1,6 @@
 ﻿using BLL.Interfaces;
 using ServiceCartao;
+using System;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -8,17 +9,46 @@ namespace BLL.Services
     {
         public async Task<bool> ValidarCartao(string numeroCartao, int mes, int ano)
         {
+            if (!ValidadeMaiorQueHoje(mes, ano))
+                return false;
+
             var client = new CreditCardValidatorSoapClient(
                 CreditCardValidatorSoapClient.EndpointConfiguration.CreditCardValidatorSoap
             );
 
-            string expDate = $"{mes:D2}/{ano:D2}"; 
+            try
+            {
+                string type = await client.GetCardTypeAsync(numeroCartao);
 
-            int result = await client.ValidCardAsync(numeroCartao, expDate);
+                if (string.IsNullOrWhiteSpace(type) || type == "UNKNOWN")
+                    return false;
 
-            // 0 = OK
-            // 1006 = serviço rejeita data mesmo válida
-            return result == 0 || result == 1006;
+                return true;
+            }
+            finally
+            {
+                if (client.State == System.ServiceModel.CommunicationState.Faulted)
+                    client.Abort();
+                else
+                    client.Close();
+            }
+        }
+
+        private bool ValidadeMaiorQueHoje(int mes, int ano)
+        {
+            if (ano < 100)
+                ano += 2000;
+
+            var ultimoDiaMes = DateTime.DaysInMonth(ano, mes);
+
+            var dataValidade = new DateTime(
+                ano,
+                mes,
+                ultimoDiaMes,
+                23, 59, 59
+            );
+
+            return dataValidade > DateTime.Now;
         }
 
     }
