@@ -87,8 +87,6 @@ Para facilitar a criação e atualização destas _stored procedures_, existe o 
 
 ## Azure Storage (Modo Desenvolvimento)
 
----
-
 Em ambiente de desenvolvimento é utilizado o **Azurite**, que é equivalente a um **Storage Account do Azure**.
 
 Por defeito, os containers são criados como **privados**. Para permitir o acesso público aos blobs, é necessário utilizar a ferramenta **Microsoft Azure Storage Explorer**.
