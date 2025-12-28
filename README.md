@@ -85,7 +85,7 @@ Os restantes ficheiros SQL correspondem a _stored procedures_ utilizadas pelo si
 
 Para facilitar a criação e atualização destas _stored procedures_, existe o ficheiro `run_all.sql`, que agrega todos os scripts e permite a sua execução numa única operação.
 
-### Azure Storage (Modo Desenvolvimento)
+## Azure Storage (Modo Desenvolvimento)
 
 Em ambiente de desenvolvimento é utilizado o **Azurite**, que é equivalente a um **Storage Account do Azure**.
 
