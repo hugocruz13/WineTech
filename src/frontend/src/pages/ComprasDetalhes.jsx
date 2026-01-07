@@ -1,79 +1,19 @@
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { CreditCard, Mail } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "../styles/CompraDetalhe.module.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useCompraDetalhe } from "../hooks/useCompraDetalhe";
 
 export default function CompraDetalhe() {
   const { id } = useParams();
   const { getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
-
-  const [dados, setDados] = useState([]);
-  const [iotDisponivel, setIotDisponivel] = useState({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchCompra = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-
-        const res = await fetch(`${API_URL}/api/compra/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!res.ok) throw new Error();
-
-        const json = await res.json();
-        if (json.success) setDados(json.data || []);
-      } catch {
-        setError("Não foi possível carregar a encomenda.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCompra();
-  }, [id, getAccessTokenSilently]);
-
-  useEffect(() => {
-    if (!dados.length) return;
-
-    const verificarIot = async (stockId) => {
-      const token = await getAccessTokenSilently();
-
-      const res = await fetch(
-        `${API_URL}/api/Leituras/${stockId}/leituras/stock/existe`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (!res.ok) return false;
-
-      const json = await res.json();
-      return json.success && json.data === true;
-    };
-
-    const carregarIot = async () => {
-      const resultado = {};
-
-      await Promise.all(
-        dados.map(async (item) => {
-          resultado[item.stockId] = await verificarIot(item.stockId);
-        })
-      );
-
-      setIotDisponivel(resultado);
-    };
-
-    carregarIot();
-  }, [dados, getAccessTokenSilently]);
+  const { dados, iotDisponivel, loading, error } = useCompraDetalhe(
+    id,
+    getAccessTokenSilently
+  );
 
   if (loading) return <Loading />;
   if (error) return <p className={styles.error}>{error}</p>;

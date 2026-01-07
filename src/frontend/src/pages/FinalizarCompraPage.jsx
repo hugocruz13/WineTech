@@ -1,79 +1,21 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import styles from "../styles/FinalizarCompraPage.module.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useCheckout } from "../hooks/useCheckout";
 
 const FinalizarCompraPage = () => {
   const { getAccessTokenSilently } = useAuth0();
-
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+  const { items, loading, comprando, handleFinalizarCompra } =
+    useCheckout(getAccessTokenSilently);
   const [cardNumber, setCardNumber] = useState("");
   const [mes, setMes] = useState("");
   const [ano, setAno] = useState("");
-  const [comprando, setComprando] = useState(false);
-
-  useEffect(() => {
-    const fetchCompra = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-
-        const response = await fetch(`${API_URL}/api/carrinho/detalhes`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error("Erro ao carregar a compra");
-        }
-
-        const result = await response.json();
-        setItems(result.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCompra();
-  }, [getAccessTokenSilently]);
-
-  const handleFinalizarCompra = async () => {
-    try {
-      setComprando(true);
-      setError(null);
-
-      const token = await getAccessTokenSilently();
-
-      const response = await fetch(`${API_URL}/api/Compra`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          cardNumber,
-          mes: Number(mes),
-          ano: Number(ano),
-        }),
-      });
-      await response.json();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setComprando(false);
-    }
-  };
+  const finalizarCompra = () =>
+    handleFinalizarCompra({ cardNumber, mes, ano });
 
   if (loading) return <Loading />;
-  if (error) return <p>{error}</p>;
 
   const subtotal = items.reduce(
     (acc, item) => acc + item.preco * item.quantidade,
@@ -151,11 +93,9 @@ const FinalizarCompraPage = () => {
             <span>€{subtotal.toFixed(2)}</span>
           </div>
 
-          {error && <p className={styles.error}>{error}</p>}
-
           <button
             className={styles.finalizar}
-            onClick={handleFinalizarCompra}
+            onClick={finalizarCompra}
             disabled={comprando}
           >
             {comprando ? "Processando..." : "Comprar"}

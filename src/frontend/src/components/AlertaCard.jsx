@@ -5,38 +5,16 @@ import {
     Calendar,
     CheckCircle,
 } from "lucide-react";
-import { useAuth0 } from "@auth0/auth0-react";
 import styles from "../styles/AlertaCard.module.css";
 import Loading from "../components/Loading";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
 const AlertaCard = ({ alerta, onResolvido }) => {
     const [loading, setLoading] = useState(false);
-    const { getAccessTokenSilently } = useAuth0();
 
     const resolverAlerta = async () => {
         try {
             setLoading(true);
-            const token = await getAccessTokenSilently();
-
-            const response = await fetch(
-                `${API_URL}/api/Alertas/${alerta.id}/resolver`,
-                {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok || !data.success) {
-                throw new Error("Erro ao resolver alerta");
-            }
-
-            onResolvido(alerta.id);
+            await onResolvido(alerta.id);
         } catch (error) {
             console.error(error);
         } finally {

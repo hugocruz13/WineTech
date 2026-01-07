@@ -1,60 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { Search, ShoppingCart, Wine, Warehouse, Bell } from "lucide-react";
+import { ShoppingCart, Wine, Warehouse, Bell } from "lucide-react";
 
 import ProfileDropdown from "./ProfileDropdown";
 import RoleVisibility from "./RoleVisibility";
 import Loading from "../components/Loading";
 import styles from "../styles/Header.module.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useUnreadNotifications } from "../hooks/useUnreadNotifications";
 
 const Header = ({ loading }) => {
   const [openMenu, setOpenMenu] = useState(null);
-  const [unreadCount, setUnreadCount] = useState(0);
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
-
-  useEffect(() => {
-    const fetchUnread = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-
-        const res = await fetch(`${API_URL}/api/utilizador/notificacoes`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const json = await res.json();
-        const unread = (json.data || []).filter((n) => !n.lida).length;
-
-        setUnreadCount(unread);
-      } catch (err) {
-        console.error("Erro ao buscar notificações", err);
-      }
-    };
-
-    fetchUnread();
-  }, [getAccessTokenSilently]);
-
-  useEffect(() => {
-    const onNotification = () => {
-      setUnreadCount((c) => c + 1);
-    };
-
-    window.addEventListener("notification:received", onNotification);
-    return () =>
-      window.removeEventListener("notification:received", onNotification);
-  }, []);
-
-  useEffect(() => {
-    const onRead = () => {
-      setUnreadCount((c) => Math.max(0, c - 1));
-    };
-
-    window.addEventListener("notification:read", onRead);
-    return () => window.removeEventListener("notification:read", onRead);
-  }, []);
+  const unreadCount = useUnreadNotifications(getAccessTokenSilently);
 
   if (loading) {
     return <Loading />;

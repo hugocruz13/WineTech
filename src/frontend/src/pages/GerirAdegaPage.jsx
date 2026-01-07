@@ -16,201 +16,33 @@ import ConfirmDialog from "../components/ConfirmDialog";
 
 
 import styles from "../styles/GerirAdegaPage.module.css";
+import { useGerirAdega, TIPOS_VALIDOS } from "../hooks/useGerirAdega";
+import { toggleDispositivo } from "../api/adega.service";
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-/* ===== FORMATAR DADOS IOT (FETCH INICIAL) ===== */
-const formatData = (apiData) => ({
-  temperatura: (apiData?.temperatura || []).map((t) => ({
-    dataHora: new Date(t.dataHora).getTime(),
-    temperatura: Number(t.temperatura.toFixed(2)),
-  })),
-  humidade: (apiData?.humidade || []).map((h) => ({
-    dataHora: new Date(h.dataHora).getTime(),
-    humidade: Number(h.humidade.toFixed(2)),
-  })),
-  luminosidade: (apiData?.luminosidade || []).map((l) => ({
-    dataHora: new Date(l.dataHora).getTime(),
-    luminosidade: Number(l.luminosidade.toFixed(2)),
-  })),
-});
-
-const TIPOS_VALIDOS = ["temperatura", "humidade", "luminosidade"];
 
 const GerirAdegaPage = () => {
   const { id: adegaId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
-  const [dispositivos, setDispositivos] = useState([]);
-
-  const [iot, setIot] = useState({
-    temperatura: [],
-    humidade: [],
-    luminosidade: [],
-  });
-
+  const {
+    dispositivos,
+    setDispositivos,
+    iot,
+    setIot,
+    stock,
+    loading,
+    addSensor,
+    deleteAdega,
+    updateStock,
+    deleteStock,
+    addToStock,
+  } = useGerirAdega(adegaId, getAccessTokenSilently);
   const [showSelectVinho, setShowSelectVinho] = useState(false);
   const [showAddSensor, setShowAddSensor] = useState(false);
 
   const navigate = useNavigate();
   const [showDeleteAdega, setShowDeleteAdega] = useState(false);
 
-
-  const [stock, setStock] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchStock = async () => {
-    const token = await getAccessTokenSilently();
-
-    const res = await fetch(
-      `${API_URL}/api/adega/${adegaId}/stock`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-
-    const json = await res.json();
-    setStock(json.data || []);
-  };
-
-  const addSensor = async (sensor) => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const res = await fetch(`${API_URL}/api/Sensores`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(sensor),
-      });
-
-      if (!res.ok) throw new Error("Erro ao criar sensor");
-
-      const json = await res.json();
-
-      setDispositivos((prev) => [...prev, json.data]);
-    } catch (err) {
-      console.error("Erro ao adicionar sensor:", err);
-    }
-  };
-
-  const deleteAdega = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const res = await fetch(
-        `${API_URL}/api/Adega/${adegaId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!res.ok) throw new Error("Erro ao apagar adega");
-
-      // Fecha modal e redireciona
-      setShowDeleteAdega(false);
-      navigate("/dashboard");
-    } catch (err) {
-      console.error("Erro ao apagar adega:", err);
-    }
-  };
-
-
-  /* ===== FETCH INICIAL ===== */
-  useEffect(() => {
-    const fetchAll = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-
-        const [iotRes, stockRes, dispositivosRes] = await Promise.all([
-          fetch(`${API_URL}/api/leituras/${adegaId}/leituras/adega`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch(`${API_URL}/api/adega/${adegaId}/stock`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-          fetch(`${API_URL}/api/sensores/${adegaId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          }),
-        ]);
-
-        const iotJson = await iotRes.json();
-        const stockJson = await stockRes.json();
-        const dispositivosJson = await dispositivosRes.json();
-
-        setIot(formatData(iotJson.data));
-        setStock(stockJson.data);
-        setDispositivos(dispositivosJson.data);
-      } catch (err) {
-        console.error("Erro fetch inicial:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (adegaId) fetchAll();
-  }, [adegaId, getAccessTokenSilently]);
-
-  /* ===== UPDATE STOCK ===== */
-  const updateStock = async (vinhoId, novaQuantidade) => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const res = await fetch(
-        `${API_URL}/api/Adega/${adegaId}/stock/${vinhoId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            vinhoId,
-            adegaId: Number(adegaId),
-            quantidade: novaQuantidade,
-          }),
-        }
-      );
-
-      if (!res.ok) throw new Error("Erro ao atualizar stock");
-
-      setStock((prev) =>
-        prev.map((v) =>
-          v.vinhoId === vinhoId ? { ...v, quantidade: novaQuantidade } : v
-        )
-      );
-    } catch (err) {
-      console.error("Erro update stock:", err);
-    }
-  };
-
-  /* ===== APAGAR STOCK ===== */
-  const deleteStock = async (vinhoId) => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const res = await fetch(
-        `${API_URL}/stock/${vinhoId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!res.ok) throw new Error("Erro ao apagar stock");
-
-      // Remove o vinho da lista no frontend
-      setStock((prev) => prev.filter((v) => v.vinhoId !== vinhoId));
-    } catch (err) {
-      console.error("Erro ao apagar stock:", err);
-    }
-  };
 
 
   /* ===== REAL TIME (SIGNALR) ===== */
@@ -229,9 +61,7 @@ const GerirAdegaPage = () => {
           .build();
 
         connection.on("ReceiveLeitura", (leitura) => {
-          if (Number(leitura.adegaId) !== Number(adegaId)) {
-            return;
-          }
+          if (Number(leitura.adegaId) !== Number(adegaId)) return;
 
           setIot((prev) => {
             const tipo = leitura.tipo.toLowerCase();
@@ -253,7 +83,6 @@ const GerirAdegaPage = () => {
           });
         });
 
-
         await connection.start();
         console.log(" SignalR conectado");
       } catch (err) {
@@ -266,7 +95,17 @@ const GerirAdegaPage = () => {
     return () => {
       if (connection) connection.stop();
     };
-  }, [adegaId, getAccessTokenSilently]);
+  }, [adegaId, getAccessTokenSilently, setIot]);
+
+  const handleDeleteAdega = async () => {
+    try {
+      await deleteAdega();
+      setShowDeleteAdega(false);
+      navigate("/dashboard");
+    } catch (err) {
+      console.error("Erro ao apagar adega:", err);
+    }
+  };
 
   const getDispositivoConfig = (tipo) => {
     const t = tipo.toLowerCase();
@@ -296,34 +135,6 @@ const GerirAdegaPage = () => {
       icon: null,
       ativo: false,
     };
-  };
-
-  const addToStock = async (vinho) => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const res = await fetch(
-        `${API_URL}/api/Adega/${adegaId}/stock`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            vinhoId: vinho.id,
-            adegaId: Number(adegaId),
-            quantidade: 1,
-          }),
-        }
-      );
-
-      if (!res.ok) throw new Error("Erro ao adicionar vinho");
-
-      await fetchStock();
-    } catch (err) {
-      console.error("Erro ao adicionar ao stock:", err);
-    }
   };
 
 
@@ -429,13 +240,7 @@ const GerirAdegaPage = () => {
                   onToggle={async () => {
                     try {
                       const token = await getAccessTokenSilently();
-
-                      await fetch(`${API_URL}/api/dispositivos/${d.id}/toggle`, {
-                        method: "PUT",
-                        headers: {
-                          Authorization: `Bearer ${token}`,
-                        },
-                      });
+                      await toggleDispositivo(d.id, token);
 
                       setDispositivos((prev) =>
                         prev.map((x) =>
@@ -517,7 +322,7 @@ const GerirAdegaPage = () => {
         title="Apagar Adega"
         message="Tem a certeza que deseja apagar esta adega? Esta ação é irreversível."
         onCancel={() => setShowDeleteAdega(false)}
-        onConfirm={deleteAdega}
+        onConfirm={handleDeleteAdega}
       />
 
     </>

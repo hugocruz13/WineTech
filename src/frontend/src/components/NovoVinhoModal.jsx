@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import styles from "../styles/NovaAdegaModal.module.css";
+import { createVinho } from "../api/vinho.service";
 
-const NovoVinhoModal = ({ onClose, onSuccess, token, apiUrl }) => {
+const NovoVinhoModal = ({ onClose, onSuccess, token }) => {
   const [nome, setNome] = useState("");
   const [produtor, setProdutor] = useState("");
   const [ano, setAno] = useState("");
@@ -32,18 +33,7 @@ const NovoVinhoModal = ({ onClose, onSuccess, token, apiUrl }) => {
     try {
       setLoading(true);
 
-      const response = await fetch(`${apiUrl}/api/vinho`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText);
-      }
+      await createVinho(formData, token);
 
       onSuccess();
       onClose();
