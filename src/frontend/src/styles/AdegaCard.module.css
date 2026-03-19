@@ -78,6 +78,39 @@
   cursor: pointer;
 }
 
+@media (max-width: 768px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .info {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top {
+    height: 120px;
+  }
+
+  .body {
+    padding: 12px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .footer {
+    gap: 6px;
+  }
+
+  .btnSecondary {
+    padding: 8px;
+    font-size: 12px;
+  }
+}
+
 .btnSecondary:hover {
   background: #f9fafb;
 }

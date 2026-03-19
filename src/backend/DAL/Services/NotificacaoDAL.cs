@@ -11,7 +11,10 @@ namespace DAL.Services
     {
         private NotificacaoRepositoryServiceSoapClient CreateClient()
         {
-            return new NotificacaoRepositoryServiceSoapClient(NotificacaoRepositoryServiceSoapClient.EndpointConfiguration.NotificacaoRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("NotificacaoRepositoryService");
+            return new NotificacaoRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
 
         public async Task<Models.Notificacao> InserirNotificacao(Models.Notificacao notificacao)

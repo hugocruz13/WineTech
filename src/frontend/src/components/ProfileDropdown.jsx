@@ -1,46 +1,18 @@
-import { useState, useEffect } from "react";
-import { User, LogOut, ShoppingBag, AlertTriangle } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { User, LogOut, ShoppingBag, AlertTriangle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/ProfileDropdown.module.css";
 import RoleVisibility from "./RoleVisibility";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { usePerfilInfo } from "../hooks/usePerfilInfo";
 
 const ProfileDropdown = ({ open, onToggle }) => {
-  const [apiUser, setApiUser] = useState(null);
-
   const { logout, getAccessTokenSilently } = useAuth0();
   const navigate = useNavigate();
+  const apiUser = usePerfilInfo(getAccessTokenSilently);
 
   const handleLogout = () => {
     logout({ logoutParams: { returnTo: window.location.origin } });
   };
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-
-        const res = await fetch(`${API_URL}/api/utilizador/perfil`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (!res.ok) {
-          throw new Error("Erro ao carregar perfil");
-        }
-
-        const data = await res.json();
-        setApiUser(data);
-      } catch (err) {
-        console.error("Erro ao buscar user da API", err);
-      }
-    };
-
-    fetchUser();
-  }, [getAccessTokenSilently]);
 
   return (
     <div className={styles.profileWrapper}>

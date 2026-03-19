@@ -1,28 +1,176 @@
-version: "3.8"
-
 services:
   mssql:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: ${SQL_EDGE_IMAGE:-mcr.microsoft.com/azure-sql-edge:latest}
+    platform: ${DOCKER_PLATFORM:-linux/arm64}
     container_name: sql
+    user: root
     ports:
       - "1433:1433"
     environment:
       SA_PASSWORD: "Passw0rd_dev!"
+      MSSQL_SA_PASSWORD: "Passw0rd_dev!"
       ACCEPT_EULA: "Y"
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c ': >/dev/tcp/127.0.0.1/1433'"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
     volumes:
       - mssql_data:/var/opt/mssql
     restart: always
 
+  mssql-init:
+    build:
+      context: .
+      dockerfile: ./scripts/mssql-init.Dockerfile
+    platform: ${DOCKER_PLATFORM:-linux/arm64}
+    container_name: mssql-init
+    entrypoint: /bin/bash
+    depends_on:
+      mssql:
+        condition: service_healthy
+    environment:
+      SA_PASSWORD: "Passw0rd_dev!"
+      MSSQL_SA_PASSWORD: "Passw0rd_dev!"
+    volumes:
+      - ./database:/sql:ro
+    command:
+      - -c
+      - |
+        set -e
+        SQLCMD_BIN="$(command -v sqlcmd || true)"
+
+        if [ ! -x "$$SQLCMD_BIN" ]; then
+          echo "Erro: sqlcmd nao encontrado no container mssql-init"
+          exit 1
+        fi
+
+        DB_PASSWORD="$$MSSQL_SA_PASSWORD"
+        if [ -z "$$DB_PASSWORD" ]; then
+          DB_PASSWORD="$$SA_PASSWORD"
+        fi
+
+        echo "A aguardar SQL Server ficar pronto..."
+        ATTEMPTS=0
+        MAX_ATTEMPTS=60
+        until "$$SQLCMD_BIN" -S mssql -U sa -P "$$DB_PASSWORD" -C -Q "SELECT 1" > /dev/null 2>&1; do
+          ATTEMPTS=$$((ATTEMPTS + 1))
+          if [ "$$ATTEMPTS" -ge "$$MAX_ATTEMPTS" ]; then
+            echo "Erro: timeout ao ligar ao SQL Server apos $$((MAX_ATTEMPTS * 5)) segundos"
+            exit 1
+          fi
+          sleep 5
+        done
+
+        echo "SQL Server pronto. A validar base de dados ISI..."
+        if "$$SQLCMD_BIN" -S mssql -U sa -P "$$DB_PASSWORD" -C -Q "SET NOCOUNT ON; SELECT DB_ID('ISI');" -h -1 -W | grep -q "NULL"; then
+          echo "A criar e popular base de dados ISI..."
+          "$$SQLCMD_BIN" -S mssql -U sa -P "$$DB_PASSWORD" -C -i /sql/DataBase.sql
+          "$$SQLCMD_BIN" -S mssql -U sa -P "$$DB_PASSWORD" -C -i /sql/run_all.sql
+          "$$SQLCMD_BIN" -S mssql -U sa -P "$$DB_PASSWORD" -C -i /sql/Dados.sql
+          echo "Base de dados ISI inicializada com sucesso."
+        else
+          echo "Base de dados ISI ja existe; a saltar inicializacao."
+        fi
+        exit 0
+    restart: "no"
+
+  soap:
+    platform: ${DOCKER_PLATFORM:-linux/arm64}
+    build:
+      context: ./backend
+      dockerfile: SOAP/Dockerfile
+      args:
+        MONO_IMAGE: ${MONO_IMAGE:-mono:6.12}
+    container_name: soap
+    environment:
+      DB_HOST: mssql
+      DB_NAME: ISI
+      DB_USER: sa
+      DB_PASSWORD: Passw0rd_dev!
+    depends_on:
+      mssql:
+        condition: service_started
+      mssql-init:
+        condition: service_completed_successfully
+    ports:
+      - "8081:8080"
+    restart: always
+
   azurite:
-    image: mcr.microsoft.com/azure-storage/azurite
+    image: ${AZURITE_IMAGE:-mcr.microsoft.com/azure-storage/azurite}
+    platform: ${DOCKER_PLATFORM:-linux/arm64}
     container_name: azurite
     ports:
       - "10000:10000"
-      - "10001:10001" 
-      - "10002:10002"  
+      - "10001:10001"
+      - "10002:10002"
     volumes:
       - azurite_data:/data
-    command: "azurite-blob --blobHost 0.0.0.0 --location /data"
+    command: "azurite-blob --blobHost 0.0.0.0 --location /data --skipApiVersionCheck"
+    restart: always
+
+  azurite-init:
+    image: ${AZURE_CLI_IMAGE:-mcr.microsoft.com/azure-cli:latest}
+    platform: ${DOCKER_PLATFORM:-linux/arm64}
+    container_name: azurite-init
+    depends_on:
+      azurite:
+        condition: service_started
+    environment:
+      AZURE_STORAGE_CONNECTION_STRING: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
+    volumes:
+      - ./scripts/init-azurite.sh:/init-azurite.sh:ro
+    command:
+      - /bin/sh
+      - /init-azurite.sh
+    restart: "no"
+
+  backend:
+    platform: ${DOCKER_PLATFORM:-linux/arm64}
+    build:
+      context: ./backend
+      dockerfile: API/Dockerfile
+      args:
+        DOTNET_SDK_IMAGE: ${DOTNET_SDK_IMAGE:-mcr.microsoft.com/dotnet/sdk:10.0}
+        DOTNET_ASPNET_IMAGE: ${DOTNET_ASPNET_IMAGE:-mcr.microsoft.com/dotnet/aspnet:10.0}
+    container_name: backend
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      DisableHttpsRedirection: "true"
+      Cors__AllowedOrigins: ${CORS_ALLOWED_ORIGINS:-http://localhost:5173,http://localhost}
+      SOAP_BASE_URL: http://soap:8080
+      BlobStorage__ConnectionString: DefaultEndpointsProtocol=http;AccountName=devstoreaccount1;AccountKey=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==;BlobEndpoint=http://azurite:10000/devstoreaccount1;
+      BlobStorage__PublicBaseUrl: http://localhost:10000/devstoreaccount1
+    depends_on:
+      mssql:
+        condition: service_started
+      mssql-init:
+        condition: service_completed_successfully
+      azurite:
+        condition: service_started
+      azurite-init:
+        condition: service_completed_successfully
+      soap:
+        condition: service_started
+    ports:
+      - "5077:8080"
+    restart: always
+
+  frontend:
+    platform: ${DOCKER_PLATFORM:-linux/arm64}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: /api
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
     restart: always
 
 volumes:

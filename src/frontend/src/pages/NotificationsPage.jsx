@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Bell } from "lucide-react";
 
@@ -6,53 +5,12 @@ import Header from "../components/Header";
 import Loading from "../components/Loading";
 import { notificationConfig } from "../utils/notificationConfig";
 import styles from "../styles/NotificationPage.module.css";
+import { useNotifications } from "../hooks/useNotifications";
 
-const API_URL = import.meta.env.VITE_API_URL;
-
-const NotificationsPage = ({ notifications, setNotifications, loading }) => {
+const NotificationsPage = () => {
   const { getAccessTokenSilently } = useAuth0();
-
-  useEffect(() => {
-    const fetchNotificacoes = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-
-        const res = await fetch(`${API_URL}/api/utilizador/notificacoes`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        const json = await res.json();
-        setNotifications(json.data || []);
-      } catch (err) {
-        console.error("Erro ao buscar notificações", err);
-      }
-    };
-
-    if (notifications.length === 0) {
-      fetchNotificacoes();
-    }
-  }, [getAccessTokenSilently, notifications.length, setNotifications]);
-
-  const handleMarkAsRead = async (id) => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      await fetch(`${API_URL}/api/utilizador/notificacoes/${id}/lida`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
-      );
-
-      window.dispatchEvent(new CustomEvent("notification:read"));
-    } catch (err) {
-      console.error("Erro ao marcar notificação como lida", err);
-    }
-  };
+  const { notifications, loading, markAsRead } =
+    useNotifications(getAccessTokenSilently);
 
   if (loading) {
     return <Loading />;
@@ -110,7 +68,7 @@ const NotificationsPage = ({ notifications, setNotifications, loading }) => {
                   {!n.lida && (
                     <button
                       className={styles.markRead}
-                      onClick={() => handleMarkAsRead(n.id)}
+                      onClick={() => markAsRead(n.id)}
                     >
                       Marcar como lida
                     </button>

@@ -150,3 +150,33 @@
   background: #dcfce7;
   color: #16a34a;
 }
+
+@media (max-width: 768px) {
+  .notificationsPage {
+    margin: 20px auto;
+  }
+
+  .pageItem {
+    gap: 12px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .notificationsPage {
+    padding: 0 12px;
+  }
+
+  .notificationsHeader h1 {
+    font-size: 22px;
+  }
+
+  .pageItem {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .content h3 {
+    font-size: 14px;
+  }
+}

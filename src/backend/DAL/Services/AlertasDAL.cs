@@ -12,7 +12,10 @@ namespace DAL.Services
     {
         private AlertasRepositoryServiceSoapClient CreateClient()
         {
-            return new AlertasRepositoryServiceSoapClient(AlertasRepositoryServiceSoapClient.EndpointConfiguration.AlertasRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("AlertasRepositoryService");
+            return new AlertasRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
 
         public async Task<Models.Alertas> InserirAlerta(Models.Alertas alerta)

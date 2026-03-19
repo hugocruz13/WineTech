@@ -10,7 +10,10 @@ namespace DAL.Services
     {
         private CompraRepositoryServiceSoapClient CreateClient()
         {
-            return new CompraRepositoryServiceSoapClient(CompraRepositoryServiceSoapClient.EndpointConfiguration.CompraRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("CompraRepositoryService");
+            return new CompraRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
 
         public async Task<Models.Compra> CriarCompra(Models.Compra compra)

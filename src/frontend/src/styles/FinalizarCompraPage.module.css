@@ -137,3 +137,44 @@
   background: #f1f1f1;
   font-size: 12px;
 }
+
+@media (max-width: 1024px) {
+  .finalizarPage {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .left h1 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 768px) {
+  .finalizarPage {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .finalizarPage {
+    padding: 12px;
+  }
+
+  .left h1 {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+}

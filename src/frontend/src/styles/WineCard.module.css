@@ -7,7 +7,9 @@
   border: 1px solid #f1f5f9;
   font-family: "Inter", sans-serif;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 /* Imagem */
@@ -135,10 +137,34 @@
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, color 0.2s;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
 }
 
 .addCartBtn:hover {
   background-color: #d32f2f;
   color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .wineCard {
+    width: 100%;
+    max-width: 260px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wineCard {
+    width: 100%;
+    max-width: none;
+  }
+
+  .wineTitle {
+    font-size: 16px;
+  }
+
+  .winePrice {
+    font-size: 18px;
+  }
 }

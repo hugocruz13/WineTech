@@ -11,7 +11,10 @@ namespace DAL.Services
     {
         private AdegaRepositoryServiceSoapClient CreateClient()
         {
-            return new AdegaRepositoryServiceSoapClient(AdegaRepositoryServiceSoapClient.EndpointConfiguration.AdegaRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("AdegaRepositoryService");
+            return new AdegaRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
 
         public async Task<Models.Adega> InserirAdega(Models.Adega adega)

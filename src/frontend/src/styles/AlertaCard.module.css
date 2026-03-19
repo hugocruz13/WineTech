@@ -133,3 +133,41 @@
     transform: rotate(360deg);
   }
 }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .alertaCard {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .titulo {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .alertaCard {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-left-width: 4px;
+  }
+
+  .header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .titulo {
+    font-size: 14px;
+  }
+
+  .badgeCritico,
+  .badgeConcluido {
+    font-size: 11px;
+  }
+
+  .mensagem {
+    font-size: 12px;
+  }
+}

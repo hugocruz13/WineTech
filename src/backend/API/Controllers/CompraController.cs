@@ -8,7 +8,7 @@ using Models;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CompraController : ControllerBase
     {
@@ -53,17 +53,24 @@ namespace API.Controllers
             if (string.IsNullOrEmpty(sub))
                 return Unauthorized(new { success = false, message = "Utilizador não autenticado." });
 
-            List<Compra> compras = await _compraBLL.ObterComprasPorUtilizador(sub);
-
-            var data = compras.Select(a => new
+            try
             {
-                idCompra = a.Id,
-                utilizadorId = a.UtilizadorId,
-                dataCompra = a.DataCompra,
-                valorTotal = a.ValorTotal,
-            }).ToList();
+                List<Compra> compras = await _compraBLL.ObterComprasPorUtilizador(sub) ?? new List<Compra>();
 
-            return Ok(new { success = true, data = data });
+                var data = compras.Select(a => new
+                {
+                    idCompra = a.Id,
+                    utilizadorId = a.UtilizadorId,
+                    dataCompra = a.DataCompra,
+                    valorTotal = a.ValorTotal,
+                }).ToList();
+
+                return Ok(new { success = true, data = data });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
         }
 
         [HttpGet("{id}")]
@@ -75,32 +82,39 @@ namespace API.Controllers
             if (string.IsNullOrEmpty(sub))
                 return Unauthorized(new { success = false, message = "Utilizador não autenticado." });
 
-            List<CompraDetalhe> compra = await _compraBLL.ObterCompraPorId(id, sub);
-
-            if (compra == null)
-                return NotFound(new { success = false, message = "Compra não encontrada." });
-
-            var data = compra.Select(a => new
+            try
             {
-                idCompra = a.IdCompra,
-                valorTotal = a.ValorTotal,
-                dataCompra = a.DataCompra,
-                idVinho = a.IdVinho,
-                nome = a.Nome,
-                produtor = a.Produtor,
-                ano = a.Ano,
-                tipo = a.Tipo,
-                quantidade = a.Quantidade,
-                preco = a.Preco,
-                imgVinho = a.ImgVinho,
-                nomeUtilizador = a.NomeUtilizador,
-                emailUtilizador = a.EmailUtilizador,
-                imagemUtilizador = a.ImagemUtilizador,
-                stockId = a.StockId,
-                cartao=a.Cartao
-            }).ToList();
+                List<CompraDetalhe> compra = await _compraBLL.ObterCompraPorId(id, sub);
 
-            return Ok(new { success = true, data = data });
+                if (compra == null)
+                    return NotFound(new { success = false, message = "Compra não encontrada." });
+
+                var data = compra.Select(a => new
+                {
+                    idCompra = a.IdCompra,
+                    valorTotal = a.ValorTotal,
+                    dataCompra = a.DataCompra,
+                    idVinho = a.IdVinho,
+                    nome = a.Nome,
+                    produtor = a.Produtor,
+                    ano = a.Ano,
+                    tipo = a.Tipo,
+                    quantidade = a.Quantidade,
+                    preco = a.Preco,
+                    imgVinho = a.ImgVinho,
+                    nomeUtilizador = a.NomeUtilizador,
+                    emailUtilizador = a.EmailUtilizador,
+                    imagemUtilizador = a.ImagemUtilizador,
+                    stockId = a.StockId,
+                    cartao = a.Cartao
+                }).ToList();
+
+                return Ok(new { success = true, data = data });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { success = false, message = $"Erro interno: {ex.Message}" });
+            }
         }
     }
 }

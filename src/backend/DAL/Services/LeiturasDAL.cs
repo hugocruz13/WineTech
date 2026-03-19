@@ -11,7 +11,10 @@ namespace DAL.Services
     {
         private LeiturasRepositoryServiceSoapClient CreateClient()
         {
-            return new LeiturasRepositoryServiceSoapClient(LeiturasRepositoryServiceSoapClient.EndpointConfiguration.LeiturasRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("LeiturasRepositoryService");
+            return new LeiturasRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
 
         public async Task<Models.Leituras> InserirLeitura(Models.Leituras leitura)

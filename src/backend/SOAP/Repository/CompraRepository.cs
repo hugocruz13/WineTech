@@ -145,10 +145,10 @@ namespace SOAP.Repository
                     {
                         compras.Add(new Compra
                         {
-                            Id = reader.GetInt32(0),
-                            DataCompra = reader.GetDateTime(1),
-                            ValorTotal = Convert.ToDouble(reader.GetDecimal(2)),
-                            UtilizadorId = reader.GetString(3)
+                            Id = GetInt32(reader, 0),
+                            DataCompra = GetDateTime(reader, 1),
+                            ValorTotal = GetDoubleFromDecimal(reader, 2),
+                            UtilizadorId = GetString(reader, 3)
                         });
                     }
                 }
@@ -171,28 +171,53 @@ namespace SOAP.Repository
                     {
                         detalhes.Add(new CompraDetalhe
                         {
-                            IdCompra = reader.GetInt32(0),
-                            DataCompra = reader.GetDateTime(1),
-                            ValorTotal = Convert.ToDouble(reader.GetDecimal(2)),
-                            IdVinho = reader.GetInt32(3),
-                            Nome = reader.GetString(4),
-                            Produtor = reader.GetString(5),
-                            Ano = reader.GetInt32(6),
-                            Tipo = reader.GetString(7),
-                            Quantidade = reader.GetInt32(8),
-                            Preco = reader.GetFloat(9),
-                            ImgVinho = reader.IsDBNull(11) ? null : reader.GetString(10),
-                            NomeUtilizador = reader.IsDBNull(11) ? null : reader.GetString(11),
-                            EmailUtilizador = reader.IsDBNull(12) ? null : reader.GetString(12),
-                            ImagemUtilizador = reader.IsDBNull(13) ? null : reader.GetString(13),
-                            StockId = reader.GetInt32(14),
-                            Cartao = reader.IsDBNull(15) ? 0 : reader.GetInt32(15),
-                            idUtilizador = reader.GetString(16)
+                            IdCompra = GetInt32(reader, 0),
+                            DataCompra = GetDateTime(reader, 1),
+                            ValorTotal = GetDoubleFromDecimal(reader, 2),
+                            IdVinho = GetInt32(reader, 3),
+                            Nome = GetString(reader, 4),
+                            Produtor = GetString(reader, 5),
+                            Ano = GetInt32(reader, 6),
+                            Tipo = GetString(reader, 7),
+                            Quantidade = GetInt32(reader, 8),
+                            Preco = GetFloat(reader, 9),
+                            ImgVinho = GetString(reader, 10),
+                            NomeUtilizador = GetString(reader, 11),
+                            EmailUtilizador = GetString(reader, 12),
+                            ImagemUtilizador = GetString(reader, 13),
+                            StockId = GetInt32(reader, 14),
+                            Cartao = GetInt32(reader, 15),
+                            idUtilizador = GetString(reader, 16)
                         });
                     }
                 }
             }
             return detalhes;
+        }
+
+        private static int GetInt32(SqlDataReader reader, int ordinal)
+        {
+            return reader.IsDBNull(ordinal) ? 0 : reader.GetInt32(ordinal);
+        }
+
+        private static DateTime GetDateTime(SqlDataReader reader, int ordinal)
+        {
+            return reader.IsDBNull(ordinal) ? DateTime.MinValue : reader.GetDateTime(ordinal);
+        }
+
+        private static double GetDoubleFromDecimal(SqlDataReader reader, int ordinal)
+        {
+            return reader.IsDBNull(ordinal) ? 0 : Convert.ToDouble(reader.GetDecimal(ordinal));
+        }
+
+        private static float GetFloat(SqlDataReader reader, int ordinal)
+        {
+            return reader.IsDBNull(ordinal) ? 0 : reader.GetFloat(ordinal);
+        }
+
+        private static string GetString(SqlDataReader reader, int ordinal)
+        {
+            return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
         }
 
     }

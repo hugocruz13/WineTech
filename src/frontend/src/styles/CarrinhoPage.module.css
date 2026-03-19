@@ -211,3 +211,67 @@
   font-size: 12px;
   font-weight: 600;
 }
+
+@media (max-width: 1024px) {
+  .carrinhoPage {
+    gap: 24px;
+    padding: 24px;
+  }
+
+  .carrinhoRight {
+    position: static;
+    top: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .carrinhoPage {
+    flex-direction: column;
+    gap: 20px;
+    padding: 16px;
+  }
+
+  .tituloCarrinho h1 {
+    font-size: 24px;
+  }
+
+  .carrinhoItem {
+    grid-template-columns: 70px 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .carrinhoItem img {
+    width: 70px;
+    height: 110px;
+  }
+
+  .vinhoPreco {
+    text-align: left;
+  }
+}
+
+@media (max-width: 480px) {
+  .carrinhoPage {
+    padding: 12px;
+  }
+
+  .tituloCarrinho {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .carrinhoItem {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .quantidade button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .carrinhoRight {
+    padding: 16px;
+  }
+}

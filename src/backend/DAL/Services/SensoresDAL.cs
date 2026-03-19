@@ -13,7 +13,10 @@ namespace DAL.Services
     {
         private SensoresRepositoryServiceSoapClient CreateClient()
         {
-            return new SensoresRepositoryServiceSoapClient(SensoresRepositoryServiceSoapClient.EndpointConfiguration.SensoresRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("SensoresRepositoryService");
+            return new SensoresRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
         public async Task<Models.Sensores> InserirSensor(Models.Sensores sensor)
         {

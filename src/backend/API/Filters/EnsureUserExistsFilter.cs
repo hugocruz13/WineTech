@@ -36,15 +36,15 @@ namespace API.Filters
                     return;
                 }
 
-                var roles = principal.FindAll("https://isi.com/roles").Select(c => c.Value).ToList();
+                var roles = principal.FindAll("https://winetech.pt/roles").Select(c => c.Value).ToList();
                 bool isOwner = roles.Contains("owner");
 
                 var utilizador = new Utilizador
                 {
                     Id = userId,
-                    Email = principal.FindFirst("https://isi.com/email")?.Value,
-                    Nome = principal.FindFirst("https://isi.com/name")?.Value,
-                    ImgUrl = principal.FindFirst("https://isi.com/picture")?.Value,
+                    Email = principal.FindFirst("https://winetech.pt/email")?.Value,
+                    Nome = principal.FindFirst("https://winetech.pt/name")?.Value,
+                    ImgUrl = principal.FindFirst("https://winetech.pt/picture")?.Value,
                     IsAdmin = isOwner
                 };
                 await _utilizadorBLL.RegisterUserAsync(utilizador);

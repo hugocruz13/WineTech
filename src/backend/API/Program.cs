@@ -3,6 +3,7 @@ using API.Hubs;
 using API.Services;
 using Azure.Storage.Blobs;
 using BLL.Interfaces;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
@@ -49,14 +50,17 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173") // frontend
+        var origins = (builder.Configuration["Cors:AllowedOrigins"] ?? "http://localhost:5173")
+            .Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+        policy.WithOrigins(origins)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
 
-// Adiciona autenticação JWT
+// Adiciona autenticaï¿½ï¿½o JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -67,7 +71,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
-            RoleClaimType = "https://isi.com/roles"
+            RoleClaimType = "https://winetech.pt/roles"
         };
 
         options.Events = new JwtBearerEvents
@@ -108,14 +112,33 @@ builder.Services.AddScoped<EnsureUserExistsFilter>();
 
 builder.Services.AddOpenApi();
 
-// Dependency injection dos seus serviços
+// Dependency injection dos seus serviï¿½os
 builder.Services.AddServices();
 
 // Adicionando Blob Storage
-builder.Services.AddSingleton(x => new BlobServiceClient("UseDevelopmentStorage=true"));
+var blobConnectionString = builder.Configuration["BlobStorage:ConnectionString"] ?? "UseDevelopmentStorage=true";
+builder.Services.AddSingleton(x => new BlobServiceClient(blobConnectionString));
 builder.Services.AddScoped<IStorageService, BlobStorageService>();
 
 var app = builder.Build();
+
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = "application/json";
+
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+        var message = exception?.Message ?? "Erro interno inesperado.";
+
+        await context.Response.WriteAsJsonAsync(new
+        {
+            success = false,
+            message = $"Erro interno: {message}"
+        });
+    });
+});
 
 // SignalR
 app.MapHub<NotificationHub>("/hubs/notifications");
@@ -129,7 +152,10 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference(); 
 }
 
-app.UseHttpsRedirection();
+if (!builder.Configuration.GetValue("DisableHttpsRedirection", false))
+{
+    app.UseHttpsRedirection();
+}
 
 // CORS
 app.UseCors("AllowFrontend");

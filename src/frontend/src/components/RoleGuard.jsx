@@ -2,7 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const RoleGuard = ({ role, children }) => {
   const { user } = useAuth0();
-  const roles = user?.["https://isi.com/roles"] || [];
+  const roles = user?.["https://winetech.pt/roles"] || [];
 
   if (!roles.includes(role)) {
     return <p>Acesso negado</p>;

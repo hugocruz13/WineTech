@@ -1,14 +1,14 @@
-import { ShoppingCart } from "lucide-react";
+﻿import { ShoppingCart } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/WineCard.module.css";
 import Loading from "../components/Loading";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useCartActions } from "../hooks/useCartActions";
 
 const WineCard = ({ id, title, subtitle, price, type, imageUrl, year, loading }) => {
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
+  const { addItem } = useCartActions(getAccessTokenSilently);
 
   if (loading) {
     return <Loading />;
@@ -22,25 +22,8 @@ const WineCard = ({ id, title, subtitle, price, type, imageUrl, year, loading })
     e.stopPropagation();
 
     try {
-      const token = await getAccessTokenSilently();
-
-      const response = await fetch(`${API_URL}/api/carrinho`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          vinhosId: id,
-          quantidade: 1,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Erro ao adicionar ao carrinho");
-      }
+      await addItem(id, 1);
     } catch (err) {
-      console.error("Erro ao adicionar ao carrinho:", err);
     }
   };
 
@@ -67,7 +50,7 @@ const WineCard = ({ id, title, subtitle, price, type, imageUrl, year, loading })
         <p className={styles.wineProducer}>{subtitle}</p>
 
         <div className={styles.wineFooter}>
-          <span className={styles.winePrice}>{price} €</span>
+          <span className={styles.winePrice}>{price}€</span>
 
           <button className={styles.addCartBtn} onClick={handleAddToCart}>
             <ShoppingCart size={16} />

@@ -128,7 +128,41 @@
 }
 
 @media (max-width: 768px) {
+  .headerContainer {
+    padding: 0.75rem 1rem;
+  }
+
   .searchSection {
     display: none;
+  }
+
+  .actionsSection {
+    gap: 1rem;
+  }
+
+  .logoText {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContainer {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .logoSection gap {
+    gap: 0.25rem;
+  }
+
+  .logoText {
+    font-size: 0.9rem;
+  }
+
+  .actionsSection {
+    gap: 0.75rem;
+  }
+
+  .iconBtn {
+    font-size: 0.9rem;
   }
 }

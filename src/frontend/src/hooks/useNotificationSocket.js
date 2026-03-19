@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+﻿import { useEffect, useRef } from "react";
 import * as signalR from "@microsoft/signalr";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -20,13 +20,13 @@ export default function useNotificationSocket(onNotification) {
         .withUrl(`${API_URL}/hubs/notifications`, {
           accessTokenFactory: () => token,
         })
+        .configureLogging(signalR.LogLevel.None)
         .withAutomaticReconnect()
         .build();
 
       connection.on("ReceiveNotification", onNotification);
 
       await connection.start();
-      console.log("SignalR conectado");
 
       connectionRef.current = connection;
     };

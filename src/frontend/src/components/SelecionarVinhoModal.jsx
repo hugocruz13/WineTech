@@ -1,51 +1,14 @@
-import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useAuth0 } from "@auth0/auth0-react";
 import styles from "../styles/SelecionarVinhoModal.module.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useVinhosDisponiveis } from "../hooks/useVinhosDisponiveis";
 
 const SelecionarVinhoModal = ({ adegaId, onClose, onSelect }) => {
     const { getAccessTokenSilently } = useAuth0();
-
-    const [vinhos, setVinhos] = useState([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = await getAccessTokenSilently();
-
-                const [vinhosRes, stockRes] = await Promise.all([
-                    fetch(`${API_URL}/api/vinho`, {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }),
-                    fetch(`${API_URL}/api/Adega/${adegaId}/stock`, {
-                        headers: { Authorization: `Bearer ${token}` },
-                    }),
-                ]);
-
-                const vinhosJson = await vinhosRes.json();
-                const stockJson = await stockRes.json();
-
-                const stockIds = new Set(
-                    (stockJson.data || []).map((s) => s.vinhoId)
-                );
-
-                const vinhosDisponiveis = (vinhosJson.data || []).filter(
-                    (vinho) => !stockIds.has(vinho.id)
-                );
-
-                setVinhos(vinhosDisponiveis);
-            } catch (err) {
-                console.error("Erro ao carregar vinhos:", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (adegaId) fetchData();
-    }, [adegaId, getAccessTokenSilently]);
+    const { vinhos, loading } = useVinhosDisponiveis(
+        adegaId,
+        getAccessTokenSilently
+    );
 
     return (
         <div className={styles.overlay}>

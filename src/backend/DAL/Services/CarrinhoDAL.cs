@@ -12,7 +12,10 @@ namespace DAL.Services
     {
         private CarrinhoRepositoryServiceSoapClient CreateClient()
         {
-            return new CarrinhoRepositoryServiceSoapClient(CarrinhoRepositoryServiceSoapClient.EndpointConfiguration.CarrinhoRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("CarrinhoRepositoryService");
+            return new CarrinhoRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
         public async Task<List<Models.Carrinho>> ObterCarrinhoPorUtilizador(string utilizadoresId)
         {

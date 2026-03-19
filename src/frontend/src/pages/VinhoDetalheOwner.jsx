@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Pencil, Trash2 } from "lucide-react";
@@ -8,111 +8,37 @@ import Loading from "../components/Loading";
 import ConfirmDialog from "../components/ConfirmDialog";
 
 import styles from "../styles/VinhoDetalhe.module.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useVinhoOwner } from "../hooks/useVinhoOwner";
 
 const VinhoDetalhe = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { getAccessTokenSilently } = useAuth0();
-
-  const [vinho, setVinho] = useState(null);
-  const [form, setForm] = useState({});
-  const [imagePreview, setImagePreview] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchVinho = async () => {
-      const token = await getAccessTokenSilently();
-      const res = await fetch(`${API_URL}/api/vinho/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+  const {
+    vinho,
+    form,
+    imagePreview,
+    imageFile,
+    loading,
 
-      const json = await res.json();
-      setVinho(json.data);
-      setForm(json.data);
-      setLoading(false);
-    };
+    handleChange,
+    handleSave,
+    handleDelete,
+    handleImageSelect,
+    handleUploadImage,
+  } = useVinhoOwner(id, getAccessTokenSilently);
 
-    fetchVinho();
-  }, [id]);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSave = async () => {
-    const token = await getAccessTokenSilently();
-
-    const payload = {
-      id: vinho.id,
-      nome: form.nome,
-      produtor: form.produtor,
-      tipo: form.tipo,
-      descricao: form.descricao,
-      ano: Number(form.ano),
-      preco: Number(form.preco),
-    };
-
-    const res = await fetch(`${API_URL}/api/vinho/${vinho.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const json = await res.json();
-    setVinho(json.data);
-    setForm(json.data);
-    setEditMode(false);
-  };
-
-  const handleDelete = async () => {
-    const token = await getAccessTokenSilently();
-
-    await fetch(`${API_URL}/api/vinho/${vinho.id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
+  const onDeleteConfirm = async () => {
+    await handleDelete();
     navigate("/dashboard");
   };
 
-  const handleImageSelect = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setImageFile(file);
-    setImagePreview(URL.createObjectURL(file));
-  };
-
-  const handleUploadImage = async () => {
-    if (!imageFile) return;
-
-    const token = await getAccessTokenSilently();
-    const formData = new FormData();
-    formData.append("file", imageFile);
-
-    const res = await fetch(
-      `${API_URL}/api/vinho/${vinho.id}/upload-image`,
-      {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      }
-    );
-
-    const json = await res.json();
-
-    setVinho((prev) => ({ ...prev, imageUrl: json.data }));
-    setImageFile(null);
-    setImagePreview(null);
+  const onSave = async () => {
+    await handleSave();
+    setEditMode(false);
   };
 
   if (loading) return <Loading />;
@@ -129,7 +55,7 @@ const VinhoDetalhe = () => {
         title="Apagar vinho"
         message="Tens a certeza que queres apagar este vinho? Esta ação é irreversível."
         onCancel={() => setConfirmOpen(false)}
-        onConfirm={handleDelete}
+        onConfirm={onDeleteConfirm}
       />
 
       <div className={styles.page}>
@@ -237,7 +163,7 @@ const VinhoDetalhe = () => {
                   >
                     Cancelar
                   </button>
-                  <button className={styles.save} onClick={handleSave}>
+                  <button className={styles.save} onClick={onSave}>
                     Guardar
                   </button>
                 </div>

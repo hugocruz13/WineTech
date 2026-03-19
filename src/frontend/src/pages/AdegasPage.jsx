@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header";
 import AdegaCard from "../components/AdegaCard";
@@ -8,71 +8,14 @@ import NovaAdegaModal from "../components/NovaAdegaModal";
 import NovoVinhoModal from "../components/NovoVinhoModal";
 import styles from "../styles/AdegasPage.module.css";
 import { Plus } from "lucide-react";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useCatalogo } from "../hooks/useCatalogo";
 
 const AdegasPage = () => {
   const { getAccessTokenSilently } = useAuth0();
-
-  const [adegas, setAdegas] = useState([]);
-  const [vinhos, setVinhos] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+  const { adegas, vinhos, loading, error, token, init } = useCatalogo(getAccessTokenSilently);
   const [showModal, setShowModal] = useState(false);
   const [showVinhoModal, setShowVinhoModal] = useState(false);
-
-  const [token, setToken] = useState(null);
   const [activeTab, setActiveTab] = useState("adegas");
-
-  const fetchAdegas = async (accessToken) => {
-    const response = await fetch(`${API_URL}/api/adega`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Erro ao carregar adegas");
-    }
-
-    const result = await response.json();
-    setAdegas(result.data);
-  };
-
-  const fetchVinhos = async (accessToken) => {
-    const response = await fetch(`${API_URL}/api/vinho`, {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error("Erro ao carregar vinhos");
-    }
-
-    const result = await response.json();
-    setVinhos(result.data);
-  };
-
-  const init = async () => {
-    try {
-      setLoading(true);
-      const accessToken = await getAccessTokenSilently();
-      setToken(accessToken);
-
-      await Promise.all([fetchAdegas(accessToken), fetchVinhos(accessToken)]);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
 
   if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
@@ -92,18 +35,16 @@ const AdegasPage = () => {
           {/* Tabs */}
           <div className={styles.tabs}>
             <button
-              className={`${styles.tab} ${
-                activeTab === "adegas" ? styles.active : ""
-              }`}
+              className={`${styles.tab} ${activeTab === "adegas" ? styles.active : ""
+                }`}
               onClick={() => setActiveTab("adegas")}
             >
               Adegas
             </button>
 
             <button
-              className={`${styles.tab} ${
-                activeTab === "vinhos" ? styles.active : ""
-              }`}
+              className={`${styles.tab} ${activeTab === "vinhos" ? styles.active : ""
+                }`}
               onClick={() => setActiveTab("vinhos")}
             >
               Vinhos
@@ -163,7 +104,6 @@ const AdegasPage = () => {
       {showModal && (
         <NovaAdegaModal
           token={token}
-          apiUrl={API_URL}
           onClose={() => setShowModal(false)}
           onSuccess={() => init()}
         />
@@ -173,7 +113,6 @@ const AdegasPage = () => {
       {showVinhoModal && (
         <NovoVinhoModal
           token={token}
-          apiUrl={API_URL}
           onClose={() => setShowVinhoModal(false)}
           onSuccess={() => init()}
         />

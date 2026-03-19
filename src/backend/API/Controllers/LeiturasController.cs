@@ -9,7 +9,7 @@ using Models;
 using System.Reflection.PortableExecutable;
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class LeiturasController : ControllerBase
     {

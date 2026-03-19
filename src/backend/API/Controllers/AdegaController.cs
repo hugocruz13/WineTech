@@ -7,7 +7,7 @@ using Models;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class AdegaController : ControllerBase
     {

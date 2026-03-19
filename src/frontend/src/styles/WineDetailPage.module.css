@@ -205,3 +205,67 @@
 .error {
   color: #d32f2f;
 }
+
+@media (max-width: 1024px) {
+  .wdGrid {
+    gap: 40px;
+    padding: 0 20px;
+  }
+
+  .wdImageCard {
+    width: 100%;
+    height: auto;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  .wdGrid {
+    gap: 24px;
+    padding: 0 16px;
+  }
+
+  .wdTitle {
+    font-size: 28px;
+  }
+
+  .wdPrice {
+    font-size: 24px;
+  }
+
+  .wdActions {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .wdPage {
+    padding: 40px 0;
+  }
+
+  .wdGrid {
+    padding: 0 12px;
+  }
+
+  .wdImageCard {
+    width: 100%;
+    height: 280px;
+  }
+
+  .wdTitle {
+    font-size: 22px;
+  }
+
+  .wdPrice {
+    font-size: 20px;
+  }
+
+  .wdExtra {
+    gap: 12px;
+  }
+
+  .wdExtraCard {
+    min-width: auto;
+    flex: 1;
+  }
+}

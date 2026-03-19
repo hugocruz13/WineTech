@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { X } from "lucide-react";
 import styles from "../styles/NovaAdegaModal.module.css";
+import { createAdega } from "../api/adega.service";
 
-const NovaAdegaModal = ({ onClose, onSuccess, token, apiUrl }) => {
+const NovaAdegaModal = ({ onClose, onSuccess, token }) => {
   const [nome, setNome] = useState("");
   const [localizacao, setLocalizacao] = useState("");
   const [capacidade, setCapacidade] = useState("");
@@ -21,15 +22,7 @@ const NovaAdegaModal = ({ onClose, onSuccess, token, apiUrl }) => {
     try {
       setLoading(true);
 
-      const response = await fetch(`${apiUrl}/api/adega`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error("Erro ao criar adega");
+      await createAdega(formData, token);
 
       onSuccess();
       onClose();

@@ -29,3 +29,33 @@
 .error {
   color: #d32f2f;
 }
+
+@media (max-width: 1024px) {
+  .ordersContainer {
+    padding: 16px;
+  }
+
+  .ordersTitle {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .ordersContainer {
+    padding: 16px;
+  }
+
+  .ordersList {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ordersContainer {
+    padding: 12px;
+  }
+
+  .ordersTitle {
+    font-size: 18px;
+  }
+}

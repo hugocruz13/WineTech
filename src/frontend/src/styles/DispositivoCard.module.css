@@ -109,3 +109,17 @@
 .inactive {
   background-color: #ef4444;
 }
+
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    width: 100%;
+    padding: 12px;
+  }
+}

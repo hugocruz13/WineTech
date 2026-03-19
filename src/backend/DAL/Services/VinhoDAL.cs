@@ -12,7 +12,10 @@ namespace DAL.Services
     {
         private VinhoRepositoryServiceSoapClient CreateClient()
         {
-            return new VinhoRepositoryServiceSoapClient(VinhoRepositoryServiceSoapClient.EndpointConfiguration.VinhoRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("VinhoRepositoryService");
+            return new VinhoRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
         public async Task<Models.Vinho> InserirVinho(Models.Vinho vinho)
         {

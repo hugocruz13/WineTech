@@ -10,7 +10,10 @@ namespace DAL.Services
     {
         private UtilizadorRepositoryServiceSoapClient CreateClient()
         {
-            return new UtilizadorRepositoryServiceSoapClient(UtilizadorRepositoryServiceSoapClient.EndpointConfiguration.UtilizadorRepositoryServiceSoap);
+            var serviceUrl = SoapEndpointResolver.BuildServiceUrl("UtilizadorRepositoryService");
+            return new UtilizadorRepositoryServiceSoapClient(
+                SoapEndpointResolver.CreateBinding(serviceUrl),
+                SoapEndpointResolver.CreateEndpointAddress(serviceUrl));
         }
 
         public async Task<Models.Utilizador> AddUserAsync(Models.Utilizador user)

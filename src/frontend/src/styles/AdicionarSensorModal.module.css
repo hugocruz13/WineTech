@@ -105,6 +105,11 @@
   background: #fff;
   outline: none;
   transition: all 0.15s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%239ca3af' d='M7 10l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
 }
 
 .selectWrapper select:focus {
@@ -148,4 +153,35 @@
 
 .submit:hover {
   filter: brightness(1.05);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .modal {
+    max-width: 90%;
+    padding: 16px 20px;
+  }
+
+  .header h2 {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    max-width: 95%;
+    padding: 12px 16px;
+  }
+
+  .form {
+    gap: 12px;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .actions button {
+    width: 100%;
+  }
 }

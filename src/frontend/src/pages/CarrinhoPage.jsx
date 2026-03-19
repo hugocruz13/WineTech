@@ -1,127 +1,16 @@
-import { useEffect, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
 import { Trash2, Minus, Plus, ArrowLeft, ArrowRight } from "lucide-react";
-
+import { useAuth0 } from "@auth0/auth0-react";
 import Loading from "../components/Loading";
 import Header from "../components/Header";
 import styles from "../styles/CarrinhoPage.module.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useCarrinho } from "../hooks/useCarrinho";
 
 const CarrinhoPage = () => {
-  const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
-
   const { getAccessTokenSilently } = useAuth0();
-
-  useEffect(() => {
-    const fetchCarrinho = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const response = await fetch(`${API_URL}/api/carrinho/detalhes`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!response.ok) throw new Error("Erro ao carregar carrinho");
-
-        const result = await response.json();
-        setItems(result.data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCarrinho();
-  }, [getAccessTokenSilently]);
-
-  const removerDoCarrinho = async (vinhoId) => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const response = await fetch(
-        `${API_URL}/api/carrinho?vinhoId=${vinhoId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) throw new Error("Erro ao remover item");
-
-      setItems((prev) => prev.filter((item) => item.vinhosId !== vinhoId));
-    } catch (err) {
-      console.error("Erro ", err);
-    }
-  };
-
-  const addQuantidade = async (vinhosId) => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const response = await fetch(`${API_URL}/api/carrinho/add`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          vinhosId,
-          quantidade: 1,
-        }),
-      });
-
-      if (!response.ok) throw new Error("Erro ao aumentar quantidade");
-
-      setItems((prev) =>
-        prev.map((item) =>
-          item.vinhosId === vinhosId
-            ? { ...item, quantidade: item.quantidade + 1 }
-            : item
-        )
-      );
-    } catch (err) {
-      console.error("Erro ", err);
-    }
-  };
-
-  const removerQuantidade = async (vinhosId) => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const response = await fetch(`${API_URL}/api/carrinho/dec`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          vinhosId,
-          quantidade: 1,
-        }),
-      });
-
-      if (!response.ok) throw new Error("Erro ao diminuir quantidade");
-
-      setItems((prev) =>
-        prev
-          .map((item) =>
-            item.vinhosId === vinhosId
-              ? { ...item, quantidade: item.quantidade - 1 }
-              : item
-          )
-          .filter((item) => item.quantidade > 0)
-      );
-    } catch (err) {
-      console.error("Erro ", err);
-    }
-  };
+  const { items, loading, error, remover, adicionarQuantidade, removerQuantidade } =
+    useCarrinho(getAccessTokenSilently);
 
   if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
@@ -159,7 +48,7 @@ const CarrinhoPage = () => {
 
                   <span>{item.quantidade}</span>
 
-                  <button onClick={() => addQuantidade(item.vinhosId)}>
+                  <button onClick={() => adicionarQuantidade(item.vinhosId)}>
                     <Plus size={16} />
                   </button>
                 </div>
@@ -172,7 +61,7 @@ const CarrinhoPage = () => {
 
               <button
                 className={styles.remover}
-                onClick={() => removerDoCarrinho(item.vinhosId)}
+                onClick={() => remover(item.vinhosId)}
               >
                 <Trash2 size={18} />
               </button>

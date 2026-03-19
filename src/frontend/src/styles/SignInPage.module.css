@@ -1,39 +1,190 @@
 .container {
+  position: relative;
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f4f4f4;
+  justify-content: center;
+  padding: 48px 24px;
+  background: radial-gradient(
+      circle at 12% 18%,
+      rgba(211, 47, 47, 0.08),
+      transparent 32%
+    ),
+    radial-gradient(circle at 82% 20%, rgba(239, 83, 80, 0.08), transparent 30%),
+    linear-gradient(150deg, #f7f8fb 0%, #eef1f7 45%, #e6eaf2 100%);
+  color: #0f172a;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  overflow: hidden;
 }
 
-.card {
-  padding: 40px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 400px;
+.shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.blobOne,
+.blobTwo {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(70px);
+  opacity: 0.55;
+}
+
+.blobOne {
+  width: 260px;
+  height: 260px;
+  background: #d32f2f;
+  top: 8%;
+  left: 4%;
+}
+
+.blobTwo {
+  width: 240px;
+  height: 240px;
+  background: #f59e0b;
+  bottom: 8%;
+  right: 10%;
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 32px;
+  max-width: 1100px;
   width: 100%;
+  z-index: 1;
+}
+
+.hero {
+  padding: 28px;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  background: #ffffffcc;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(6px);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #fff5f5;
+  border: 1px solid #fef2f2;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: #b91c1c;
 }
 
 .title {
-  color: #333;
-  margin-bottom: 10px;
+  margin: 18px 0 10px;
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.2;
+  color: #0f172a;
 }
 
 .subtitle {
-  color: #666;
-  margin-bottom: 30px;
+  margin: 0 0 18px;
+  color: #475569;
+  line-height: 1.6;
+  max-width: 520px;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.pills span {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 13px;
+}
+
+.card {
+  position: relative;
+  padding: 28px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 14px 36px rgba(15, 23, 42, 0.12);
+  backdrop-filter: none;
+  display: grid;
+  gap: 16px;
+}
+
+.logoMark {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #d32f2f, #ef4444);
+  display: grid;
+  place-items: center;
+  color: #fef2f2;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  font-size: 16px;
+  box-shadow: 0 12px 30px rgba(211, 47, 47, 0.3);
+}
+
+.cardHeader h2 {
+  margin: 6px 0 4px;
+  font-size: 24px;
+  color: #0f172a;
+}
+
+.cardHeader p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
 }
 
 .button {
-  padding: 12px 24px;
-  font-size: 16px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  margin-top: 4px;
   width: 100%;
-  font-weight: bold;
+  padding: 14px 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #d32f2f, #ef4444);
+  color: #fef2f2;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  box-shadow: 0 12px 30px rgba(211, 47, 47, 0.28);
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.03);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.secureNote {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .container {
+    padding: 32px 18px;
+  }
+
+  .card,
+  .hero {
+    padding: 22px;
+  }
 }

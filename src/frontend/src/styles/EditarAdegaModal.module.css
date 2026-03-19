@@ -115,3 +115,45 @@ input {
 .cancel:hover {
   background: #f3f4f6;
 }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .modal {
+    max-width: 90%;
+    padding: 16px;
+  }
+
+  .preview {
+    max-height: 100px;
+  }
+
+  .fileName {
+    max-width: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    max-width: 95%;
+    padding: 12px;
+  }
+
+  input {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  .uploadBox {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}

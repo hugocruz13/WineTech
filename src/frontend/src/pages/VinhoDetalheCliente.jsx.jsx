@@ -1,75 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import styles from "../styles/WineDetailPage.module.css";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import { useVinhoCliente } from "../hooks/useVinhoCliente";
 
 const WineDetailPage = () => {
   const { id } = useParams();
-  const [wine, setWine] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [quantidade, setQuantidade] = useState(1);
-  const [added, setAdded] = useState(false);
-
   const { getAccessTokenSilently } = useAuth0();
-
-  useEffect(() => {
-    const fetchWine = async () => {
-      try {
-        const token = await getAccessTokenSilently();
-        const response = await fetch(`${API_URL}/api/vinho/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (!response.ok) throw new Error("Erro ao carregar vinho");
-
-        const result = await response.json();
-        setWine(result.data ?? result);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWine();
-  }, [id, getAccessTokenSilently]);
-
-  const handleAddToCart = async () => {
-    try {
-      const token = await getAccessTokenSilently();
-
-      const response = await fetch(`${API_URL}/api/carrinho`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          vinhosId: wine.id,
-          quantidade,
-        }),
-      });
-
-      if (!response.ok) return;
-
-      setAdded(true);
-
-      const cartIcon = document.querySelector(".cart-icon");
-      cartIcon?.classList.add(styles.cartPulse);
-
-      setTimeout(() => {
-        setAdded(false);
-        cartIcon?.classList.remove(styles.cartPulse);
-      }, 1200);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const { wine, loading, error, added, handleAddToCart } = useVinhoCliente(
+    id,
+    getAccessTokenSilently
+  );
 
   if (loading) return <Loading />;
   if (error) return <p className={styles.error}>{error}</p>;
@@ -113,7 +57,7 @@ const WineDetailPage = () => {
 
               <button
                 className={`${styles.wdAddCart} ${added ? styles.added : ""}`}
-                onClick={handleAddToCart}
+                onClick={() => handleAddToCart(wine, quantidade, styles)}
                 disabled={added}
               >
                 {added ? "Adicionado ✓" : "Adicionar ao Carrinho →"}

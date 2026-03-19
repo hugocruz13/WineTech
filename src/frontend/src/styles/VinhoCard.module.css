@@ -69,3 +69,31 @@
   font-size: 18px;
   font-weight: 700;
 }
+
+@media (max-width: 768px) {
+  .imageWrapper {
+    height: 200px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .imageWrapper {
+    height: 160px;
+  }
+
+  .title {
+    font-size: 13px;
+  }
+
+  .produtor {
+    font-size: 12px;
+  }
+
+  .price {
+    font-size: 16px;
+  }
+}

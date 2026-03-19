@@ -8,9 +8,11 @@
 /* Grid de vinhos */
 .wineGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.8rem;
   align-items: stretch;
+  justify-items: center;
+  max-width: 100%;
 }
 
 /* Mensagem de erro */
@@ -20,25 +22,27 @@
   margin-bottom: 1rem;
 }
 
-/* RESPONSIVO */
-
-/* Tablets */
-@media (max-width: 1024px) {
-  .wineGrid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Tablets pequenos */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
+  .homeContainer {
+    padding: 1.5rem 1rem;
+  }
+
   .wineGrid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
   }
 }
 
-/* Mobile */
 @media (max-width: 480px) {
+  .homeContainer {
+    padding: 1rem 0.5rem;
+  }
+
   .wineGrid {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
+    max-width: 100%;
+    margin: 0 auto;
   }
 }
