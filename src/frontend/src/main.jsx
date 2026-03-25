@@ -7,6 +7,7 @@ import App from "./App.jsx";
 const domain = "dev-pph3mb8b0az7n35a.eu.auth0.com";
 const clientId = "ArSx6AIrbsHO2JJdQX4bLbzicwqpmrXR";
 const apiAudience = "https://isi-backend";
+const authScope = "openid profile email offline_access";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -16,10 +17,11 @@ createRoot(document.getElementById("root")).render(
       authorizationParams={{
         redirect_uri: window.location.origin,
         audience: apiAudience,
-        scope: "openid profile email",
+        scope: authScope,
       }}
       cacheLocation="localstorage"
       useRefreshTokens={true}
+      useRefreshTokensFallback={true}
     >
       <App />
     </Auth0Provider>

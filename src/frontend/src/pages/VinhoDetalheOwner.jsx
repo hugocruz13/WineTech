@@ -111,7 +111,7 @@ const VinhoDetalhe = () => {
                       onClick={() => setConfirmOpen(true)}
                     >
                       <Trash2 size={16} />
-                      Apagar Adega
+                      Apagar Vinho
                     </button>
                   </div>
                 </div>
