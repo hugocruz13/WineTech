@@ -136,7 +136,9 @@ namespace BLL.Services
                 return null;
 
             return compras
-                .Where(c => string.Equals(c.Estado, "Concluída", StringComparison.OrdinalIgnoreCase))
+                .Where(c =>
+                    string.Equals(c.Estado?.Trim(), "Concluída", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(c.Estado?.Trim(), "Concluida", StringComparison.OrdinalIgnoreCase))
                 .ToList();
         }
 
