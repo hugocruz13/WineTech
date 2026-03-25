@@ -145,10 +145,12 @@ namespace SOAP.Repository
                     {
                         compras.Add(new Compra
                         {
-                            Id = GetInt32(reader, 0),
-                            DataCompra = GetDateTime(reader, 1),
-                            ValorTotal = GetDoubleFromDecimal(reader, 2),
-                            UtilizadorId = GetString(reader, 3)
+                            Id = GetInt32(reader, "Id"),
+                            DataCompra = GetDateTime(reader, "DataCompra"),
+                            ValorTotal = GetDoubleFromDecimal(reader, "ValorTotal"),
+                            Estado = GetString(reader, "Estado"),
+                            cartao = GetInt32(reader, "Cartao"),
+                            UtilizadorId = GetString(reader, "UtilizadoresId")
                         });
                     }
                 }
@@ -200,14 +202,29 @@ namespace SOAP.Repository
             return reader.IsDBNull(ordinal) ? 0 : reader.GetInt32(ordinal);
         }
 
+        private static int GetInt32(SqlDataReader reader, string columnName)
+        {
+            return GetInt32(reader, reader.GetOrdinal(columnName));
+        }
+
         private static DateTime GetDateTime(SqlDataReader reader, int ordinal)
         {
             return reader.IsDBNull(ordinal) ? DateTime.MinValue : reader.GetDateTime(ordinal);
         }
 
+        private static DateTime GetDateTime(SqlDataReader reader, string columnName)
+        {
+            return GetDateTime(reader, reader.GetOrdinal(columnName));
+        }
+
         private static double GetDoubleFromDecimal(SqlDataReader reader, int ordinal)
         {
             return reader.IsDBNull(ordinal) ? 0 : Convert.ToDouble(reader.GetDecimal(ordinal));
+        }
+
+        private static double GetDoubleFromDecimal(SqlDataReader reader, string columnName)
+        {
+            return GetDoubleFromDecimal(reader, reader.GetOrdinal(columnName));
         }
 
         private static float GetFloat(SqlDataReader reader, int ordinal)
@@ -218,6 +235,11 @@ namespace SOAP.Repository
         private static string GetString(SqlDataReader reader, int ordinal)
         {
             return reader.IsDBNull(ordinal) ? null : reader.GetString(ordinal);
+        }
+
+        private static string GetString(SqlDataReader reader, string columnName)
+        {
+            return GetString(reader, reader.GetOrdinal(columnName));
         }
 
     }

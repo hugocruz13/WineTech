@@ -89,7 +89,7 @@ namespace DAL.Services
         {
             return await SoapClientHelper.ExecuteAsync<CompraRepositoryServiceSoapClient, bool>(CreateClient, async client =>
             {
-                var soapModel = new ServiceCompra.Compra { Id = compra.Id, UtilizadorId = compra.UtilizadorId, Estado = compra.Estado,ValorTotal = compra.ValorTotal, DataCompra = compra.DataCompra , cartao = compra.cartao};
+                var soapModel = new ServiceCompra.Compra { Id = compra.Id, UtilizadorId = compra.UtilizadorId, Estado = compra.Estado, ValorTotal = compra.ValorTotal, DataCompra = compra.DataCompra, cartao = compra.cartao };
                 var response = await client.AtualizarValorTotalAsync(soapModel);
                 return response.Body.AtualizarValorTotalResult;
             });
@@ -110,7 +110,9 @@ namespace DAL.Services
                         Id = item.Id,
                         ValorTotal = item.ValorTotal,
                         UtilizadorId = item.UtilizadorId,
-                        DataCompra = item.DataCompra
+                        DataCompra = item.DataCompra,
+                        Estado = item.Estado,
+                        cartao = item.cartao
                     });
                 }
                 return result;

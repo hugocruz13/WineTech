@@ -130,7 +130,14 @@ namespace BLL.Services
             if (utilizador == null)
                 return null;
 
-            return await _compraDAL.ObterComprasUtilizador(utilizadorId);
+            var compras = await _compraDAL.ObterComprasUtilizador(utilizadorId);
+
+            if (compras == null)
+                return null;
+
+            return compras
+                .Where(c => string.Equals(c.Estado, "Concluída", StringComparison.OrdinalIgnoreCase))
+                .ToList();
         }
 
         public async Task<List<CompraDetalhe>> ObterCompraPorId(int compraId, string utilizadorId)
@@ -138,13 +145,13 @@ namespace BLL.Services
             if (compraId <= 0)
                 throw new ArgumentException("Compra ID must be greater than zero", nameof(compraId));
 
-            var compra =  await _compraDAL.ObterDetalhesCompra(compraId);
+            var compra = await _compraDAL.ObterDetalhesCompra(compraId);
 
             foreach (var detalhe in compra)
             {
                 if (detalhe.idUtilizador != utilizadorId)
                 {
-                       throw new UnauthorizedAccessException("Acesso negado à compra de outro utilizador.");
+                    throw new UnauthorizedAccessException("Acesso negado à compra de outro utilizador.");
                 }
             }
 
